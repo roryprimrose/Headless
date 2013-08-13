@@ -38,6 +38,7 @@
     <Reference Include="FluentAssertions">
       <HintPath>..\packages\FluentAssertions.2.0.1\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -55,17 +56,19 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Home.cs" />
     <Compile Include="Pages\CommonLayoutPage.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Pages\GoogleSearchPage.cs" />
     <Compile Include="Pages\HomeAboutPage.cs" />
     <Compile Include="Pages\HomeIndexPage.cs" />
-    <Compile Include="BrowserTests.cs" />
+    <Compile Include="PageModelTests.cs" />
     <Compile Include="IisExpress.cs" />
     <Compile Include="Initialization.cs" />
     <Compile Include="Pages\LinksIndexPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestContextExtensions.cs" />
+    <Compile Include="DynamicPageTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Headless\Headless.csproj">

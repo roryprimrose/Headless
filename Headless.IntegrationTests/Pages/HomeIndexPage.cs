@@ -13,7 +13,7 @@
         {
             get
             {
-                return Config.BaseWebAddress;
+                return Home.Index;
             }
         }
     }

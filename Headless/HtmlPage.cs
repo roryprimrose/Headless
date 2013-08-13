@@ -8,7 +8,7 @@
     ///     The <see cref="HtmlPage" />
     ///     class provides the HTML response from a <see cref="Browser" /> request.
     /// </summary>
-    public abstract class HtmlPage : Page
+    public abstract class HtmlPage : Page, IHtmlPage
     {
         /// <summary>
         ///     Stores the content.
@@ -35,18 +35,23 @@
             _content.Load(result);
         }
 
-        /// <summary>
-        ///     Gets the content.
-        /// </summary>
-        /// <value>
-        ///     The content.
-        /// </value>
-        public HtmlDocument Content
+        /// <inheritdoc />
+        public HtmlDocument Document
         {
             [DebuggerStepThrough]
             get
             {
                 return _content;
+            }
+        }
+
+        /// <inheritdoc />
+        public HtmlNode Node
+        {
+            [DebuggerStepThrough]
+            get
+            {
+                return _content.DocumentNode;
             }
         }
     }

@@ -9,7 +9,7 @@
     public class GoogleSearchPage : HtmlPage
     {
         /// <inheritdoc />
-        protected override bool IsValidLocation(Uri location)
+        public override bool IsValidLocation(Uri location)
         {
             var isValid = base.IsValidLocation(location);
 

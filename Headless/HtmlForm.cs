@@ -18,7 +18,7 @@
         /// <param name="node">
         /// The node.
         /// </param>
-        public HtmlForm(HtmlPage page, HtmlNode node) : base(page, node)
+        public HtmlForm(IHtmlPage page, HtmlNode node) : base(page, node)
         {
         }
 

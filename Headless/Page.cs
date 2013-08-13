@@ -9,7 +9,7 @@
     ///     The <see cref="Page" />
     ///     class provides the base page logic for interacting with a browser response.
     /// </summary>
-    public abstract class Page
+    public abstract class Page : IPage
     {
         /// <summary>
         ///     Stores the reference to the owning browser.
@@ -26,50 +26,28 @@
         /// </summary>
         private string _statusDescription;
 
-        /// <summary>
-        /// Sets the browser.
-        /// </summary>
-        /// <param name="browser">
-        /// The browser.
-        /// </param>
-        internal void SetBrowser(Browser browser)
+        /// <inheritdoc />
+        public void Initialize(Browser browser, HttpResponseMessage response)
         {
+            if (browser == null)
+            {
+                throw new ArgumentNullException("browser");
+            }
+
+            if (response == null)
+            {
+                throw new ArgumentNullException("response");
+            }
+
             _browser = browser;
+            _statusCode = response.StatusCode;
+            _statusDescription = response.ReasonPhrase;
+
+            SetContent(response.Content);
         }
 
-        /// <summary>
-        /// Sets the content of the string.
-        /// </summary>
-        /// <param name="content">
-        /// The content.
-        /// </param>
-        internal abstract void SetContent(HttpContent content);
-
-        /// <summary>
-        /// Sets the state.
-        /// </summary>
-        /// <param name="statusCode">
-        /// The status code.
-        /// </param>
-        /// <param name="statusDescription">
-        /// The status description.
-        /// </param>
-        internal void SetStatus(HttpStatusCode statusCode, string statusDescription)
-        {
-            _statusCode = statusCode;
-            _statusDescription = statusDescription;
-        }
-
-        /// <summary>
-        /// Determines whether the specified location is valid for the page.
-        /// </summary>
-        /// <param name="location">
-        /// The current location.
-        /// </param>
-        /// <returns>
-        /// <c>true</c> if the specified location is valid for the page; otherwise, <c>false</c>.
-        /// </returns>
-        protected internal virtual bool IsValidLocation(Uri location)
+        /// <inheritdoc />
+        public virtual bool IsValidLocation(Uri location)
         {
             if (location == null)
             {
@@ -90,22 +68,30 @@
         }
 
         /// <summary>
-        ///     Gets the location of the page.
+        /// Sets the content of the string.
         /// </summary>
-        /// <value>
-        ///     The location of the page.
-        /// </value>
+        /// <param name="content">
+        /// The content.
+        /// </param>
+        internal abstract void SetContent(HttpContent content);
+
+        /// <inheritdoc />
+        public Browser Browser
+        {
+            [DebuggerStepThrough]
+            get
+            {
+                return _browser;
+            }
+        }
+
+        /// <inheritdoc />
         public abstract Uri Location
         {
             get;
         }
 
-        /// <summary>
-        ///     Gets the status code.
-        /// </summary>
-        /// <value>
-        ///     The status code.
-        /// </value>
+        /// <inheritdoc />
         public HttpStatusCode StatusCode
         {
             [DebuggerStepThrough]
@@ -115,30 +101,13 @@
             }
         }
 
-        /// <summary>
-        ///     Gets the status description.
-        /// </summary>
-        /// <value>
-        ///     The status description.
-        /// </value>
+        /// <inheritdoc />
         public string StatusDescription
         {
             [DebuggerStepThrough]
             get
             {
                 return _statusDescription;
-            }
-        }
-
-        /// <summary>
-        ///     Stores the reference to the owning browser.
-        /// </summary>
-        internal Browser Browser
-        {
-            [DebuggerStepThrough]
-            get
-            {
-                return _browser;
             }
         }
     }

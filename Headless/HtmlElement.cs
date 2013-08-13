@@ -20,7 +20,7 @@
         /// <summary>
         ///     Stores the reference to the owning page.
         /// </summary>
-        private readonly HtmlPage _page;
+        private readonly IHtmlPage _page;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HtmlElement"/> class.
@@ -31,7 +31,7 @@
         /// <param name="node">
         /// The node.
         /// </param>
-        protected HtmlElement(HtmlPage page, HtmlNode node)
+        protected HtmlElement(IHtmlPage page, HtmlNode node)
         {
             _page = page;
             _node = node;
@@ -189,7 +189,7 @@
         /// <value>
         ///     The owning page.
         /// </value>
-        protected internal HtmlPage Page
+        protected internal IHtmlPage Page
         {
             [DebuggerStepThrough]
             get

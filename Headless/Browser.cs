@@ -70,7 +70,7 @@
         /// </summary>
         /// <typeparam name="T">The type of page related to the result.</typeparam>
         /// <returns>A <see cref="HttpResult{T}" /> value.</returns>
-        public HttpResult<T> GetLastResult<T>() where T : Page
+        public HttpResult<T> GetLastResult<T>() where T : IPage
         {
             if (_lastResult == null)
             {
@@ -110,7 +110,7 @@
         /// <returns>
         /// A <see cref="Page"/> value.
         /// </returns>
-        internal T GoTo<T>(Uri locationToMatch, HttpStatusCode expectedOutcome) where T : Page, new()
+        internal T GoTo<T>(Uri locationToMatch, HttpStatusCode expectedOutcome) where T : IPage, new()
         {
             var page = new T();
 
@@ -190,6 +190,10 @@
                 throw new InvalidOperationException(message);
             }
 
+            _lastResult = new HttpResult<T>(page, outcomes);
+
+            page.Initialize(this, response);
+
             // Validate that the final address matches the page
             if (page.IsValidLocation(outcome.Location) == false)
             {
@@ -203,12 +207,6 @@
 
                 throw new InvalidOperationException(message);
             }
-
-            page.SetBrowser(this);
-            page.SetStatus(response.StatusCode, response.ReasonPhrase);
-            page.SetContent(response.Content);
-
-            _lastResult = new HttpResult<T>(page, outcomes);
 
             return page;
         }

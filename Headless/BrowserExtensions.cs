@@ -34,6 +34,31 @@
         /// <summary>
         /// Goes to.
         /// </summary>
+        /// <param name="browser">
+        /// The browser.
+        /// </param>
+        /// <param name="location">
+        /// The location.
+        /// </param>
+        /// <returns>
+        /// A dynamic html page.
+        /// </returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// browser
+        /// </exception>
+        public static dynamic GoTo(this Browser browser, Uri location)
+        {
+            if (browser == null)
+            {
+                throw new ArgumentNullException("browser");
+            }
+
+            return browser.GoTo<DynamicHtmlPage>(location, HttpStatusCode.OK);
+        }
+
+        /// <summary>
+        /// Goes to.
+        /// </summary>
         /// <typeparam name="T">
         /// The type of page to return.
         /// </typeparam>

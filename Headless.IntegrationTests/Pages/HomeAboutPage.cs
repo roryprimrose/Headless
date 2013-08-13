@@ -13,7 +13,7 @@
         {
             get
             {
-                return new Uri(Config.BaseWebAddress, "home/about");
+                return Home.About;
             }
         }
     }

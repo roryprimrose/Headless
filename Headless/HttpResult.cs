@@ -12,7 +12,7 @@
     /// <typeparam name="T">
     /// The type of page expected from the request.
     /// </typeparam>
-    public class HttpResult<T> where T : Page
+    public class HttpResult<T> where T : IPage
     {
         /// <summary>
         ///     Stores the http request outcomes.

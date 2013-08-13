@@ -42,7 +42,7 @@
         /// <returns>
         /// A <typeparamref name="T"/> value.
         /// </returns>
-        public static T Create<T>(HtmlPage page, HtmlNode node) where T : HtmlElement
+        public static T Create<T>(IHtmlPage page, HtmlNode node) where T : HtmlElement
         {
             // Find a constructor on the type that takes in HtmlPage and HtmlNode
             var typeToCreate = typeof(T);

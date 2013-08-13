@@ -3,15 +3,15 @@
     using System.Diagnostics;
     using System.Net;
     using FluentAssertions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Headless.IntegrationTests.Pages;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    ///     The <see cref="BrowserTests" />
+    ///     The <see cref="PageModelTests" />
     ///     class tests the <see cref="Browser" /> class.
     /// </summary>
     [TestClass]
-    public class BrowserTests
+    public class PageModelTests
     {
         /// <summary>
         ///     Runs a test for handle external redirect.

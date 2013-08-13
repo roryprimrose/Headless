@@ -24,7 +24,7 @@
         /// <summary>
         ///     The owning page.
         /// </summary>
-        private readonly HtmlPage _page;
+        private readonly IHtmlPage _page;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HtmlElementFinder{T}"/> class.
@@ -32,7 +32,7 @@
         /// <param name="page">
         /// The page.
         /// </param>
-        public HtmlElementFinder(HtmlPage page) : this(page, page.Content.DocumentNode)
+        public HtmlElementFinder(HtmlPage page) : this(page, page.Document.DocumentNode)
         {
         }
 
@@ -55,7 +55,7 @@
         /// <param name="node">
         /// The node.
         /// </param>
-        public HtmlElementFinder(HtmlPage page, HtmlNode node)
+        public HtmlElementFinder(IHtmlPage page, HtmlNode node)
         {
             if (page == null)
             {
@@ -181,7 +181,7 @@
         /// <returns>
         /// An <see cref="IEnumerable{T}"/> value.
         /// </returns>
-        private static IEnumerable<T> BuildElementResults(HtmlPage owningPage, HtmlNode parentNode, string query)
+        private static IEnumerable<T> BuildElementResults(IHtmlPage owningPage, HtmlNode parentNode, string query)
         {
             var nodes = parentNode.SelectNodes(query);
 
