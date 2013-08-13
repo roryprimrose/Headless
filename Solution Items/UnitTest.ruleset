@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="UnitTest.ruleset" Description="Ignores rules not relevant to unit test projects" ToolsVersion="11.0">
+  <IncludeAll Action="Warning" />
+  <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+    <Rule Id="CA1020" Action="None" />
+    <Rule Id="CA1303" Action="None" />
+    <Rule Id="CA1502" Action="None" />
+    <Rule Id="CA1505" Action="None" />
+    <Rule Id="CA1506" Action="None" />
+    <Rule Id="CA1702" Action="None" />
+    <Rule Id="CA1704" Action="None" />
+    <Rule Id="CA1806" Action="None" />
+    <Rule Id="CA1811" Action="None" />
+    <Rule Id="CA1812" Action="None" />
+    <Rule Id="CA2204" Action="None" />
+    <Rule Id="CA2210" Action="None" />
+    <Rule Id="CA2234" Action="None" />
+  </Rules>
+</RuleSet>

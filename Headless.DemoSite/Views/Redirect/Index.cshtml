@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Link Tests";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+
+<article>
+    <div>
+        @Html.ActionLink("Test 302", "Temporary", "Redirect")
+    </div>
+
+    <div>
+        @Html.ActionLink("Test 301", "Permanent", "Redirect")
+    </div>
+            
+    <div>
+        @Html.ActionLink("Test External", "External", "Redirect")
+    </div>
+
+</article>
