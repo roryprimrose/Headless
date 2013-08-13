@@ -1,5 +1,6 @@
 ﻿namespace Headless
 {
+    using System;
     using HtmlAgilityPack;
 
     /// <summary>
@@ -18,8 +19,46 @@
         /// <param name="node">
         /// The node.
         /// </param>
-        public HtmlLink(HtmlPage page, HtmlNode node) : base(page, node)
+        public HtmlLink(IHtmlPage page, HtmlNode node) : base(page, node)
         {
+        }
+
+        /// <summary>
+        ///     Clicks the specified element.
+        /// </summary>
+        /// <returns>
+        ///     A dynamic value for the page.
+        /// </returns>
+        public dynamic Click()
+        {
+            return Click<DynamicHtmlPage>();
+        }
+
+        /// <summary>
+        ///     Clicks the specified element.
+        /// </summary>
+        /// <typeparam name="T">The type of page to return.</typeparam>
+        /// <returns>
+        ///     A <see cref="HttpResult{T}" /> value.
+        /// </returns>
+        /// <exception cref="System.InvalidOperationException">The link does not have an href attribute.</exception>
+        public T Click<T>() where T : IPage, new()
+        {
+            var href = Node.Attributes["href"].Value;
+
+            if (string.IsNullOrWhiteSpace(href))
+            {
+                throw new InvalidOperationException("The link does not have an href attribute.");
+            }
+
+            var location = new Uri(href, UriKind.RelativeOrAbsolute);
+
+            if (location.IsAbsoluteUri == false)
+            {
+                location = new Uri(Page.Location, location);
+            }
+
+            return Page.Browser.GoTo<T>(location);
         }
 
         /// <summary>

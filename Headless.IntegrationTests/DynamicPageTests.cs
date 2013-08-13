@@ -23,10 +23,9 @@
 
                 ((HttpStatusCode)result.StatusCode).Should().Be(HttpStatusCode.OK);
 
-                Assert.Inconclusive("The rest of this functionality has not yet been writte");
-                //var aboutPage = result.About.Click<HomeAboutPage>();
+                var aboutPage = result.About.Click();
 
-                //aboutPage.StatusCode.Should().Be(HttpStatusCode.OK);
+                ((HttpStatusCode)aboutPage.StatusCode).Should().Be(HttpStatusCode.OK);
             }
         }
     }

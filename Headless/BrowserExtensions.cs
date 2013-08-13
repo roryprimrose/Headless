@@ -44,7 +44,7 @@
         /// A dynamic html page.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
-        /// browser
+        /// The <paramref name="browser"/> parameter is <c>null</c>.
         /// </exception>
         public static dynamic GoTo(this Browser browser, Uri location)
         {
@@ -71,7 +71,7 @@
         /// <returns>
         /// A <see cref="Page"/> value.
         /// </returns>
-        public static T GoTo<T>(this Browser browser, Uri location) where T : Page, new()
+        public static T GoTo<T>(this Browser browser, Uri location) where T : IPage, new()
         {
             if (browser == null)
             {

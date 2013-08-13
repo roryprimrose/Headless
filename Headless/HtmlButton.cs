@@ -22,5 +22,19 @@
         public HtmlButton(HtmlPage page, HtmlNode node) : base(page, node)
         {
         }
+
+        /// <summary>
+        ///     Clicks the specified button.
+        /// </summary>
+        /// <typeparam name="T">The type of page to return.</typeparam>
+        /// <returns>
+        ///     A <typeparamref name="T" /> value.
+        /// </returns>
+        public T Click<T>() where T : Page, new()
+        {
+            var form = this.GetContainingForm();
+
+            return form.Submit<T>();
+        }
     }
 }

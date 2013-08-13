@@ -42,11 +42,14 @@
         {
             get
             {
+                var supportedTags = _supportedTags.Aggregate((i, j) => i + Environment.NewLine + j);
+
                 var message = string.Format(
                     CultureInfo.CurrentCulture, 
                     "The specified '{0}' element is invalid. The supported tags for this node are: {1}", 
                     _node.Name, 
-                    _supportedTags.Select(x => Environment.NewLine + x));
+                    supportedTags);
+
                 return message;
             }
         }

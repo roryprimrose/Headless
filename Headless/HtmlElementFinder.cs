@@ -32,7 +32,7 @@
         /// <param name="page">
         /// The page.
         /// </param>
-        public HtmlElementFinder(HtmlPage page) : this(page, page.Document.DocumentNode)
+        public HtmlElementFinder(IHtmlPage page) : this(page, page.Document.DocumentNode)
         {
         }
 
@@ -167,6 +167,22 @@
         }
 
         /// <summary>
+        /// Finds the element by name anywhere under this node.
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <returns>
+        /// A <typeparamref name="T"/> value.
+        /// </returns>
+        public T FindByName(string name)
+        {
+            var matches = ByAttribute("name", name);
+
+            return matches.EnsureSingle();
+        }
+
+        /// <summary>
         /// Builds the element results.
         /// </summary>
         /// <param name="owningPage">
@@ -184,6 +200,11 @@
         private static IEnumerable<T> BuildElementResults(IHtmlPage owningPage, HtmlNode parentNode, string query)
         {
             var nodes = parentNode.SelectNodes(query);
+
+            if (nodes == null)
+            {
+                return new List<T>();
+            }
 
             return nodes.Select(node => HtmlElementFactory.Create<T>(owningPage, node));
         }

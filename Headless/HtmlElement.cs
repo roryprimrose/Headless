@@ -85,6 +85,12 @@
         {
             var supportedTags = GetType().GetSupportedTags();
 
+            if (supportedTags.Contains("*"))
+            {
+                // This type supports any tag
+                return;
+            }
+
             if (supportedTags.Contains(TagName, StringComparer.OrdinalIgnoreCase) == false)
             {
                 throw new InvalidHtmlElementException(Node, supportedTags);

@@ -59,11 +59,9 @@
     <Compile Include="BrowserExtensions.cs">
       <DependentUpon>Extensions.cs</DependentUpon>
     </Compile>
+    <Compile Include="DynamicHtmlElement.cs" />
     <Compile Include="DynamicHtmlPage.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="HtmlButtonExtensions.cs">
-      <DependentUpon>Extensions.cs</DependentUpon>
-    </Compile>
     <Compile Include="HtmlElementFinder.cs" />
     <Compile Include="HtmlElementNotFoundException.cs" />
     <Compile Include="HtmlForm.cs" />
@@ -74,9 +72,6 @@
     <Compile Include="HtmlPageWrapper.cs" />
     <Compile Include="HtmlResultException.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="HtmlLinkExtensions.cs">
-      <DependentUpon>Extensions.cs</DependentUpon>
-    </Compile>
     <Compile Include="HtmlElementExtensions.cs">
       <DependentUpon>Extensions.cs</DependentUpon>
     </Compile>
