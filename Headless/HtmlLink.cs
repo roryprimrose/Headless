@@ -32,7 +32,7 @@
         {
             get
             {
-                return Node.Attributes["target"].Value;
+                return GetAttributeValue("target");
             }
         }
     }

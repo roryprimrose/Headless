@@ -8,7 +8,7 @@
     /// </summary>
     [SupportedTag("submit")]
     [SupportedTag("button")]
-    public class HtmlButton : HtmlElement
+    public class HtmlButton : HtmlFormElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="HtmlButton"/> class.

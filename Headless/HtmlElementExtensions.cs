@@ -76,5 +76,40 @@
 
             return elements[0];
         }
+
+        /// <summary>
+        /// Gets the containing form.
+        /// </summary>
+        /// <param name="element">
+        /// The element.
+        /// </param>
+        /// <returns>
+        /// A <see cref="HtmlForm"/> value.
+        /// </returns>
+        /// <exception cref="Headless.HtmlElementNotFoundException">
+        /// No form element was found for the requested element.
+        /// </exception>
+        /// <exception cref="InvalidHtmlElementMatchException">
+        /// More than one form element was found for the requested element
+        /// </exception>
+        public static HtmlForm GetContainingForm(this HtmlElement element)
+        {
+            var forms = element.Node.AncestorsAndSelf("form").ToList();
+
+            if (forms.Count == 0)
+            {
+                throw new HtmlElementNotFoundException(
+                    element.Node, 
+                    "No form element was found for the requested element.");
+            }
+
+            if (forms.Count > 1)
+            {
+                throw new InvalidHtmlElementMatchException(
+                    "More than one form element was found for the requested element");
+            }
+
+            return new HtmlForm(element.Page, forms[0]);
+        }
     }
 }

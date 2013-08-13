@@ -60,7 +60,16 @@
       <DependentUpon>Extensions.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="HtmlButtonExtensions.cs">
+      <DependentUpon>Extensions.cs</DependentUpon>
+    </Compile>
     <Compile Include="HtmlElementFinder.cs" />
+    <Compile Include="HtmlElementNotFoundException.cs" />
+    <Compile Include="HtmlForm.cs" />
+    <Compile Include="HtmlFormElement.cs" />
+    <Compile Include="HtmlFormExtensions.cs">
+      <DependentUpon>Extensions.cs</DependentUpon>
+    </Compile>
     <Compile Include="HtmlResultException.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="HtmlLinkExtensions.cs">

@@ -50,13 +50,36 @@
         }
 
         /// <summary>
+        /// Gets the attribute value.
+        /// </summary>
+        /// <param name="attributeName">
+        /// Name of the attribute.
+        /// </param>
+        /// <returns>
+        /// A <see cref="string"/> value.
+        /// </returns>
+        protected string GetAttributeValue(string attributeName)
+        {
+            var attribute = Node.Attributes[attributeName];
+
+            if (attribute == null)
+            {
+                return string.Empty;
+            }
+
+            if (attribute.Value == null)
+            {
+                return string.Empty;
+            }
+
+            return attribute.Value;
+        }
+
+        /// <summary>
         ///     Validates the node.
         /// </summary>
         /// <exception cref="InvalidHtmlElementException">
-        ///     new[]
-        ///     {
-        ///     a
-        ///     }
+        ///     The node does not match any of the supported HTML tags for the type.
         /// </exception>
         private void ValidateNode()
         {
@@ -76,16 +99,10 @@
         /// </value>
         public string CssClass
         {
+            [DebuggerStepThrough]
             get
             {
-                var attribute = Node.Attributes["class"];
-
-                if (attribute == null)
-                {
-                    return string.Empty;
-                }
-
-                return attribute.Value;
+                return GetAttributeValue("class");
             }
         }
 
@@ -97,6 +114,7 @@
         /// </value>
         public string Html
         {
+            [DebuggerStepThrough]
             get
             {
                 return Node.OuterHtml;
@@ -111,15 +129,10 @@
         /// </value>
         public string Id
         {
+            [DebuggerStepThrough]
             get
             {
-                var attribute = Node.Attributes["id"];
-                if (attribute == null)
-                {
-                    return string.Empty;
-                }
-
-                return attribute.Value;
+                return GetAttributeValue("id");
             }
         }
 
@@ -148,6 +161,7 @@
         /// </value>
         public virtual string Text
         {
+            [DebuggerStepThrough]
             get
             {
                 return Node.InnerText;
