@@ -1,6 +1,5 @@
 ﻿namespace Headless.IntegrationTests
 {
-    using System.Diagnostics;
     using System.Net;
     using FluentAssertions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,25 +21,21 @@
             {
                 var linksResult = browser.GoTo(Redirect.Index);
 
-                var searchPage = (IHtmlPage)linksResult.External.Click();
+                ((IPage)linksResult).Result.TraceResults();
 
-                var outcomes = searchPage.Result.Outcomes;
+                var page = (IHtmlPage)linksResult.External.Click();
+
+                page.Result.TraceResults();
+
+                var outcomes = page.Result.Outcomes;
 
                 // There should have been a redirection
                 outcomes.Should().Contain(x => x.StatusCode == HttpStatusCode.Found);
 
                 // One of the requests should have hit the original location defined by the page
-                outcomes.Should().ContainSingle(x => x.Location == searchPage.Location);
+                outcomes.Should().ContainSingle(x => x.Location == page.Location);
 
-                searchPage.StatusCode.Should().Be(HttpStatusCode.OK);
-
-                foreach (var outcome in outcomes)
-                {
-                    Trace.WriteLine(outcome);
-                }
-
-                Trace.WriteLine(
-                    "Total response time: " + searchPage.Result.ResponseTime.TotalMilliseconds + " milliseconds");
+                page.StatusCode.Should().Be(HttpStatusCode.OK);
             }
         }
 
@@ -54,12 +49,16 @@
             {
                 var linksResult = browser.GoTo(Redirect.Index);
 
-                var aboutPage = (IHtmlPage)linksResult.Temporary.Click();
+                ((IPage)linksResult).Result.TraceResults();
+
+                var page = (IHtmlPage)linksResult.Temporary.Click();
+
+                page.Result.TraceResults();
 
                 // There should have been a redirection
-                aboutPage.Result.Outcomes.Should().ContainSingle(x => x.StatusCode == HttpStatusCode.Found);
+                page.Result.Outcomes.Should().ContainSingle(x => x.StatusCode == HttpStatusCode.Found);
 
-                aboutPage.StatusCode.Should().Be(HttpStatusCode.OK);
+                page.StatusCode.Should().Be(HttpStatusCode.OK);
             }
         }
 
@@ -73,12 +72,16 @@
             {
                 var linksResult = browser.GoTo(Redirect.Index);
 
-                var aboutPage = (IHtmlPage)linksResult.Permanent.Click();
+                ((IPage)linksResult).Result.TraceResults();
+
+                var page = (IHtmlPage)linksResult.Permanent.Click();
+
+                page.Result.TraceResults();
 
                 // There should have been a redirection
-                aboutPage.Result.Outcomes.Should().ContainSingle(x => x.StatusCode == HttpStatusCode.MovedPermanently);
+                page.Result.Outcomes.Should().ContainSingle(x => x.StatusCode == HttpStatusCode.MovedPermanently);
 
-                aboutPage.StatusCode.Should().Be(HttpStatusCode.OK);
+                page.StatusCode.Should().Be(HttpStatusCode.OK);
             }
         }
 
@@ -92,12 +95,16 @@
             {
                 var result = browser.GoTo(Home.Index);
 
+                ((IPage)result).Result.TraceResults();
+
                 ((IHtmlPage)result).StatusCode.Should().Be(HttpStatusCode.OK);
 
-                var aboutPage = (IHtmlPage)result.About.Click();
+                var page = (IHtmlPage)result.About.Click();
 
-                aboutPage.IsOn(Home.About).Should().BeTrue();
-                aboutPage.StatusCode.Should().Be(HttpStatusCode.OK);
+                page.Result.TraceResults();
+
+                page.IsOn(Home.About).Should().BeTrue();
+                page.StatusCode.Should().Be(HttpStatusCode.OK);
             }
         }
     }

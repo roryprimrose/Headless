@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Resources;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Headless")]
@@ -9,3 +10,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 [assembly: Guid("372763c2-3871-41fa-a512-6c62177a7b03")]
 [assembly: CLSCompliant(false)]
+[assembly: NeutralResourcesLanguage("en-US")]

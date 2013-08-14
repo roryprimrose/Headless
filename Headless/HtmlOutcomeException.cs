@@ -4,31 +4,31 @@
     using System.Runtime.Serialization;
 
     /// <summary>
-    ///     The <see cref="InvalidHtmlElementMatchException" />
-    ///     class identifies scenarios where an invalid element match is encountered.
+    ///     The <see cref="HttpOutcomeException" />
+    ///     is used to identify that HTTP response encountered was not expected.
     /// </summary>
     [Serializable]
-    public class InvalidHtmlElementMatchException : Exception
+    public class HttpOutcomeException : Exception
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="InvalidHtmlElementMatchException" /> class.
+        ///     Initializes a new instance of the <see cref="HttpOutcomeException" /> class.
         /// </summary>
-        public InvalidHtmlElementMatchException()
+        public HttpOutcomeException()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidHtmlElementMatchException"/> class.
+        /// Initializes a new instance of the <see cref="HttpOutcomeException"/> class.
         /// </summary>
         /// <param name="message">
         /// The message that describes the error.
         /// </param>
-        public InvalidHtmlElementMatchException(string message) : base(message)
+        public HttpOutcomeException(string message) : base(message)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidHtmlElementMatchException"/> class.
+        /// Initializes a new instance of the <see cref="HttpOutcomeException"/> class.
         /// </summary>
         /// <param name="message">
         /// The message.
@@ -36,12 +36,12 @@
         /// <param name="inner">
         /// The inner.
         /// </param>
-        public InvalidHtmlElementMatchException(string message, Exception inner) : base(message, inner)
+        public HttpOutcomeException(string message, Exception inner) : base(message, inner)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InvalidHtmlElementMatchException"/> class.
+        /// Initializes a new instance of the <see cref="HttpOutcomeException"/> class.
         /// </summary>
         /// <param name="info">
         /// The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object
@@ -51,8 +51,7 @@
         /// The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual
         ///     information about the source or destination.
         /// </param>
-        protected InvalidHtmlElementMatchException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
+        protected HttpOutcomeException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

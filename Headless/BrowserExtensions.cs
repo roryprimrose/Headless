@@ -10,7 +10,7 @@
     public static class BrowserExtensions
     {
         /// <summary>
-        /// Goes to.
+        /// Browses to the location defined by the specified page type.
         /// </summary>
         /// <param name="browser">
         /// The browser.
@@ -21,6 +21,9 @@
         /// <returns>
         /// A <see cref="Page"/> value.
         /// </returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="browser"/> parameter is <c>null</c>.
+        /// </exception>
         public static T GoTo<T>(this Browser browser) where T : Page, new()
         {
             if (browser == null)
@@ -32,7 +35,7 @@
         }
 
         /// <summary>
-        /// Goes to.
+        /// Browses to the specified location.
         /// </summary>
         /// <param name="browser">
         /// The browser.
@@ -57,7 +60,7 @@
         }
 
         /// <summary>
-        /// Goes to.
+        /// Browses to the specified location.
         /// </summary>
         /// <typeparam name="T">
         /// The type of page to return.
@@ -66,11 +69,14 @@
         /// The browser.
         /// </param>
         /// <param name="location">
-        /// The location.
+        /// The location to navigate to.
         /// </param>
         /// <returns>
         /// A <see cref="Page"/> value.
         /// </returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="browser"/> parameter is <c>null</c>.
+        /// </exception>
         public static T GoTo<T>(this Browser browser, Uri location) where T : IPage, new()
         {
             if (browser == null)

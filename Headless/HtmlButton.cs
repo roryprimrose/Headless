@@ -32,7 +32,7 @@
         /// </returns>
         public T Click<T>() where T : Page, new()
         {
-            var form = this.GetContainingForm();
+            var form = this.GetHtmlForm();
 
             return form.Submit<T>();
         }

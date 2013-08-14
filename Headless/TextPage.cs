@@ -13,17 +13,6 @@
         /// </summary>
         private string _content;
 
-        /// <summary>
-        /// Sets the content.
-        /// </summary>
-        /// <param name="content">
-        /// The content.
-        /// </param>
-        internal void SetContent(string content)
-        {
-            _content = content;
-        }
-
         /// <inheritdoc />
         internal override void SetContent(HttpContent content)
         {

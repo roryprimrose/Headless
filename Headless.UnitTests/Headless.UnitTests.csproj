@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8577FCC8-5FF0-4A18-BD92-6ACFBA6777B2}</ProjectGuid>
+    <ProjectGuid>{1074D199-4069-42C6-9A5F-9A12774CEC88}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Headless.IntegrationTests</RootNamespace>
-    <AssemblyName>Headless.IntegrationTests</AssemblyName>
+    <RootNamespace>Headless.UnitTests</RootNamespace>
+    <AssemblyName>Headless.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -40,7 +40,9 @@
     <Reference Include="FluentAssertions">
       <HintPath>..\packages\FluentAssertions.2.0.1\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -58,26 +60,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Content.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="Pages\RedirectIndexPage.cs" />
-    <Compile Include="Home.cs" />
-    <Compile Include="Pages\CommonLayoutPage.cs" />
-    <Compile Include="Config.cs" />
-    <Compile Include="Pages\GoogleSearchPage.cs" />
-    <Compile Include="Pages\HomeAboutPage.cs" />
-    <Compile Include="Pages\HomeIndexPage.cs" />
-    <Compile Include="PageModelTests.cs" />
-    <Compile Include="IisExpress.cs" />
-    <Compile Include="Initialization.cs" />
-    <Compile Include="Pages\TextContentPage.cs" />
+    <Compile Include="InvalidHtmlElementMatchExceptionTests.cs" />
+    <Compile Include="HtmlElementNotFoundExceptionTests.cs" />
+    <Compile Include="HttpOutcomeExceptionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Redirect.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TestContextExtensions.cs" />
-    <Compile Include="DynamicPageTests.cs" />
-    <Compile Include="TextPageTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Headless\Headless.csproj">

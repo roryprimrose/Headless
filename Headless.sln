@@ -30,6 +30,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{3F0DA5
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Headless.UnitTests", "Headless.UnitTests\Headless.UnitTests.csproj", "{1074D199-4069-42C6-9A5F-9A12774CEC88}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,6 +50,10 @@ Global
 		{B47105B7-8DF5-413A-AC84-B5D977E6E883}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B47105B7-8DF5-413A-AC84-B5D977E6E883}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B47105B7-8DF5-413A-AC84-B5D977E6E883}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1074D199-4069-42C6-9A5F-9A12774CEC88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1074D199-4069-42C6-9A5F-9A12774CEC88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1074D199-4069-42C6-9A5F-9A12774CEC88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1074D199-4069-42C6-9A5F-9A12774CEC88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,5 +61,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B47105B7-8DF5-413A-AC84-B5D977E6E883} = {3FE556AE-6A05-4C6C-84E5-DC5419B3E39C}
 		{8577FCC8-5FF0-4A18-BD92-6ACFBA6777B2} = {3FE556AE-6A05-4C6C-84E5-DC5419B3E39C}
+		{1074D199-4069-42C6-9A5F-9A12774CEC88} = {3FE556AE-6A05-4C6C-84E5-DC5419B3E39C}
 	EndGlobalSection
 EndGlobal

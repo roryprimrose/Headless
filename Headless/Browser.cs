@@ -7,6 +7,7 @@
     using System.Globalization;
     using System.Net;
     using System.Net.Http;
+    using Headless.Properties;
 
     /// <summary>
     ///     The <see cref="Browser" />
@@ -147,11 +148,11 @@
             {
                 var message = string.Format(
                     CultureInfo.CurrentCulture, 
-                    "StatusCode expected was {0} but {1} was returned.", 
+                    Resources.Browser_InvalidResponseStatus, 
                     expectedOutcome, 
                     outcome.StatusCode);
 
-                throw new HttpResultException(message);
+                throw new HttpOutcomeException(message);
             }
 
             var result = new HttpResult(outcomes);
@@ -269,10 +270,10 @@
         }
 
         /// <summary>
-        ///     Gets the cookies.
+        ///     Gets the cookies for the browser session.
         /// </summary>
         /// <value>
-        ///     The cookies.
+        ///     The cookies for the browser session.
         /// </value>
         public CookieContainer Cookies
         {

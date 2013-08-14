@@ -23,25 +23,21 @@
             {
                 var linksResult = browser.GoTo<RedirectIndexPage>();
 
-                var searchPage = linksResult.External.Click<GoogleSearchPage>();
+                ((IPage)linksResult).Result.TraceResults();
 
-                var outcomes = searchPage.Result.Outcomes;
+                var page = linksResult.External.Click<GoogleSearchPage>();
+
+                page.Result.TraceResults();
+
+                var outcomes = page.Result.Outcomes;
 
                 // There should have been a redirection
                 outcomes.Should().Contain(x => x.StatusCode == HttpStatusCode.Found);
 
                 // One of the requests should have hit the original location defined by the page
-                outcomes.Should().ContainSingle(x => x.Location == searchPage.Location);
+                outcomes.Should().ContainSingle(x => x.Location == page.Location);
 
-                searchPage.StatusCode.Should().Be(HttpStatusCode.OK);
-
-                foreach (var outcome in outcomes)
-                {
-                    Trace.WriteLine(outcome);
-                }
-
-                Trace.WriteLine(
-                    "Total response time: " + searchPage.Result.ResponseTime.TotalMilliseconds + " milliseconds");
+                page.StatusCode.Should().Be(HttpStatusCode.OK);
             }
         }
 
@@ -55,12 +51,16 @@
             {
                 var linksResult = browser.GoTo<RedirectIndexPage>();
 
-                var aboutPage = linksResult.Temporary.Click<HomeAboutPage>();
+                ((IPage)linksResult).Result.TraceResults();
+
+                var page = linksResult.Temporary.Click<HomeAboutPage>();
+
+                page.Result.TraceResults();
 
                 // There should have been a redirection
-                aboutPage.Result.Outcomes.Should().ContainSingle(x => x.StatusCode == HttpStatusCode.Found);
+                page.Result.Outcomes.Should().ContainSingle(x => x.StatusCode == HttpStatusCode.Found);
 
-                aboutPage.StatusCode.Should().Be(HttpStatusCode.OK);
+                page.StatusCode.Should().Be(HttpStatusCode.OK);
             }
         }
 
@@ -74,12 +74,16 @@
             {
                 var linksResult = browser.GoTo<RedirectIndexPage>();
 
-                var aboutPage = linksResult.Permanent.Click<HomeAboutPage>();
+                ((IPage)linksResult).Result.TraceResults();
+
+                var page = linksResult.Permanent.Click<HomeAboutPage>();
+
+                page.Result.TraceResults();
 
                 // There should have been a redirection
-                aboutPage.Result.Outcomes.Should().ContainSingle(x => x.StatusCode == HttpStatusCode.MovedPermanently);
+                page.Result.Outcomes.Should().ContainSingle(x => x.StatusCode == HttpStatusCode.MovedPermanently);
 
-                aboutPage.StatusCode.Should().Be(HttpStatusCode.OK);
+                page.StatusCode.Should().Be(HttpStatusCode.OK);
             }
         }
 
@@ -93,9 +97,13 @@
             {
                 var result = browser.GoTo<HomeIndexPage>();
 
-                var aboutPage = result.About.Click<HomeAboutPage>();
+                ((IPage)result).Result.TraceResults();
 
-                aboutPage.StatusCode.Should().Be(HttpStatusCode.OK);
+                var page = result.About.Click<HomeAboutPage>();
+
+                page.Result.TraceResults();
+
+                page.StatusCode.Should().Be(HttpStatusCode.OK);
             }
         }
     }

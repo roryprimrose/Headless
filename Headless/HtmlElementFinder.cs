@@ -32,8 +32,18 @@
         /// <param name="page">
         /// The page.
         /// </param>
-        public HtmlElementFinder(IHtmlPage page) : this(page, page.Document.DocumentNode)
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="page"/> parameter is <c>null</c>.
+        /// </exception>
+        public HtmlElementFinder(IHtmlPage page)
         {
+            if (page == null)
+            {
+                throw new ArgumentNullException("page");
+            }
+
+            _page = page;
+            _node = page.Document.DocumentNode;
         }
 
         /// <summary>
@@ -42,8 +52,18 @@
         /// <param name="element">
         /// The element.
         /// </param>
-        public HtmlElementFinder(HtmlElement element) : this(element.Page, element.Node)
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="element"/> parameter is <c>null</c>.
+        /// </exception>
+        public HtmlElementFinder(HtmlElement element)
         {
+            if (element == null)
+            {
+                throw new ArgumentNullException("element");
+            }
+
+            _page = element.Page;
+            _node = element.Node;
         }
 
         /// <summary>
@@ -55,6 +75,12 @@
         /// <param name="node">
         /// The node.
         /// </param>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="page"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="node"/> parameter is <c>null</c>.
+        /// </exception>
         public HtmlElementFinder(IHtmlPage page, HtmlNode node)
         {
             if (page == null)

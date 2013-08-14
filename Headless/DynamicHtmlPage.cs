@@ -59,6 +59,11 @@
         /// <inheritdoc />
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
+            if (binder == null)
+            {
+                throw new ArgumentNullException("binder");
+            }
+
             result = ResolveConcreteElement(binder.Name);
 
             if (result == null)
