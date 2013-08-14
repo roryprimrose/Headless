@@ -1,5 +1,6 @@
 ﻿namespace Headless.IntegrationTests
 {
+    using System.Diagnostics.CodeAnalysis;
     using FluentAssertions;
     using Headless.IntegrationTests.Pages;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,16 +13,29 @@
     public class TextPageTests
     {
         /// <summary>
-        ///     Runs a test for can download text file data.
+        ///     Runs a test for can read text page using dynamic.
         /// </summary>
-        [TestMethod]
-        public void CanDownloadTextFileDataTest()
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1119:StatementMustNotUseUnnecessaryParenthesis", Justification = "Reviewed. Suppression is OK here."),TestMethod]
+        public void CanReadTextPageUsingDynamicTest()
         {
             using (var browser = new Browser())
             {
-                // TODO: Update DynamicPage so that it isn't restricted to HTML pages
-                // It should look at the MIME type of the HTTP response to determine whether the dynamic page
-                // returns HtmlPage, TextPage or BinaryPage.
+                var page = (TextPage)browser.GoTo(Content.TextTest);
+
+                page.Result.TraceResults();
+
+                page.Content.Should().Be("This is a test text file");
+            }
+        }
+
+        /// <summary>
+        ///     Runs a test for can read text page using model.
+        /// </summary>
+        [TestMethod]
+        public void CanReadTextPageUsingModelTest()
+        {
+            using (var browser = new Browser())
+            {
                 var page = browser.GoTo<TextContentPage>(Content.TextTest);
 
                 page.Result.TraceResults();

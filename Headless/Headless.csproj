@@ -61,8 +61,10 @@
     <Compile Include="BrowserExtensions.cs">
       <DependentUpon>Extensions.cs</DependentUpon>
     </Compile>
+    <Compile Include="BinaryPageWrapper.cs" />
     <Compile Include="DynamicHtmlElement.cs" />
     <Compile Include="DynamicHtmlPage.cs" />
+    <Compile Include="DynamicResolverPage.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="HtmlElementFinder.cs" />
     <Compile Include="HtmlElementNotFoundException.cs" />
@@ -93,6 +95,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SupportedTagAttribute.cs" />
+    <Compile Include="TextPageWrapper.cs" />
     <Compile Include="TypeExtensions.cs">
       <DependentUpon>Extensions.cs</DependentUpon>
     </Compile>

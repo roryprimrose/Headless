@@ -56,7 +56,9 @@
                 throw new ArgumentNullException("browser");
             }
 
-            return browser.GoTo<DynamicHtmlPage>(location, HttpStatusCode.OK);
+            var dynamicPage = browser.GoTo<DynamicResolverPage>(location, HttpStatusCode.OK);
+
+            return dynamicPage.GetAppropriatePage();
         }
 
         /// <summary>
