@@ -58,6 +58,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Pages\RedirectIndexPage.cs" />
+    <Compile Include="Redirect.cs" />
     <Compile Include="Home.cs" />
     <Compile Include="Pages\CommonLayoutPage.cs" />
     <Compile Include="Config.cs" />
@@ -67,7 +69,6 @@
     <Compile Include="PageModelTests.cs" />
     <Compile Include="IisExpress.cs" />
     <Compile Include="Initialization.cs" />
-    <Compile Include="Pages\LinksIndexPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestContextExtensions.cs" />
     <Compile Include="DynamicPageTests.cs" />

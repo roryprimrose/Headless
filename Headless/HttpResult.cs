@@ -6,13 +6,10 @@
     using System.Linq;
 
     /// <summary>
-    /// The <see cref="HttpResult{T}"/>
+    /// The <see cref="HttpResult"/>
     ///     class provides the results for an HTTP request.
     /// </summary>
-    /// <typeparam name="T">
-    /// The type of page expected from the request.
-    /// </typeparam>
-    public class HttpResult<T> where T : IPage
+    public class HttpResult
     {
         /// <summary>
         ///     Stores the http request outcomes.
@@ -20,22 +17,13 @@
         private readonly IReadOnlyCollection<HttpOutcome> _outcomes;
 
         /// <summary>
-        ///     Stores the page.
+        /// Initializes a new instance of the <see cref="HttpResult"/> class.
         /// </summary>
-        private readonly T _page;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HttpResult{T}"/> class.
-        /// </summary>
-        /// <param name="page">
-        /// The page.
-        /// </param>
         /// <param name="outcomes">
         /// The http request outcomes.
         /// </param>
-        internal HttpResult(T page, IReadOnlyCollection<HttpOutcome> outcomes)
+        internal HttpResult(IReadOnlyCollection<HttpOutcome> outcomes)
         {
-            _page = page;
             _outcomes = outcomes;
         }
 
@@ -51,21 +39,6 @@
             get
             {
                 return _outcomes;
-            }
-        }
-
-        /// <summary>
-        ///     Gets the page.
-        /// </summary>
-        /// <value>
-        ///     The page.
-        /// </value>
-        public T Page
-        {
-            [DebuggerStepThrough]
-            get
-            {
-                return _page;
             }
         }
 

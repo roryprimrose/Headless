@@ -30,11 +30,6 @@
         private bool _disposed;
 
         /// <summary>
-        ///     Stores the last http result set.
-        /// </summary>
-        private object _lastResult;
-
-        /// <summary>
         ///     Initializes a new instance of the <see cref="Browser" /> class.
         /// </summary>
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", 
@@ -63,36 +58,6 @@
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        ///     Gets the last result.
-        /// </summary>
-        /// <typeparam name="T">The type of page related to the result.</typeparam>
-        /// <returns>A <see cref="HttpResult{T}" /> value.</returns>
-        public HttpResult<T> GetLastResult<T>() where T : IPage
-        {
-            if (_lastResult == null)
-            {
-                const string Message = "No HTTP request has been made by the browser.";
-
-                throw new HttpResultException(Message);
-            }
-
-            var lastResult = _lastResult as HttpResult<T>;
-
-            if (lastResult == null)
-            {
-                var message = string.Format(
-                    CultureInfo.CurrentCulture, 
-                    "The HTTP result type requested is {0} however the HTTP result type stored is {1}.", 
-                    typeof(HttpResult<T>).FullName, 
-                    _lastResult.GetType().FullName);
-
-                throw new HttpResultException(message);
-            }
-
-            return lastResult;
         }
 
         /// <summary>
@@ -190,12 +155,12 @@
                 throw new InvalidOperationException(message);
             }
 
-            _lastResult = new HttpResult<T>(page, outcomes);
+            var result = new HttpResult(outcomes);
 
-            page.Initialize(this, response);
+            page.Initialize(this, response, result);
 
             // Validate that the final address matches the page
-            if (page.IsValidLocation(outcome.Location) == false)
+            if (page.IsOn(outcome.Location) == false)
             {
                 // We have been requested to go to a location that doesn't match the requested page
                 var message = string.Format(

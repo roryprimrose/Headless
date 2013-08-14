@@ -17,6 +17,11 @@
         private Browser _browser;
 
         /// <summary>
+        ///     The HTTP result.
+        /// </summary>
+        private HttpResult _result;
+
+        /// <summary>
         ///     Stores the status code.
         /// </summary>
         private HttpStatusCode _statusCode;
@@ -27,7 +32,7 @@
         private string _statusDescription;
 
         /// <inheritdoc />
-        public void Initialize(Browser browser, HttpResponseMessage response)
+        public void Initialize(Browser browser, HttpResponseMessage response, HttpResult result)
         {
             if (browser == null)
             {
@@ -39,15 +44,21 @@
                 throw new ArgumentNullException("response");
             }
 
+            if (result == null)
+            {
+                throw new ArgumentNullException("result");
+            }
+
             _browser = browser;
             _statusCode = response.StatusCode;
             _statusDescription = response.ReasonPhrase;
+            _result = result;
 
             SetContent(response.Content);
         }
 
         /// <inheritdoc />
-        public virtual bool IsValidLocation(Uri location)
+        public virtual bool IsOn(Uri location)
         {
             if (location == null)
             {
@@ -89,6 +100,16 @@
         public abstract Uri Location
         {
             get;
+        }
+
+        /// <inheritdoc />
+        public HttpResult Result
+        {
+            [DebuggerStepThrough]
+            get
+            {
+                return _result;
+            }
         }
 
         /// <inheritdoc />

@@ -4,7 +4,7 @@
 
     /// <summary>
     ///     The <see cref="HttpResultException" />
-    ///     is used to identify that the <see cref="HttpResult{T}" /> value stored is not what was expected by the caller.
+    ///     is used to identify that the <see cref="HttpResult" /> value stored is not what was expected by the caller.
     /// </summary>
     public class HttpResultException : Exception
     {

@@ -20,7 +20,7 @@
         private HtmlPageWrapper _wrapperPage;
 
         /// <inheritdoc />
-        public void Initialize(Browser browser, HttpResponseMessage response)
+        public void Initialize(Browser browser, HttpResponseMessage response, HttpResult result)
         {
             if (browser == null)
             {
@@ -32,12 +32,16 @@
                 throw new ArgumentNullException("response");
             }
 
-            var results = browser.GetLastResult<DynamicHtmlPage>();
-            var location = results.Outcomes.Last().Location;
+            if (result == null)
+            {
+                throw new ArgumentNullException("result");
+            }
+
+            var location = result.Outcomes.Last().Location;
 
             _wrapperPage = new HtmlPageWrapper(location);
 
-            _wrapperPage.Initialize(browser, response);
+            _wrapperPage.Initialize(browser, response, result);
         }
 
         /// <inheritdoc />
@@ -118,9 +122,9 @@
         }
 
         /// <inheritdoc />
-        public bool IsValidLocation(Uri location)
+        public bool IsOn(Uri location)
         {
-            return _wrapperPage.IsValidLocation(location);
+            return _wrapperPage.IsOn(location);
         }
 
         /// <inheritdoc />
@@ -160,6 +164,16 @@
             get
             {
                 return _wrapperPage.Node;
+            }
+        }
+
+        /// <inheritdoc />
+        public HttpResult Result
+        {
+            [DebuggerStepThrough]
+            get
+            {
+                return _wrapperPage.Result;
             }
         }
 

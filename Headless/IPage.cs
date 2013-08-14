@@ -19,7 +19,21 @@
         /// <param name="response">
         /// The response.
         /// </param>
-        void Initialize(Browser browser, HttpResponseMessage response);
+        /// <param name="result">
+        /// The HTTP result.
+        /// </param>
+        void Initialize(Browser browser, HttpResponseMessage response, HttpResult result);
+
+        /// <summary>
+        /// Determines whether the the page is on the specified location.
+        /// </summary>
+        /// <param name="location">
+        /// The current location.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified location is valid for the page; otherwise, <c>false</c>.
+        /// </returns>
+        bool IsOn(Uri location);
 
         /// <summary>
         ///     Gets the owning browser.
@@ -33,23 +47,23 @@
         }
 
         /// <summary>
-        /// Determines whether the specified location is valid for the page.
-        /// </summary>
-        /// <param name="location">
-        /// The current location.
-        /// </param>
-        /// <returns>
-        /// <c>true</c> if the specified location is valid for the page; otherwise, <c>false</c>.
-        /// </returns>
-        bool IsValidLocation(Uri location);
-
-        /// <summary>
         ///     Gets the location of the page.
         /// </summary>
         /// <value>
         ///     The location of the page.
         /// </value>
         Uri Location
+        {
+            get;
+        }
+
+        /// <summary>
+        ///     Gets the HTTP result.
+        /// </summary>
+        /// <value>
+        ///     The HTTP result.
+        /// </value>
+        HttpResult Result
         {
             get;
         }

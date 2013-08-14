@@ -21,26 +21,27 @@
         {
             using (var browser = new Browser())
             {
-                var linksResult = browser.GoTo<LinksIndexPage>();
+                var linksResult = browser.GoTo<RedirectIndexPage>();
 
                 var searchPage = linksResult.External.Click<GoogleSearchPage>();
 
-                // There should have been a redirection
-                var result = browser.GetLastResult<GoogleSearchPage>();
+                var outcomes = searchPage.Result.Outcomes;
 
-                result.Outcomes.Should().Contain(x => x.StatusCode == HttpStatusCode.Found);
+                // There should have been a redirection
+                outcomes.Should().Contain(x => x.StatusCode == HttpStatusCode.Found);
 
                 // One of the requests should have hit the original location defined by the page
-                result.Outcomes.Should().ContainSingle(x => x.Location == searchPage.Location);
+                outcomes.Should().ContainSingle(x => x.Location == searchPage.Location);
 
                 searchPage.StatusCode.Should().Be(HttpStatusCode.OK);
 
-                foreach (var outcome in result.Outcomes)
+                foreach (var outcome in outcomes)
                 {
                     Trace.WriteLine(outcome);
                 }
 
-                Trace.WriteLine("Total response time: " + result.ResponseTime.TotalMilliseconds + " milliseconds");
+                Trace.WriteLine(
+                    "Total response time: " + searchPage.Result.ResponseTime.TotalMilliseconds + " milliseconds");
             }
         }
 
@@ -52,14 +53,12 @@
         {
             using (var browser = new Browser())
             {
-                var linksResult = browser.GoTo<LinksIndexPage>();
+                var linksResult = browser.GoTo<RedirectIndexPage>();
 
                 var aboutPage = linksResult.Temporary.Click<HomeAboutPage>();
 
                 // There should have been a redirection
-                browser.GetLastResult<HomeAboutPage>()
-                    .Outcomes.Should()
-                    .ContainSingle(x => x.StatusCode == HttpStatusCode.Found);
+                aboutPage.Result.Outcomes.Should().ContainSingle(x => x.StatusCode == HttpStatusCode.Found);
 
                 aboutPage.StatusCode.Should().Be(HttpStatusCode.OK);
             }
@@ -73,14 +72,12 @@
         {
             using (var browser = new Browser())
             {
-                var linksResult = browser.GoTo<LinksIndexPage>();
+                var linksResult = browser.GoTo<RedirectIndexPage>();
 
                 var aboutPage = linksResult.Permanent.Click<HomeAboutPage>();
 
                 // There should have been a redirection
-                browser.GetLastResult<HomeAboutPage>()
-                    .Outcomes.Should()
-                    .ContainSingle(x => x.StatusCode == HttpStatusCode.MovedPermanently);
+                aboutPage.Result.Outcomes.Should().ContainSingle(x => x.StatusCode == HttpStatusCode.MovedPermanently);
 
                 aboutPage.StatusCode.Should().Be(HttpStatusCode.OK);
             }

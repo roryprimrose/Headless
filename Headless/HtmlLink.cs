@@ -39,7 +39,7 @@
         /// </summary>
         /// <typeparam name="T">The type of page to return.</typeparam>
         /// <returns>
-        ///     A <see cref="HttpResult{T}" /> value.
+        ///     A <see cref="IPage" /> value.
         /// </returns>
         /// <exception cref="System.InvalidOperationException">The link does not have an href attribute.</exception>
         public T Click<T>() where T : IPage, new()

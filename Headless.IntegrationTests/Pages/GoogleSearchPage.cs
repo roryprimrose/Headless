@@ -9,9 +9,9 @@
     public class GoogleSearchPage : HtmlPage
     {
         /// <inheritdoc />
-        public override bool IsValidLocation(Uri location)
+        public override bool IsOn(Uri location)
         {
-            var isValid = base.IsValidLocation(location);
+            var isValid = base.IsOn(location);
 
             if (isValid)
             {

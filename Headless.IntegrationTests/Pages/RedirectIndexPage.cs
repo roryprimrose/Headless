@@ -2,7 +2,11 @@
 {
     using System;
 
-    public class LinksIndexPage : HtmlPage
+    /// <summary>
+    ///     The <see cref="RedirectIndexPage" />
+    ///     class provides the page model for the redirect index page.
+    /// </summary>
+    public class RedirectIndexPage : HtmlPage
     {
         /// <summary>
         ///     Gets the external link.
@@ -14,7 +18,7 @@
         {
             get
             {
-                return Find<HtmlLink>().ByText("Test External").EnsureSingle();
+                return Find<HtmlLink>().ByText("External").EnsureSingle();
             }
         }
 
@@ -37,7 +41,7 @@
         {
             get
             {
-                return Find<HtmlLink>().ByText("Test 301").EnsureSingle();
+                return Find<HtmlLink>().ByText("Permanent").EnsureSingle();
             }
         }
 
@@ -51,7 +55,7 @@
         {
             get
             {
-                return Find<HtmlLink>().ByText("Test 302").EnsureSingle();
+                return Find<HtmlLink>().ByText("Temporary").EnsureSingle();
             }
         }
     }
