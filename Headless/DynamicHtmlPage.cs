@@ -20,6 +20,12 @@
         private HtmlPageWrapper _wrapperPage;
 
         /// <inheritdoc />
+        public HtmlElementFinder<T> Find<T>() where T : HtmlElement
+        {
+            return new HtmlElementFinder<T>(this);
+        }
+
+        /// <inheritdoc />
         public void Initialize(Browser browser, HttpResponseMessage response, HttpResult result)
         {
             if (browser == null)
@@ -45,6 +51,12 @@
         }
 
         /// <inheritdoc />
+        public bool IsOn(Uri location)
+        {
+            return _wrapperPage.IsOn(location);
+        }
+
+        /// <inheritdoc />
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
             result = ResolveConcreteElement(binder.Name);
@@ -58,36 +70,21 @@
         }
 
         /// <summary>
-        /// Resolves the concrete element.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>A <see cref="HtmlElement"/> value.</returns>
-        private HtmlElement ResolveConcreteElement(string value)
-        {
-            var element = FindElement(value);
-
-            if (element == null)
-            {
-                return null;
-            }
-
-            // Convert this dynamic element into the correct HtmlElement
-            // TODO: Figure out a cleaner way of doing this that will support multiple types per tag name (for input tags with different type attributes)
-            if (element.TagName == "a")
-            {
-                return new HtmlLink(element.Page, element.Node);
-            }
-
-            return null;
-        }
-
-        /// <summary>
         /// Finds the element.
         /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>A <see cref="HtmlElement"/> value.</returns>
-        /// <exception cref="System.NotImplementedException">Need to support radio buttons here that use the same name</exception>
-        /// <exception cref="Headless.HtmlElementNotFoundException">No html element was found by id, name or text for the value ' + value + '.</exception>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// A <see cref="HtmlElement"/> value.
+        /// </returns>
+        /// <exception cref="System.NotImplementedException">
+        /// Need to support radio buttons here that use the same name
+        /// </exception>
+        /// <exception cref="Headless.HtmlElementNotFoundException">
+        /// No html element was found by id, name or text for the value ' +
+        ///     value + '.
+        /// </exception>
         private HtmlElement FindElement(string value)
         {
             var finder = new HtmlElementFinder<DynamicHtmlElement>(this);
@@ -105,7 +102,7 @@
             {
                 return elementsByName[0];
             }
-            
+
             if (elementsByName.Count > 1)
             {
                 throw new NotImplementedException("Need to support radio buttons here that use the same name");
@@ -121,10 +118,32 @@
             return null;
         }
 
-        /// <inheritdoc />
-        public bool IsOn(Uri location)
+        /// <summary>
+        /// Resolves the concrete element.
+        /// </summary>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// A <see cref="HtmlElement"/> value.
+        /// </returns>
+        private HtmlElement ResolveConcreteElement(string value)
         {
-            return _wrapperPage.IsOn(location);
+            var element = FindElement(value);
+
+            if (element == null)
+            {
+                return null;
+            }
+
+            // Convert this dynamic element into the correct HtmlElement
+            // TODO: Figure out a cleaner way of doing this that will support multiple types per tag name (for input tags with different type attributes)
+            if (element.TagName == "a")
+            {
+                return new HtmlLink(element.Page, element.Node);
+            }
+
+            return null;
         }
 
         /// <inheritdoc />

@@ -151,8 +151,7 @@
                     expectedOutcome, 
                     outcome.StatusCode);
 
-                // TODO: replace with a better exception type
-                throw new InvalidOperationException(message);
+                throw new HttpResultException(message);
             }
 
             var result = new HttpResult(outcomes);

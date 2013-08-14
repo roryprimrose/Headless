@@ -15,11 +15,7 @@
         /// </summary>
         private HtmlDocument _content;
 
-        /// <summary>
-        ///     Provides a finding implementation for searching for child <see cref="HtmlElement" /> values.
-        /// </summary>
-        /// <typeparam name="T">The type of <see cref="HtmlElement" /> to find.</typeparam>
-        /// <returns>A <see cref="HtmlElementFinder{T}" /> value.</returns>
+        /// <inheritdoc />
         public HtmlElementFinder<T> Find<T>() where T : HtmlElement
         {
             return new HtmlElementFinder<T>(this);
