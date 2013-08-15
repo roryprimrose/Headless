@@ -5,7 +5,7 @@
 
     /// <summary>
     ///     The <see cref="BrowserExtensions" />
-    ///     class is used to provide extension methods to the <see cref="Browser" /> class.
+    ///     class is used to provide extension methods to the <see cref="IBrowser" /> interface.
     /// </summary>
     public static class BrowserExtensions
     {
@@ -24,7 +24,7 @@
         /// <exception cref="System.ArgumentNullException">
         /// The <paramref name="browser"/> parameter is <c>null</c>.
         /// </exception>
-        public static T GoTo<T>(this Browser browser) where T : Page, new()
+        public static T GoTo<T>(this IBrowser browser) where T : Page, new()
         {
             if (browser == null)
             {
@@ -49,7 +49,7 @@
         /// <exception cref="System.ArgumentNullException">
         /// The <paramref name="browser"/> parameter is <c>null</c>.
         /// </exception>
-        public static dynamic GoTo(this Browser browser, Uri location)
+        public static dynamic GoTo(this IBrowser browser, Uri location)
         {
             if (browser == null)
             {
@@ -79,7 +79,7 @@
         /// <exception cref="System.ArgumentNullException">
         /// The <paramref name="browser"/> parameter is <c>null</c>.
         /// </exception>
-        public static T GoTo<T>(this Browser browser, Uri location) where T : IPage, new()
+        public static T GoTo<T>(this IBrowser browser, Uri location) where T : IPage, new()
         {
             if (browser == null)
             {

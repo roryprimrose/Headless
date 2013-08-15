@@ -26,7 +26,7 @@
         }
 
         /// <inheritdoc />
-        public void Initialize(Browser browser, HttpResponseMessage response, HttpResult result)
+        public void Initialize(IBrowser browser, HttpResponseMessage response, HttpResult result)
         {
             if (browser == null)
             {
@@ -153,7 +153,7 @@
         }
 
         /// <inheritdoc />
-        public Browser Browser
+        public IBrowser Browser
         {
             [DebuggerStepThrough]
             get

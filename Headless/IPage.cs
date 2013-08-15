@@ -22,7 +22,7 @@
         /// <param name="result">
         /// The HTTP result.
         /// </param>
-        void Initialize(Browser browser, HttpResponseMessage response, HttpResult result);
+        void Initialize(IBrowser browser, HttpResponseMessage response, HttpResult result);
 
         /// <summary>
         /// Determines whether the the page is on the specified location.
@@ -41,7 +41,7 @@
         /// <value>
         ///     The owning browser.
         /// </value>
-        Browser Browser
+        IBrowser Browser
         {
             get;
         }

@@ -1,6 +1,7 @@
 ﻿namespace Headless
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net;
 
@@ -25,6 +26,8 @@
         /// <exception cref="System.ArgumentNullException">
         /// The <paramref name="form"/> parameter is <c>null</c>.
         /// </exception>
+        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", 
+            Justification = "This action is only valid against a form.")]
         public static T Submit<T>(this HtmlForm form) where T : IPage, new()
         {
             if (form == null)

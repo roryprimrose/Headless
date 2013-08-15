@@ -14,7 +14,7 @@
     ///     The <see cref="Browser" />
     ///     class provides a wrapper around a HTTP browsing session.
     /// </summary>
-    public class Browser : IDisposable
+    public class Browser : IDisposable, IBrowser
     {
         /// <summary>
         ///     Stores the http client.
@@ -62,6 +62,28 @@
             GC.SuppressFinalize(this);
         }
 
+        /// <inheritdoc />
+        public T GoTo<T>(Uri location, HttpStatusCode expectedStatusCode) where T : IPage, new()
+        {
+            return ExecuteAction<T>(location, expectedStatusCode, x => _client.GetAsync(x));
+        }
+
+        /// <inheritdoc />
+        public T PostTo<T>(Uri location, HttpStatusCode expectedStatusCode, IDictionary<string, string> parameters)
+            where T : IPage, new()
+        {
+            return ExecuteAction<T>(
+                location, 
+                expectedStatusCode, 
+                x =>
+                {
+                    using (var formData = new FormUrlEncodedContent(parameters))
+                    {
+                        return _client.PostAsync(x, formData);
+                    }
+                });
+        }
+
         /// <summary>
         /// Executes the action.
         /// </summary>
@@ -71,8 +93,8 @@
         /// <param name="location">
         /// The specific location to request rather than that identified by the page.
         /// </param>
-        /// <param name="expectedOutcome">
-        /// The expected outcome.
+        /// <param name="expectedStatusCode">
+        /// The expected status code.
         /// </param>
         /// <param name="action">
         /// The action.
@@ -89,7 +111,7 @@
         /// </exception>
         internal T ExecuteAction<T>(
             Uri location, 
-            HttpStatusCode expectedOutcome, 
+            HttpStatusCode expectedStatusCode, 
             Func<Uri, Task<HttpResponseMessage>> action) where T : IPage, new()
         {
             var page = new T();
@@ -154,12 +176,12 @@
                 outcomes.Add(outcome);
             }
 
-            if (outcome.StatusCode != expectedOutcome)
+            if (outcome.StatusCode != expectedStatusCode)
             {
                 var message = string.Format(
                     CultureInfo.CurrentCulture, 
                     Resources.Browser_InvalidResponseStatus, 
-                    expectedOutcome, 
+                    expectedStatusCode, 
                     outcome.StatusCode);
 
                 throw new HttpOutcomeException(message);
@@ -175,7 +197,7 @@
                 // We have been requested to go to a location that doesn't match the requested page
                 var message = string.Format(
                     CultureInfo.CurrentCulture, 
-                    "The url requested is {0} which does not match the location of {1} defined by page {2}.",
+                    "The url requested is {0} which does not match the location of {1} defined by page {2}.", 
                     currentResourceLocation, 
                     page.Location, 
                     page.GetType().FullName);
@@ -184,55 +206,6 @@
             }
 
             return page;
-        }
-
-        /// <summary>
-        /// Goes to.
-        /// </summary>
-        /// <typeparam name="T">
-        /// The type of page to return.
-        /// </typeparam>
-        /// <param name="location">
-        /// The specific location to request rather than that identified by the page.
-        /// </param>
-        /// <param name="expectedOutcome">
-        /// The expected outcome.
-        /// </param>
-        /// <returns>
-        /// A <see cref="Page"/> value.
-        /// </returns>
-        internal T GoTo<T>(Uri location, HttpStatusCode expectedOutcome) where T : IPage, new()
-        {
-            return ExecuteAction<T>(location, expectedOutcome, x => _client.GetAsync(x));
-        }
-
-        /// <summary>
-        /// Posts to.
-        /// </summary>
-        /// <typeparam name="T">
-        /// The type of page to return.
-        /// </typeparam>
-        /// <param name="location">
-        /// The specific location to request rather than that identified by the page.
-        /// </param>
-        /// <param name="expectedOutcome">
-        /// The expected outcome.
-        /// </param>
-        /// <param name="parameters">
-        /// The parameters.
-        /// </param>
-        /// <returns>
-        /// A <typeparamref name="T"/> value.
-        /// </returns>
-        internal T PostTo<T>(
-            Uri location, 
-            HttpStatusCode expectedOutcome, 
-            IDictionary<string, string> parameters) where T : IPage, new()
-        {
-            return ExecuteAction<T>(
-                location, 
-                expectedOutcome, 
-                x => _client.PostAsync(x, new FormUrlEncodedContent(parameters)));
         }
 
         /// <summary>

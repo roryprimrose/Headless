@@ -54,9 +54,11 @@
       <Link>Properties\ProductInfo.cs</Link>
     </Compile>
     <Compile Include="Activation\HtmlElementFactory.cs" />
-    <Compile Include="Browser.cs" />
     <Compile Include="BinaryPage.cs">
-      <DependentUpon>Page.cs</DependentUpon>
+      <DependentUpon>IPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Browser.cs">
+      <DependentUpon>IBrowser.cs</DependentUpon>
     </Compile>
     <Compile Include="BrowserExtensions.cs">
       <DependentUpon>Extensions.cs</DependentUpon>
@@ -64,16 +66,32 @@
     <Compile Include="BinaryPageWrapper.cs">
       <DependentUpon>DynamicHtmlPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="DynamicHtmlElement.cs" />
-    <Compile Include="DynamicHtmlPage.cs" />
-    <Compile Include="DynamicResolverPage.cs" />
+    <Compile Include="DynamicHtmlElement.cs">
+      <DependentUpon>IHtmlElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicHtmlPage.cs">
+      <DependentUpon>IPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicResolverPage.cs">
+      <DependentUpon>IPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="HtmlElementFinder.cs" />
     <Compile Include="HtmlElementNotFoundException.cs" />
-    <Compile Include="HtmlForm.cs" />
-    <Compile Include="HtmlFormElement.cs" />
+    <Compile Include="HtmlForm.cs">
+      <DependentUpon>IHtmlElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HtmlFormElement.cs">
+      <DependentUpon>IHtmlElement.cs</DependentUpon>
+    </Compile>
     <Compile Include="HtmlFormExtensions.cs">
       <DependentUpon>Extensions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HtmlLink.cs">
+      <DependentUpon>IHtmlElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HtmlPage.cs">
+      <DependentUpon>IPage.cs</DependentUpon>
     </Compile>
     <Compile Include="HtmlPageWrapper.cs">
       <DependentUpon>DynamicHtmlPage.cs</DependentUpon>
@@ -83,14 +101,22 @@
     <Compile Include="HtmlElementExtensions.cs">
       <DependentUpon>Extensions.cs</DependentUpon>
     </Compile>
-    <Compile Include="HtmlTextElement.cs" />
+    <Compile Include="HtmlTextElement.cs">
+      <DependentUpon>IHtmlElement.cs</DependentUpon>
+    </Compile>
     <Compile Include="HttpOutcome.cs" />
     <Compile Include="HttpResult.cs" />
-    <Compile Include="HtmlButton.cs" />
-    <Compile Include="HtmlElement.cs" />
-    <Compile Include="HtmlLink.cs" />
+    <Compile Include="HtmlButton.cs">
+      <DependentUpon>IHtmlElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HtmlElement.cs">
+      <DependentUpon>IHtmlElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IBrowser.cs" />
     <Compile Include="IHtmlElement.cs" />
-    <Compile Include="IHtmlPage.cs" />
+    <Compile Include="IHtmlPage.cs">
+      <DependentUpon>IPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="InvalidHtmlElementException.cs" />
     <Compile Include="InvalidHtmlElementMatchException.cs" />
     <Compile Include="IPage.cs" />
@@ -100,19 +126,18 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SupportedTagAttribute.cs" />
+    <Compile Include="TextPage.cs">
+      <DependentUpon>IPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="TextPageWrapper.cs">
       <DependentUpon>DynamicHtmlPage.cs</DependentUpon>
     </Compile>
     <Compile Include="TypeExtensions.cs">
       <DependentUpon>Extensions.cs</DependentUpon>
     </Compile>
-    <Compile Include="TextPage.cs">
-      <DependentUpon>Page.cs</DependentUpon>
+    <Compile Include="Page.cs">
+      <DependentUpon>IPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="HtmlPage.cs">
-      <DependentUpon>Page.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Page.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

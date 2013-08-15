@@ -16,7 +16,7 @@
         /// <summary>
         ///     The browser.
         /// </summary>
-        private Browser _browser;
+        private IBrowser _browser;
 
         /// <summary>
         ///     The response.
@@ -57,7 +57,7 @@
         }
 
         /// <inheritdoc />
-        public void Initialize(Browser browser, HttpResponseMessage response, HttpResult result)
+        public void Initialize(IBrowser browser, HttpResponseMessage response, HttpResult result)
         {
             if (browser == null)
             {
@@ -104,7 +104,7 @@
             }
 
             // TODO: Find out more binary content types here
-            if (mediaType.IndexOf("image", StringComparison.InvariantCultureIgnoreCase) > -1)
+            if (mediaType.IndexOf("image", StringComparison.OrdinalIgnoreCase) > -1)
             {
                 return ContentType.Binary;
             }
@@ -113,7 +113,7 @@
         }
 
         /// <inheritdoc />
-        public Browser Browser
+        public IBrowser Browser
         {
             get
             {

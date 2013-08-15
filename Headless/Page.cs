@@ -14,7 +14,7 @@
         /// <summary>
         ///     Stores the reference to the owning browser.
         /// </summary>
-        private Browser _browser;
+        private IBrowser _browser;
 
         /// <summary>
         ///     The HTTP result.
@@ -32,7 +32,7 @@
         private string _statusDescription;
 
         /// <inheritdoc />
-        public void Initialize(Browser browser, HttpResponseMessage response, HttpResult result)
+        public void Initialize(IBrowser browser, HttpResponseMessage response, HttpResult result)
         {
             if (browser == null)
             {
@@ -87,7 +87,7 @@
         internal abstract void SetContent(HttpContent content);
 
         /// <inheritdoc />
-        public Browser Browser
+        public IBrowser Browser
         {
             [DebuggerStepThrough]
             get
