@@ -1,6 +1,5 @@
 ﻿namespace Headless
 {
-    using System.Diagnostics.CodeAnalysis;
     using System.Net.Http;
 
     /// <summary>

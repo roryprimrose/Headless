@@ -7,6 +7,7 @@
     using System.Globalization;
     using System.Net;
     using System.Net.Http;
+    using System.Threading.Tasks;
     using Headless.Properties;
 
     /// <summary>
@@ -62,34 +63,43 @@
         }
 
         /// <summary>
-        /// Goes to.
+        /// Executes the action.
         /// </summary>
         /// <typeparam name="T">
         /// The type of page to return.
         /// </typeparam>
-        /// <param name="locationToMatch">
-        /// The location to match.
+        /// <param name="location">
+        /// The specific location to request rather than that identified by the page.
         /// </param>
         /// <param name="expectedOutcome">
         /// The expected outcome.
         /// </param>
+        /// <param name="action">
+        /// The action.
+        /// </param>
         /// <returns>
-        /// A <see cref="Page"/> value.
+        /// A <typeparamref name="T"/> value.
         /// </returns>
-        internal T GoTo<T>(Uri locationToMatch, HttpStatusCode expectedOutcome) where T : IPage, new()
+        /// <exception cref="System.InvalidOperationException">
+        /// No location has been specified for the browser to request.
+        ///     or
+        /// </exception>
+        /// <exception cref="HttpOutcomeException">
+        /// An unexpected HTTP outcome was encountered.
+        /// </exception>
+        internal T ExecuteAction<T>(
+            Uri location, 
+            HttpStatusCode expectedOutcome, 
+            Func<Uri, Task<HttpResponseMessage>> action) where T : IPage, new()
         {
             var page = new T();
 
-            Uri currentResourceLocation;
+            if (location == null)
+            {
+                location = page.Location;
+            }
 
-            if (locationToMatch == null)
-            {
-                currentResourceLocation = page.Location;
-            }
-            else
-            {
-                currentResourceLocation = locationToMatch;
-            }
+            var currentResourceLocation = location;
 
             if (currentResourceLocation == null)
             {
@@ -100,7 +110,7 @@
 
             var stopwatch = Stopwatch.StartNew();
 
-            var task = _client.GetAsync(currentResourceLocation);
+            var task = action(currentResourceLocation);
             var response = task.Result;
 
             stopwatch.Stop();
@@ -130,7 +140,7 @@
 
                 currentResourceLocation = redirectTo;
                 stopwatch = Stopwatch.StartNew();
-                task = _client.GetAsync(currentResourceLocation);
+                task = action(currentResourceLocation);
                 response = task.Result;
 
                 stopwatch.Stop();
@@ -160,13 +170,13 @@
             page.Initialize(this, response, result);
 
             // Validate that the final address matches the page
-            if (page.IsOn(outcome.Location) == false)
+            if (page.IsOn(currentResourceLocation) == false)
             {
                 // We have been requested to go to a location that doesn't match the requested page
                 var message = string.Format(
                     CultureInfo.CurrentCulture, 
-                    "The url requested is {0} which does not match the location of {1} defined by page {2}.", 
-                    locationToMatch, 
+                    "The url requested is {0} which does not match the location of {1} defined by page {2}.",
+                    currentResourceLocation, 
                     page.Location, 
                     page.GetType().FullName);
 
@@ -174,6 +184,55 @@
             }
 
             return page;
+        }
+
+        /// <summary>
+        /// Goes to.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of page to return.
+        /// </typeparam>
+        /// <param name="location">
+        /// The specific location to request rather than that identified by the page.
+        /// </param>
+        /// <param name="expectedOutcome">
+        /// The expected outcome.
+        /// </param>
+        /// <returns>
+        /// A <see cref="Page"/> value.
+        /// </returns>
+        internal T GoTo<T>(Uri location, HttpStatusCode expectedOutcome) where T : IPage, new()
+        {
+            return ExecuteAction<T>(location, expectedOutcome, x => _client.GetAsync(x));
+        }
+
+        /// <summary>
+        /// Posts to.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of page to return.
+        /// </typeparam>
+        /// <param name="location">
+        /// The specific location to request rather than that identified by the page.
+        /// </param>
+        /// <param name="expectedOutcome">
+        /// The expected outcome.
+        /// </param>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <returns>
+        /// A <typeparamref name="T"/> value.
+        /// </returns>
+        internal T PostTo<T>(
+            Uri location, 
+            HttpStatusCode expectedOutcome, 
+            IDictionary<string, string> parameters) where T : IPage, new()
+        {
+            return ExecuteAction<T>(
+                location, 
+                expectedOutcome, 
+                x => _client.PostAsync(x, new FormUrlEncodedContent(parameters)));
         }
 
         /// <summary>

@@ -21,6 +21,7 @@
         /// The location.
         /// </param>
         /// <exception cref="ArgumentNullException">
+        /// The <paramref name="location"/> parameter is <c>null</c>.
         /// </exception>
         public HtmlPageWrapper(Uri location)
         {
@@ -30,6 +31,13 @@
             }
 
             _location = location;
+        }
+
+        /// <inheritdoc />
+        public override bool IsOn(Uri location)
+        {
+            // There is no verification of dynamic page locations because there is no model to define where the current location should be
+            return true;
         }
 
         /// <inheritdoc />

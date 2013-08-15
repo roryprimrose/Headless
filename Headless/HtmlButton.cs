@@ -19,7 +19,7 @@
         /// <param name="node">
         /// The node.
         /// </param>
-        public HtmlButton(HtmlPage page, HtmlNode node) : base(page, node)
+        public HtmlButton(IHtmlPage page, HtmlNode node) : base(page, node)
         {
         }
 

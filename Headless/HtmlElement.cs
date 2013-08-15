@@ -76,6 +76,25 @@
         }
 
         /// <summary>
+        /// Sets the attribute value.
+        /// </summary>
+        /// <param name="attributeName">Name of the attribute.</param>
+        /// <param name="attributeValue">The attribute value.</param>
+        protected void SetAttributeValue(string attributeName, string attributeValue)
+        {
+            var attribute = Node.Attributes[attributeName];
+
+            if (attribute == null)
+            {
+                Node.Attributes.Add(attributeName, attributeValue);
+            }
+            else
+            {
+                attribute.Value = attributeValue;
+            }
+        }
+
+        /// <summary>
         ///     Validates the node.
         /// </summary>
         /// <exception cref="InvalidHtmlElementException">

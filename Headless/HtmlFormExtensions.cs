@@ -1,6 +1,8 @@
 ﻿namespace Headless
 {
     using System;
+    using System.Linq;
+    using System.Net;
 
     /// <summary>
     ///     The <see cref="HtmlFormExtensions" />
@@ -23,14 +25,18 @@
         /// <exception cref="System.ArgumentNullException">
         /// The <paramref name="form"/> parameter is <c>null</c>.
         /// </exception>
-        public static T Submit<T>(this HtmlForm form) where T : Page, new()
+        public static T Submit<T>(this HtmlForm form) where T : IPage, new()
         {
             if (form == null)
             {
                 throw new ArgumentNullException("form");
             }
 
-            throw new NotImplementedException();
+            var formElements = form.Find<HtmlFormElement>().All();
+
+            var parameters = formElements.ToDictionary(element => element.Name, element => element.Value);
+
+            return form.Page.Browser.PostTo<T>(null, HttpStatusCode.OK, parameters);
         }
     }
 }

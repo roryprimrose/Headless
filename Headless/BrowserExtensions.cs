@@ -41,7 +41,7 @@
         /// The browser.
         /// </param>
         /// <param name="location">
-        /// The location.
+        /// The specific location to request rather than that identified by the page.
         /// </param>
         /// <returns>
         /// A dynamic html page.
@@ -71,7 +71,7 @@
         /// The browser.
         /// </param>
         /// <param name="location">
-        /// The location to navigate to.
+        /// The specific location to request rather than that identified by the page.
         /// </param>
         /// <returns>
         /// A <see cref="Page"/> value.

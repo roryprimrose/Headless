@@ -61,7 +61,9 @@
     <Compile Include="BrowserExtensions.cs">
       <DependentUpon>Extensions.cs</DependentUpon>
     </Compile>
-    <Compile Include="BinaryPageWrapper.cs" />
+    <Compile Include="BinaryPageWrapper.cs">
+      <DependentUpon>DynamicHtmlPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="DynamicHtmlElement.cs" />
     <Compile Include="DynamicHtmlPage.cs" />
     <Compile Include="DynamicResolverPage.cs" />
@@ -73,12 +75,15 @@
     <Compile Include="HtmlFormExtensions.cs">
       <DependentUpon>Extensions.cs</DependentUpon>
     </Compile>
-    <Compile Include="HtmlPageWrapper.cs" />
+    <Compile Include="HtmlPageWrapper.cs">
+      <DependentUpon>DynamicHtmlPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="HtmlOutcomeException.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="HtmlElementExtensions.cs">
       <DependentUpon>Extensions.cs</DependentUpon>
     </Compile>
+    <Compile Include="HtmlTextElement.cs" />
     <Compile Include="HttpOutcome.cs" />
     <Compile Include="HttpResult.cs" />
     <Compile Include="HtmlButton.cs" />
@@ -95,7 +100,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SupportedTagAttribute.cs" />
-    <Compile Include="TextPageWrapper.cs" />
+    <Compile Include="TextPageWrapper.cs">
+      <DependentUpon>DynamicHtmlPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="TypeExtensions.cs">
       <DependentUpon>Extensions.cs</DependentUpon>
     </Compile>

@@ -17,7 +17,7 @@
         /// <param name="node">
         /// The node.
         /// </param>
-        protected HtmlFormElement(HtmlPage page, HtmlNode node) : base(page, node)
+        protected HtmlFormElement(IHtmlPage page, HtmlNode node) : base(page, node)
         {
         }
 
@@ -36,16 +36,21 @@
         }
 
         /// <summary>
-        ///     Gets the value of the form element.
+        ///     Gets or sets the value of the form element.
         /// </summary>
         /// <value>
         ///     The value of the form element.
         /// </value>
-        public string Value
+        public virtual string Value
         {
             get
             {
                 return GetAttributeValue("value");
+            }
+
+            set
+            {
+                SetAttributeValue("value", value);
             }
         }
     }

@@ -1,0 +1,20 @@
+﻿@using Headless.DemoSite.Models
+@model FormData
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Edit form</legend>
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.Text)
+                @Html.TextBoxFor(m => m.Text)
+                @Html.ValidationMessageFor(m => m.Text)
+            </li>
+        </ol>
+        <input type="submit" value="Log in" />
+    </fieldset>
+}
