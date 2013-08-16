@@ -3,6 +3,7 @@
     using System;
     using System.Globalization;
     using System.Net;
+    using System.Net.Http;
 
     /// <summary>
     ///     The <see cref="HttpOutcome" />
@@ -14,6 +15,11 @@
         ///     The location.
         /// </summary>
         private readonly Uri _location;
+
+        /// <summary>
+        ///     The request method.
+        /// </summary>
+        private readonly HttpMethod _method;
 
         /// <summary>
         ///     The response message.
@@ -36,6 +42,9 @@
         /// <param name="location">
         /// The location.
         /// </param>
+        /// <param name="method">
+        /// The request method.
+        /// </param>
         /// <param name="statusCode">
         /// The status code.
         /// </param>
@@ -45,7 +54,15 @@
         /// <param name="responseTime">
         /// The response time.
         /// </param>
-        public HttpOutcome(Uri location, HttpStatusCode statusCode, string responseMessage, TimeSpan responseTime)
+        /// <exception cref="System.ArgumentNullException">
+        /// location
+        /// </exception>
+        public HttpOutcome(
+            Uri location, 
+            HttpMethod method, 
+            HttpStatusCode statusCode, 
+            string responseMessage, 
+            TimeSpan responseTime)
         {
             if (location == null)
             {
@@ -53,6 +70,7 @@
             }
 
             _location = location;
+            _method = method;
             _statusCode = statusCode;
             _responseMessage = responseMessage;
             _responseTime = responseTime;
@@ -61,12 +79,13 @@
         /// <inheritdoc />
         public override string ToString()
         {
-            const string Layout = "{0} returned {1} ({2} - {3}) in {4} milliseconds";
+            const string Layout = "{0} ({1}) returned {2} ({3} - {4}) in {5} milliseconds";
 
             return string.Format(
                 CultureInfo.CurrentCulture, 
                 Layout, 
                 Location, 
+                Method, 
                 ResponseMessage, 
                 (int)StatusCode, 
                 StatusCode, 
@@ -84,6 +103,20 @@
             get
             {
                 return _location;
+            }
+        }
+
+        /// <summary>
+        ///     Gets the requet method.
+        /// </summary>
+        /// <value>
+        ///     The request method.
+        /// </value>
+        public HttpMethod Method
+        {
+            get
+            {
+                return _method;
             }
         }
 

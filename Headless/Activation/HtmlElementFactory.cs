@@ -44,8 +44,11 @@
         /// </returns>
         public static T Create<T>(IHtmlPage page, HtmlNode node) where T : HtmlElement
         {
+            // Find the most appropriate type that supports this node
+            var sourceType = typeof(T);
+
             // Find a constructor on the type that takes in HtmlPage and HtmlNode
-            var typeToCreate = typeof(T);
+            var typeToCreate = sourceType.FindBestMatchingType(node);
 
             if (typeof(HtmlElement).IsAssignableFrom(typeToCreate) == false)
             {

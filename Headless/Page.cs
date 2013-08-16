@@ -32,7 +32,7 @@
         private string _statusDescription;
 
         /// <inheritdoc />
-        public void Initialize(IBrowser browser, HttpResponseMessage response, HttpResult result)
+        public virtual void Initialize(IBrowser browser, HttpResponseMessage response, HttpResult result)
         {
             if (browser == null)
             {

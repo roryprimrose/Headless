@@ -6,8 +6,13 @@
     ///     The <see cref="HtmlButton" />
     ///     class provides access to HTML button elements.
     /// </summary>
-    [SupportedTag("submit")]
-    [SupportedTag("button")]
+    /// <remarks>
+    ///     This class does not support the button element or input type=button because they are usually for JavaScript
+    ///     actions that Headless does not support. While some browsers may submit the form for these elements, not all
+    ///     browsers will.
+    /// </remarks>
+    [SupportedTag("input", "type", "submit")]
+    [SupportedTag("input", "type", "image")]
     public class HtmlButton : HtmlFormElement
     {
         /// <summary>
@@ -26,6 +31,19 @@
         /// <summary>
         ///     Clicks the specified button.
         /// </summary>
+        /// <returns>
+        ///     A <see cref="IPage" /> value.
+        /// </returns>
+        public IPage Click()
+        {
+            var form = this.GetHtmlForm();
+
+            return form.Submit(this);
+        }
+
+        /// <summary>
+        ///     Clicks the specified button.
+        /// </summary>
         /// <typeparam name="T">The type of page to return.</typeparam>
         /// <returns>
         ///     A <typeparamref name="T" /> value.
@@ -34,7 +52,7 @@
         {
             var form = this.GetHtmlForm();
 
-            return form.Submit<T>();
+            return form.Submit<T>(this);
         }
     }
 }

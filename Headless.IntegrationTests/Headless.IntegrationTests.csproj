@@ -59,7 +59,9 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Content.cs" />
+    <Compile Include="Form.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Pages\FormIndexPage.cs" />
     <Compile Include="Pages\RedirectIndexPage.cs" />
     <Compile Include="Home.cs" />
     <Compile Include="Pages\CommonLayoutPage.cs" />
@@ -78,6 +80,7 @@
     <Compile Include="TestContextExtensions.cs" />
     <Compile Include="DynamicPageTests.cs" />
     <Compile Include="TextPageTests.cs" />
+    <Compile Include="FormTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Headless\Headless.csproj">

@@ -3,8 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Globalization;
     using System.Linq;
     using System.Reflection;
+    using Headless.Properties;
+    using HtmlAgilityPack;
 
     /// <summary>
     ///     The <see cref="TypeExtensions" />
@@ -21,8 +24,8 @@
         /// <summary>
         ///     Stores the supported tag name cache.
         /// </summary>
-        private static readonly IDictionary<string, IReadOnlyCollection<string>> _supportedTagCache =
-            new Dictionary<string, IReadOnlyCollection<string>>();
+        private static readonly IDictionary<string, IReadOnlyCollection<SupportedTagAttribute>> _supportedTagCache =
+            new Dictionary<string, IReadOnlyCollection<SupportedTagAttribute>>();
 
         /// <summary>
         ///     Stores the tag name cache sync lock.
@@ -33,6 +36,79 @@
         ///     Stores the type cache sync lock.
         /// </summary>
         private static readonly object _typeSyncLock = new object();
+
+        /// <summary>
+        /// The find best matching type.
+        /// </summary>
+        /// <param name="elementType">
+        /// The element type.
+        /// </param>
+        /// <param name="node">
+        /// The related node.
+        /// </param>
+        /// <returns>
+        /// A <see cref="Type"/> value.
+        /// </returns>
+        /// <exception cref="InvalidHtmlElementMatchException">
+        /// No type could be found to match the node.
+        /// </exception>
+        public static Type FindBestMatchingType(this Type elementType, HtmlNode node)
+        {
+            var possibleTypes = GetMatchingTypes(elementType).ToList();
+            var matchingTypes = new List<Type>();
+
+            foreach (var possibleType in possibleTypes)
+            {
+                var attributes = possibleType.GetCustomAttributes<SupportedTagAttribute>();
+
+                foreach (var attribute in attributes)
+                {
+                    if (node.Name != attribute.TagName)
+                    {
+                        continue;
+                    }
+
+                    if (attribute.HasAttributeFilter)
+                    {
+                        var matchingAttribute = node.Attributes[attribute.AttributeName];
+
+                        if (matchingAttribute == null)
+                        {
+                            continue;
+                        }
+
+                        if (matchingAttribute.Value == attribute.AttributeValue)
+                        {
+                            matchingTypes.Add(possibleType);
+                        }
+                    }
+                    else
+                    {
+                        matchingTypes.Add(possibleType);
+                    }
+                }
+            }
+
+            if (matchingTypes.Count == 0)
+            {
+                return typeof(AnyHtmlElement);
+            }
+
+            if (matchingTypes.Count > 1)
+            {
+                var matchingTypeNames = matchingTypes.Aggregate(string.Empty, (x, y) => x + Environment.NewLine + y);
+                var message = string.Format(
+                    CultureInfo.CurrentCulture, 
+                    Resources.TypeExtensions_MultipleTypeMatchesForNode, 
+                    elementType.FullName, 
+                    node.OuterHtml, 
+                    matchingTypeNames);
+
+                throw new InvalidHtmlElementMatchException(message);
+            }
+
+            return matchingTypes[0];
+        }
 
         /// <summary>
         /// Gets the matching types.
@@ -62,7 +138,9 @@
                 var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
                 var matchingTypes =
-                    assemblies.SelectMany(assembly => assembly.GetTypes().Where(elementType.IsAssignableFrom));
+                    assemblies.SelectMany(
+                        assembly =>
+                            assembly.GetTypes().Where(x => elementType.IsAssignableFrom(x) && x.IsAbstract == false));
 
                 var types = new ReadOnlyCollection<Type>(matchingTypes.ToList());
 
@@ -84,7 +162,7 @@
         /// <exception cref="System.InvalidOperationException">
         /// The type does not indicate any supported tags.
         /// </exception>
-        public static IReadOnlyCollection<string> GetSupportedTags(this Type elementType)
+        public static IReadOnlyCollection<SupportedTagAttribute> GetSupportedTags(this Type elementType)
         {
             var typeName = elementType.AssemblyQualifiedName;
 
@@ -109,7 +187,7 @@
                         "The type " + typeName + " does not indicate any supported tags.");
                 }
 
-                var supportedTags = new ReadOnlyCollection<string>(tags);
+                var supportedTags = new ReadOnlyCollection<SupportedTagAttribute>(tags);
 
                 _supportedTagCache.Add(typeName, supportedTags);
 
@@ -126,20 +204,24 @@
         /// <returns>
         /// An <see cref="IEnumerable{T}"/> value.
         /// </returns>
-        private static IList<string> FindSupportedTags(IEnumerable<Type> types)
+        private static IList<SupportedTagAttribute> FindSupportedTags(IEnumerable<Type> types)
         {
-            var tagsFound = new List<string>();
+            var tagsFound = new List<SupportedTagAttribute>();
+            var comparer = new SupportedTagAttributeComparer();
 
             foreach (var type in types)
             {
-                var attribute = type.GetCustomAttribute<SupportedTagAttribute>();
+                var attributes = type.GetCustomAttributes<SupportedTagAttribute>();
 
-                if (tagsFound.Contains(attribute.TagName))
+                foreach (var attribute in attributes)
                 {
-                    continue;
-                }
+                    if (tagsFound.Contains(attribute, comparer))
+                    {
+                        continue;
+                    }
 
-                tagsFound.Add(attribute.TagName);
+                    tagsFound.Add(attribute);
+                }
             }
 
             return tagsFound;

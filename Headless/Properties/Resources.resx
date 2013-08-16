@@ -132,4 +132,11 @@
   <data name="HtmlElement_MultipleMatchesFound" xml:space="preserve">
     <value>Multiple HTML elements match the criteria but only one element is expected.</value>
   </data>
+  <data name="TypeExtensions_MultipleTypeMatchesForNode" xml:space="preserve">
+    <value>Multiple types were found matching {0} that supports the HTML {1}. The following types were matching types:
+{2}</value>
+  </data>
+  <data name="Browser_NoLocation" xml:space="preserve">
+    <value>No location has been specified for the browser to request.</value>
+  </data>
 </root>

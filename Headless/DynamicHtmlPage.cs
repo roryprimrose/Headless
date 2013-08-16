@@ -65,7 +65,7 @@
                 throw new ArgumentNullException("binder");
             }
 
-            result = ResolveConcreteElement(binder.Name);
+            result = FindElement(binder.Name);
 
             if (result == null)
             {
@@ -93,7 +93,7 @@
         /// </exception>
         private HtmlElement FindElement(string value)
         {
-            var finder = new HtmlElementFinder<DynamicHtmlElement>(this);
+            var finder = new HtmlElementFinder<HtmlElement>(this);
 
             var elementsById = finder.ByAttribute("id", value).ToList();
 
@@ -123,35 +123,7 @@
 
             return null;
         }
-
-        /// <summary>
-        /// Resolves the concrete element.
-        /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <returns>
-        /// A <see cref="HtmlElement"/> value.
-        /// </returns>
-        private HtmlElement ResolveConcreteElement(string value)
-        {
-            var element = FindElement(value);
-
-            if (element == null)
-            {
-                return null;
-            }
-
-            // Convert this dynamic element into the correct HtmlElement
-            // TODO: Figure out a cleaner way of doing this that will support multiple types per tag name (for input tags with different type attributes)
-            if (element.TagName == "a")
-            {
-                return new HtmlLink(element.Page, element.Node);
-            }
-
-            return null;
-        }
-
+        
         /// <inheritdoc />
         public IBrowser Browser
         {

@@ -1,6 +1,5 @@
 ﻿namespace Headless
 {
-    using System;
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
@@ -44,6 +43,7 @@
         /// </summary>
         /// <typeparam name="T">The type of <see cref="HtmlElement" /> to find.</typeparam>
         /// <returns>A <see cref="HtmlElementFinder{T}" /> value.</returns>
+        [DebuggerStepThrough]
         public HtmlElementFinder<T> Find<T>() where T : HtmlElement
         {
             return new HtmlElementFinder<T>(this);
@@ -78,8 +78,12 @@
         /// <summary>
         /// Sets the attribute value.
         /// </summary>
-        /// <param name="attributeName">Name of the attribute.</param>
-        /// <param name="attributeValue">The attribute value.</param>
+        /// <param name="attributeName">
+        /// Name of the attribute.
+        /// </param>
+        /// <param name="attributeValue">
+        /// The attribute value.
+        /// </param>
         protected void SetAttributeValue(string attributeName, string attributeValue)
         {
             var attribute = Node.Attributes[attributeName];
@@ -104,16 +108,35 @@
         {
             var supportedTags = GetType().GetSupportedTags();
 
-            if (supportedTags.Contains("*"))
+            if (supportedTags.Any(x => x.TagName == "*"))
             {
                 // This type supports any tag
                 return;
             }
 
-            if (supportedTags.Contains(TagName, StringComparer.OrdinalIgnoreCase) == false)
+            // Attempt to match a supporting tag that has specific attribute matching first
+            var attributedSupportingTags =
+                supportedTags.Where(x => x.HasAttributeFilter);
+
+            if (
+                attributedSupportingTags.Any(
+                    x => x.TagName == TagName && x.AttributeValue == GetAttributeValue(x.AttributeName)))
             {
-                throw new InvalidHtmlElementException(Node, supportedTags);
+                // We have a match between this element type and the HTML content of the node
+                return;
             }
+
+            var tagOnlySupportingTags =
+                supportedTags.Where(
+                    x => x.HasAttributeFilter == false);
+
+            if (tagOnlySupportingTags.Any(x => x.TagName == TagName))
+            {
+                // We have a match between this element type and the HTML content of the node
+                return;
+            }
+
+            throw new InvalidHtmlElementException(Node, supportedTags);
         }
 
         /// <summary>

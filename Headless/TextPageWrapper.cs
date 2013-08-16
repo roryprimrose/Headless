@@ -1,6 +1,8 @@
 ﻿namespace Headless
 {
     using System;
+    using System.Linq;
+    using System.Net.Http;
 
     /// <summary>
     ///     The <see cref="TextPageWrapper" />
@@ -11,17 +13,14 @@
         /// <summary>
         ///     The location.
         /// </summary>
-        private readonly Uri _location;
+        private Uri _location;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TextPageWrapper"/> class.
-        /// </summary>
-        /// <param name="location">
-        /// The location.
-        /// </param>
-        public TextPageWrapper(Uri location)
+        /// <inheritdoc />
+        public override void Initialize(IBrowser browser, HttpResponseMessage response, HttpResult result)
         {
-            _location = location;
+            base.Initialize(browser, response, result);
+
+            _location = result.Outcomes.Last().Location;
         }
 
         /// <inheritdoc />

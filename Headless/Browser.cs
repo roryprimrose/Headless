@@ -63,33 +63,26 @@
         }
 
         /// <inheritdoc />
-        public T GoTo<T>(Uri location, HttpStatusCode expectedStatusCode) where T : IPage, new()
+        public IPage GoTo(
+            Uri location, 
+            HttpStatusCode expectedStatusCode, 
+            Func<IBrowser, HttpResponseMessage, HttpResult, IPage> pageFactory)
         {
-            return ExecuteAction<T>(location, expectedStatusCode, x => _client.GetAsync(x));
+            return ExecuteAction(location, expectedStatusCode, x => _client.GetAsync(x), pageFactory);
         }
 
         /// <inheritdoc />
-        public T PostTo<T>(Uri location, HttpStatusCode expectedStatusCode, IDictionary<string, string> parameters)
-            where T : IPage, new()
+        public IPage PostTo(IDictionary<string, string> parameters, Uri location, HttpStatusCode expectedStatusCode, Func<IBrowser, HttpResponseMessage, HttpResult, IPage> pageFactory)
         {
-            return ExecuteAction<T>(
-                location, 
-                expectedStatusCode, 
-                x =>
-                {
-                    using (var formData = new FormUrlEncodedContent(parameters))
-                    {
-                        return _client.PostAsync(x, formData);
-                    }
-                });
+            using (var formData = new FormUrlEncodedContent(parameters))
+            {
+                return ExecuteAction(location, expectedStatusCode, x => _client.PostAsync(x, formData), pageFactory);
+            }
         }
 
         /// <summary>
         /// Executes the action.
         /// </summary>
-        /// <typeparam name="T">
-        /// The type of page to return.
-        /// </typeparam>
         /// <param name="location">
         /// The specific location to request rather than that identified by the page.
         /// </param>
@@ -99,97 +92,145 @@
         /// <param name="action">
         /// The action.
         /// </param>
+        /// <param name="pageFactory">
+        /// The page factory.
+        /// </param>
         /// <returns>
-        /// A <typeparamref name="T"/> value.
+        /// An <see cref="IPage"/> value.
         /// </returns>
         /// <exception cref="System.InvalidOperationException">
         /// No location has been specified for the browser to request.
         ///     or
         /// </exception>
+        /// <exception cref="System.ArgumentNullException">
+        /// action
+        ///     or
+        ///     pageFactory
+        /// </exception>
         /// <exception cref="HttpOutcomeException">
         /// An unexpected HTTP outcome was encountered.
         /// </exception>
-        internal T ExecuteAction<T>(
+        internal IPage ExecuteAction(
             Uri location, 
             HttpStatusCode expectedStatusCode, 
-            Func<Uri, Task<HttpResponseMessage>> action) where T : IPage, new()
+            Func<Uri, Task<HttpResponseMessage>> action, 
+            Func<IBrowser, HttpResponseMessage, HttpResult, IPage> pageFactory)
         {
-            var page = new T();
+            IPage page = null;
 
             if (location == null)
             {
-                location = page.Location;
+                throw new InvalidOperationException(Resources.Browser_NoLocation);
+            }
+
+            if (action == null)
+            {
+                throw new ArgumentNullException("action");
+            }
+
+            if (pageFactory == null)
+            {
+                throw new ArgumentNullException("pageFactory");
             }
 
             var currentResourceLocation = location;
-
-            if (currentResourceLocation == null)
-            {
-                throw new InvalidOperationException("No location has been specified for the browser to request.");
-            }
 
             var outcomes = new List<HttpOutcome>();
 
             var stopwatch = Stopwatch.StartNew();
 
             var task = action(currentResourceLocation);
-            var response = task.Result;
 
-            stopwatch.Stop();
+            Uri redirectLocation = null;
+            bool requiresRedirect;
 
-            var outcome = new HttpOutcome(
-                currentResourceLocation, 
-                response.StatusCode, 
-                response.ReasonPhrase, 
-                stopwatch.Elapsed);
-
-            outcomes.Add(outcome);
-
-            while (IsRedirect(response))
+            using (var response = task.Result)
             {
-                // Get the redirect address
-                var newLocation = response.Headers.Location;
-                Uri redirectTo;
-
-                if (newLocation.IsAbsoluteUri)
-                {
-                    redirectTo = newLocation;
-                }
-                else
-                {
-                    redirectTo = new Uri(currentResourceLocation, newLocation);
-                }
-
-                currentResourceLocation = redirectTo;
-                stopwatch = Stopwatch.StartNew();
-                task = action(currentResourceLocation);
-                response = task.Result;
-
                 stopwatch.Stop();
 
-                outcome = new HttpOutcome(
+                var outcome = new HttpOutcome(
                     currentResourceLocation, 
+                    response.RequestMessage.Method, 
                     response.StatusCode, 
                     response.ReasonPhrase, 
                     stopwatch.Elapsed);
 
                 outcomes.Add(outcome);
+
+                requiresRedirect = IsRedirect(response);
+
+                if (requiresRedirect)
+                {
+                    redirectLocation = response.Headers.Location;
+                }
+                else
+                {
+                    // This the final response
+                    var result = new HttpResult(outcomes);
+
+                    page = pageFactory(this, response, result);
+                }
             }
 
-            if (outcome.StatusCode != expectedStatusCode)
+            while (requiresRedirect)
+            {
+                // Get the redirect address
+                Uri fullRedirectLocation;
+
+                if (redirectLocation.IsAbsoluteUri)
+                {
+                    fullRedirectLocation = redirectLocation;
+                }
+                else
+                {
+                    fullRedirectLocation = new Uri(currentResourceLocation, redirectLocation);
+                }
+
+                currentResourceLocation = fullRedirectLocation;
+                stopwatch = Stopwatch.StartNew();
+                task = action(currentResourceLocation);
+
+                using (var response = task.Result)
+                {
+                    stopwatch.Stop();
+
+                    var outcome = new HttpOutcome(
+                        currentResourceLocation, 
+                        response.RequestMessage.Method, 
+                        response.StatusCode, 
+                        response.ReasonPhrase, 
+                        stopwatch.Elapsed);
+
+                    outcomes.Add(outcome);
+
+                    requiresRedirect = IsRedirect(response);
+
+                    if (requiresRedirect)
+                    {
+                        redirectLocation = response.Headers.Location;
+                    }
+                    else
+                    {
+                        // This the final response
+                        var result = new HttpResult(outcomes);
+
+                        page = pageFactory(this, response, result);
+                    }
+                }
+            }
+
+            var lastOutcome = outcomes[outcomes.Count - 1];
+
+            if (lastOutcome.StatusCode != expectedStatusCode)
             {
                 var message = string.Format(
                     CultureInfo.CurrentCulture, 
                     Resources.Browser_InvalidResponseStatus, 
                     expectedStatusCode, 
-                    outcome.StatusCode);
+                    lastOutcome.StatusCode);
 
                 throw new HttpOutcomeException(message);
             }
-
-            var result = new HttpResult(outcomes);
-
-            page.Initialize(this, response, result);
 
             // Validate that the final address matches the page
             if (page.IsOn(currentResourceLocation) == false)

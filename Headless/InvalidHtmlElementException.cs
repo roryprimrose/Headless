@@ -24,7 +24,7 @@
         ///     Stores the tags supported by the element.
         /// </summary>
         [NonSerialized]
-        private readonly IEnumerable<string> _supportedTags;
+        private readonly IEnumerable<SupportedTagAttribute> _supportedTags;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="InvalidHtmlElementException" /> class.
@@ -42,7 +42,7 @@
         /// <param name="supportedTags">
         /// The supported tags.
         /// </param>
-        public InvalidHtmlElementException(HtmlNode node, IReadOnlyCollection<string> supportedTags)
+        public InvalidHtmlElementException(HtmlNode node, IReadOnlyCollection<SupportedTagAttribute> supportedTags)
             : this(BuildSupportedTagsMessage(node, supportedTags))
         {
             _node = node;
@@ -99,9 +99,9 @@
         /// <returns>
         /// A <see cref="string"/> value.
         /// </returns>
-        private static string BuildSupportedTagsMessage(HtmlNode node, IEnumerable<string> tags)
+        private static string BuildSupportedTagsMessage(HtmlNode node, IEnumerable<SupportedTagAttribute> tags)
         {
-            var supportedTags = tags.Aggregate((i, j) => i + Environment.NewLine + j);
+            var supportedTags = tags.Select(x => x.ToString()).Aggregate((i, j) => i + Environment.NewLine + j);
 
             var message = string.Format(
                 CultureInfo.CurrentCulture, 
@@ -132,7 +132,7 @@
         /// <value>
         ///     The supported tags.
         /// </value>
-        public IEnumerable<string> SupportedTags
+        public IEnumerable<SupportedTagAttribute> SupportedTags
         {
             get
             {

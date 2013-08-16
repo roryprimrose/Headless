@@ -106,7 +106,7 @@
         public IEnumerable<T> All()
         {
             var tagSelector = BuildTagNameSelector(typeof(T));
-            var query = "//" + tagSelector;
+            var query = tagSelector;
 
             return BuildElementResults(_page, _node, query);
         }
@@ -126,7 +126,7 @@
         public IEnumerable<T> ByAttribute(string attributeName, string attributeValue)
         {
             var tagSelector = BuildTagNameSelector(typeof(T));
-            var query = "//" + tagSelector + "[@" + attributeName + "='" + attributeValue + "']";
+            var query = tagSelector + "[@" + attributeName + "='" + attributeValue + "']";
 
             return BuildElementResults(_page, _node, query);
         }
@@ -171,7 +171,7 @@
         public IEnumerable<T> ByText(string text)
         {
             var tagSelector = BuildTagNameSelector(typeof(T));
-            var query = "//" + tagSelector + "[./text() = '" + text + "']";
+            var query = tagSelector + "[./text() = '" + text + "']";
 
             return BuildElementResults(_page, _node, query);
         }
@@ -236,6 +236,26 @@
         }
 
         /// <summary>
+        /// Builds the tag expression.
+        /// </summary>
+        /// <param name="supportedTag">
+        /// The supported tag.
+        /// </param>
+        /// <returns>
+        /// A <see cref="string"/> value.
+        /// </returns>
+        private static string BuildTagExpression(SupportedTagAttribute supportedTag)
+        {
+            if (supportedTag.HasAttributeFilter)
+            {
+                return supportedTag.TagName + "[@" + supportedTag.AttributeName + "='" + supportedTag.AttributeValue +
+                       "']";
+            }
+
+            return supportedTag.TagName;
+        }
+
+        /// <summary>
         /// Builds the tag name xpath selector.
         /// </summary>
         /// <param name="elementType">
@@ -246,14 +266,30 @@
         /// </returns>
         private static string BuildTagNameSelector(Type elementType)
         {
-            var supportedTags = elementType.GetSupportedTags();
+            var supportedTags = elementType.GetSupportedTags().ToList();
 
             if (supportedTags.Count == 1)
             {
-                return supportedTags.First();
+                // This is the base form which will be in the format //p[@class='sam']
+                return "//" + BuildTagExpression(supportedTags.First());
             }
 
-            return "(" + string.Join("|", supportedTags) + ")";
+            // This expression is much more complex and will be in the format //*[self::p[@class='sam'] or self::div][@id='asdf']
+            var selector = "//*[";
+
+            for (var index = 0; index < supportedTags.Count; index++)
+            {
+                if (index > 0)
+                {
+                    selector += " or ";
+                }
+
+                selector += "self::" + BuildTagExpression(supportedTags[index]);
+            }
+
+            selector += "]";
+
+            return selector;
         }
     }
 }

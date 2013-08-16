@@ -54,6 +54,7 @@
       <Link>Properties\ProductInfo.cs</Link>
     </Compile>
     <Compile Include="Activation\HtmlElementFactory.cs" />
+    <Compile Include="Activation\PageFactory.cs" />
     <Compile Include="BinaryPage.cs">
       <DependentUpon>IPage.cs</DependentUpon>
     </Compile>
@@ -66,7 +67,7 @@
     <Compile Include="BinaryPageWrapper.cs">
       <DependentUpon>DynamicHtmlPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="DynamicHtmlElement.cs">
+    <Compile Include="AnyHtmlElement.cs">
       <DependentUpon>IHtmlElement.cs</DependentUpon>
     </Compile>
     <Compile Include="DynamicHtmlPage.cs">
@@ -126,6 +127,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SupportedTagAttribute.cs" />
+    <Compile Include="SupportedTagAttributeComparer.cs" />
     <Compile Include="TextPage.cs">
       <DependentUpon>IPage.cs</DependentUpon>
     </Compile>

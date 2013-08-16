@@ -69,7 +69,15 @@
                 throw new ArgumentNullException("element");
             }
 
-            var forms = element.Node.AncestorsAndSelf("form").ToList();
+            var currentElement = element as HtmlForm;
+
+            if (currentElement != null)
+            {
+                return currentElement;
+            }
+
+            // BUG: There is a bug in the agility pack where form elements are not returned as decendents of the current node
+            var forms = element.Node.OwnerDocument.DocumentNode.SelectNodes("//form").ToList();
 
             if (forms.Count == 0)
             {
