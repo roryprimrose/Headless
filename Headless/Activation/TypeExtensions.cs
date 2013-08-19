@@ -1,4 +1,4 @@
-﻿namespace Headless
+﻿namespace Headless.Activation
 {
     using System;
     using System.Collections.Generic;
@@ -13,7 +13,7 @@
     ///     The <see cref="TypeExtensions" />
     ///     class provides extension methods for the <see cref="Type" /> class.
     /// </summary>
-    internal static class TypeExtensions
+    public static class TypeExtensions
     {
         /// <summary>
         ///     Stores the matching type cache.
@@ -54,9 +54,20 @@
         /// </exception>
         public static Type FindBestMatchingType(this Type elementType, IXPathNavigable node)
         {
+            if (elementType == null)
+            {
+                throw new ArgumentNullException("elementType");
+            }
+
+            if (node == null)
+            {
+                throw new ArgumentNullException("node");
+            }
+
             var navigator = node.GetNavigator();
             var possibleTypes = GetMatchingTypes(elementType).ToList();
             var matchingTypes = new List<Type>();
+            var nodeName = navigator.Name;
 
             foreach (var possibleType in possibleTypes)
             {
@@ -64,7 +75,7 @@
 
                 foreach (var attribute in attributes)
                 {
-                    if (navigator.Name != attribute.TagName)
+                    if (nodeName != attribute.TagName)
                     {
                         continue;
                     }
@@ -117,6 +128,11 @@
         /// </returns>
         public static IEnumerable<Type> GetMatchingTypes(Type elementType)
         {
+            if (elementType == null)
+            {
+                throw new ArgumentNullException("elementType");
+            }
+
             var typeName = elementType.AssemblyQualifiedName;
 
             if (_matchingTypesCache.ContainsKey(typeName))
@@ -160,6 +176,11 @@
         /// </exception>
         public static IReadOnlyCollection<SupportedTagAttribute> GetSupportedTags(this Type elementType)
         {
+            if (elementType == null)
+            {
+                throw new ArgumentNullException("elementType");
+            }
+
             var typeName = elementType.AssemblyQualifiedName;
 
             if (_supportedTagCache.ContainsKey(typeName))

@@ -12,6 +12,20 @@
     public class DynamicPageTests
     {
         /// <summary>
+        ///     Runs a test for go to location returns page.
+        /// </summary>
+        [TestMethod]
+        public void GoToLocationReturnsPageTest()
+        {
+            using (var browser = new Browser())
+            {
+                var linksResult = browser.GoTo(Redirect.Index) as IPage;
+
+                linksResult.Should().NotBeNull();
+            }
+        }
+
+        /// <summary>
         ///     Runs a test for handle external redirect.
         /// </summary>
         [TestMethod]

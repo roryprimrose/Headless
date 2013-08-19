@@ -50,13 +50,13 @@
             // Find a constructor on the type that takes in HtmlPage and IXPathNavigable
             var typeToCreate = sourceType.FindBestMatchingType(node);
 
-            if (typeof(HtmlElement).IsAssignableFrom(typeToCreate) == false)
+            if (sourceType.IsAssignableFrom(typeToCreate) == false)
             {
                 var message = string.Format(
                     CultureInfo.CurrentCulture, 
                     "The instance could not be created because {0} does not inherit from {1}.", 
-                    typeToCreate.FullName, 
-                    typeof(HtmlElement).FullName);
+                    typeToCreate.FullName,
+                    sourceType.FullName);
 
                 throw new InvalidOperationException(message);
             }

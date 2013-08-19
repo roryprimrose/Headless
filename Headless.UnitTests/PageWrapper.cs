@@ -1,60 +1,44 @@
 ﻿namespace Headless.UnitTests
 {
     using System;
-    using System.Net;
-    using System.Net.Http;
 
     /// <summary>
     ///     The <see cref="PageWrapper" />
     ///     class is used for internal testing.
     /// </summary>
-    internal class PageWrapper : IPage
+    internal class PageWrapper : TextPage
     {
-        /// <inheritdoc />
-        public void Initialize(IBrowser browser, HttpResponseMessage response, HttpResult result)
+        /// <summary>
+        ///     The location.
+        /// </summary>
+        private readonly Uri _location;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="PageWrapper" /> class.
+        /// </summary>
+        public PageWrapper()
         {
-            throw new NotImplementedException();
+            _location = new Uri("https://google.com");
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PageWrapper"/> class.
+        /// </summary>
+        /// <param name="location">
+        /// The location.
+        /// </param>
+        public PageWrapper(Uri location)
+        {
+            _location = location;
         }
 
         /// <inheritdoc />
-        public bool IsOn(Uri location)
+        public override Uri Location
         {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public IBrowser Browser
-        {
-            get;
-            private set;
-        }
-
-        /// <inheritdoc />
-        public Uri Location
-        {
-            get;
-            private set;
-        }
-
-        /// <inheritdoc />
-        public HttpResult Result
-        {
-            get;
-            private set;
-        }
-
-        /// <inheritdoc />
-        public HttpStatusCode StatusCode
-        {
-            get;
-            private set;
-        }
-
-        /// <inheritdoc />
-        public string StatusDescription
-        {
-            get;
-            private set;
+            get
+            {
+                return _location;
+            }
         }
     }
 }

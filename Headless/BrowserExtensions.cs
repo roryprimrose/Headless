@@ -58,16 +58,6 @@
         /// </exception>
         public static dynamic GoTo(this IBrowser browser, Uri location, HttpStatusCode expectedStatusCode)
         {
-            if (browser == null)
-            {
-                throw new ArgumentNullException("browser");
-            }
-
-            if (location == null)
-            {
-                throw new ArgumentNullException("location");
-            }
-
             var pageFactory = new DefaultPageFactory();
 
             var dynamicPage = browser.GoTo<DynamicResolverPage>(location, expectedStatusCode, pageFactory);
@@ -175,16 +165,6 @@
         public static T GoTo<T>(this IBrowser browser, Uri location, HttpStatusCode expectedStatusCode)
             where T : IPage, new()
         {
-            if (browser == null)
-            {
-                throw new ArgumentNullException("browser");
-            }
-
-            if (location == null)
-            {
-                throw new ArgumentNullException("location");
-            }
-
             var pageFactory = new DefaultPageFactory();
 
             return browser.GoTo<T>(location, expectedStatusCode, pageFactory);
@@ -309,21 +289,6 @@
             Uri location, 
             HttpStatusCode expectedStatusCode)
         {
-            if (browser == null)
-            {
-                throw new ArgumentNullException("browser");
-            }
-
-            if (parameters == null)
-            {
-                throw new ArgumentNullException("parameters");
-            }
-
-            if (location == null)
-            {
-                throw new ArgumentNullException("location");
-            }
-
             var pageFactory = new DefaultPageFactory();
 
             var dynamicPage = browser.PostTo<DynamicResolverPage>(parameters, location, expectedStatusCode, pageFactory);
@@ -462,21 +427,6 @@
             Uri location, 
             HttpStatusCode expectedStatusCode) where T : IPage, new()
         {
-            if (browser == null)
-            {
-                throw new ArgumentNullException("browser");
-            }
-
-            if (parameters == null)
-            {
-                throw new ArgumentNullException("parameters");
-            }
-
-            if (location == null)
-            {
-                throw new ArgumentNullException("location");
-            }
-
             var pageFactory = new DefaultPageFactory();
 
             return browser.PostTo<T>(parameters, location, expectedStatusCode, pageFactory);
@@ -535,6 +485,11 @@
             if (location == null)
             {
                 throw new ArgumentNullException("location");
+            }
+
+            if (pageFactory == null)
+            {
+                throw new ArgumentNullException("pageFactory");
             }
 
             using (var formData = new FormUrlEncodedContent(parameters))

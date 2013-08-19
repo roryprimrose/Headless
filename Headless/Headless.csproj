@@ -135,13 +135,11 @@
     <Compile Include="TextPageWrapper.cs">
       <DependentUpon>DynamicHtmlPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="TypeExtensions.cs">
-      <DependentUpon>Extensions.cs</DependentUpon>
-    </Compile>
     <Compile Include="Page.cs">
       <DependentUpon>IPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Activation\TypeExtensions.cs" />
     <Compile Include="XPathNavigableExtensions.cs">
       <DependentUpon>Extensions.cs</DependentUpon>
     </Compile>

@@ -64,6 +64,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Activation\HtmlElementFactoryTests.cs" />
     <Compile Include="PageWrapper.cs" />
     <Compile Include="InvalidHtmlElementMatchExceptionTests.cs" />
     <Compile Include="HtmlElementNotFoundExceptionTests.cs" />

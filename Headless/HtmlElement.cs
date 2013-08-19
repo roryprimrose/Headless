@@ -5,6 +5,7 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Xml.XPath;
+    using Headless.Activation;
     using Headless.Properties;
 
     /// <summary>
