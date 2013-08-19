@@ -2,7 +2,7 @@
 {
     using System;
     using System.Globalization;
-    using System.Xml;
+    using System.Xml.XPath;
 
     /// <summary>
     ///     The <see cref="HtmlElementFactory" />
@@ -42,12 +42,12 @@
         /// <returns>
         /// A <typeparamref name="T"/> value.
         /// </returns>
-        public static T Create<T>(IHtmlPage page, XmlNode node) where T : HtmlElement
+        public static T Create<T>(IHtmlPage page, IXPathNavigable node) where T : HtmlElement
         {
             // Find the most appropriate type that supports this node
             var sourceType = typeof(T);
 
-            // Find a constructor on the type that takes in HtmlPage and XmlNode
+            // Find a constructor on the type that takes in HtmlPage and IXPathNavigable
             var typeToCreate = sourceType.FindBestMatchingType(node);
 
             if (typeof(HtmlElement).IsAssignableFrom(typeToCreate) == false)

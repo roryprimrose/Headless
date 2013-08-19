@@ -1,9 +1,11 @@
 ﻿namespace Headless
 {
+    using System;
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Xml;
+    using System.Xml.XPath;
+    using Headless.Properties;
 
     /// <summary>
     ///     The <see cref="HtmlElement" />
@@ -14,7 +16,7 @@
         /// <summary>
         ///     Stores a reference to the html node for the element.
         /// </summary>
-        private readonly XmlNode _node;
+        private readonly IXPathNavigable _node;
 
         /// <summary>
         ///     Stores the reference to the owning page.
@@ -30,7 +32,7 @@
         /// <param name="node">
         /// The node.
         /// </param>
-        protected HtmlElement(IHtmlPage page, XmlNode node)
+        protected HtmlElement(IHtmlPage page, IXPathNavigable node)
         {
             _page = page;
             _node = node;
@@ -60,19 +62,14 @@
         /// </returns>
         protected string GetAttributeValue(string attributeName)
         {
-            var attribute = Node.Attributes[attributeName];
+            var navigator = Node.GetNavigator();
 
-            if (attribute == null)
+            if (navigator == null)
             {
-                return string.Empty;
+                throw new InvalidOperationException(Resources.XPathNavigator_NavigatorNotCreated);
             }
 
-            if (attribute.Value == null)
-            {
-                return string.Empty;
-            }
-
-            return attribute.Value;
+            return navigator.GetAttribute(attributeName, string.Empty);
         }
 
         /// <summary>
@@ -86,20 +83,7 @@
         /// </param>
         protected void SetAttributeValue(string attributeName, string attributeValue)
         {
-            var attribute = Node.Attributes[attributeName];
-
-            if (attribute == null)
-            {
-                attribute = Node.OwnerDocument.CreateAttribute(attributeName);
-
-                attribute.Value = attributeValue;
-
-                Node.Attributes.Append(attribute);
-            }
-            else
-            {
-                attribute.Value = attributeValue;
-            }
+            Node.SetAttribute(string.Empty, attributeName, string.Empty, attributeValue);
         }
 
         /// <summary>
@@ -119,8 +103,7 @@
             }
 
             // Attempt to match a supporting tag that has specific attribute matching first
-            var attributedSupportingTags =
-                supportedTags.Where(x => x.HasAttributeFilter);
+            var attributedSupportingTags = supportedTags.Where(x => x.HasAttributeFilter);
 
             if (
                 attributedSupportingTags.Any(
@@ -130,9 +113,7 @@
                 return;
             }
 
-            var tagOnlySupportingTags =
-                supportedTags.Where(
-                    x => x.HasAttributeFilter == false);
+            var tagOnlySupportingTags = supportedTags.Where(x => x.HasAttributeFilter == false);
 
             if (tagOnlySupportingTags.Any(x => x.TagName == TagName))
             {
@@ -169,7 +150,9 @@
             [DebuggerStepThrough]
             get
             {
-                return Node.OuterXml;
+                var navigator = Node.GetNavigator();
+
+                return navigator.OuterXml;
             }
         }
 
@@ -201,7 +184,9 @@
             [DebuggerStepThrough]
             get
             {
-                return Node.Name.ToLowerInvariant();
+                var navigator = Node.GetNavigator();
+
+                return navigator.Name.ToLowerInvariant();
             }
         }
 
@@ -216,7 +201,9 @@
             [DebuggerStepThrough]
             get
             {
-                return Node.InnerText;
+                var navigator = Node.GetNavigator();
+
+                return navigator.Value;
             }
         }
 
@@ -226,7 +213,7 @@
         /// <value>
         ///     The node.
         /// </value>
-        protected internal XmlNode Node
+        protected internal IXPathNavigable Node
         {
             [DebuggerStepThrough]
             get

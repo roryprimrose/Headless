@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using System.Xml;
+    using System.Xml.XPath;
     using Headless.Properties;
 
     /// <summary>
@@ -76,25 +78,19 @@
                 return currentElement;
             }
 
-            // BUG: There is a bug in the agility pack where form elements are not returned as decendents of the current node
-            var forms = element.Node.OwnerDocument.DocumentElement.SelectNodes("//form");
+            var navigator = element.Node.GetNavigator();
 
-            if (forms == null)
+            var form =
+                navigator.SelectAncestors(XPathNodeType.Element, true)
+                    .OfType<XPathNavigator>()
+                    .FirstOrDefault(x => x.Name.Equals("form", StringComparison.OrdinalIgnoreCase));
+
+            if (form == null)
             {
                 throw new HtmlElementNotFoundException(Resources.HtmlElement_GetHtmlForm_FormNotFound, element.Node);
             }
 
-            if (forms.Count == 0)
-            {
-                throw new HtmlElementNotFoundException(Resources.HtmlElement_GetHtmlForm_FormNotFound, element.Node);
-            }
-
-            if (forms.Count > 1)
-            {
-                throw new InvalidHtmlElementMatchException(Resources.HtmlElement_GetHtmlForm_MultipleFormsFound);
-            }
-
-            return new HtmlForm(element.Page, forms[0]);
+            return new HtmlForm(element.Page, form);
         }
 
         /// <summary>

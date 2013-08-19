@@ -6,7 +6,7 @@
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Xml;
+    using System.Xml.XPath;
 
     /// <summary>
     ///     The <see cref="DynamicHtmlPage" />
@@ -135,7 +135,7 @@
         }
 
         /// <inheritdoc />
-        public XmlDocument Document
+        public IXPathNavigable Document
         {
             [DebuggerStepThrough]
             get
@@ -155,7 +155,7 @@
         }
 
         /// <inheritdoc />
-        public XmlNode Node
+        public IXPathNavigable Node
         {
             [DebuggerStepThrough]
             get

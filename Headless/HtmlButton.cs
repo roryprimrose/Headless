@@ -1,6 +1,6 @@
 ﻿namespace Headless
 {
-    using System.Xml;
+    using System.Xml.XPath;
 
     /// <summary>
     ///     The <see cref="HtmlButton" />
@@ -24,7 +24,7 @@
         /// <param name="node">
         /// The node.
         /// </param>
-        public HtmlButton(IHtmlPage page, XmlNode node) : base(page, node)
+        public HtmlButton(IHtmlPage page, IXPathNavigable node) : base(page, node)
         {
         }
 

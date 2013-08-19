@@ -88,15 +88,6 @@ namespace Headless.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to More than one form element was found for the requested element.
-        /// </summary>
-        internal static string HtmlElement_GetHtmlForm_MultipleFormsFound {
-            get {
-                return ResourceManager.GetString("HtmlElement_GetHtmlForm_MultipleFormsFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Multiple HTML elements match the criteria but only one element is expected..
         /// </summary>
         internal static string HtmlElement_MultipleMatchesFound {
@@ -121,6 +112,24 @@ namespace Headless.Properties {
         internal static string TypeExtensions_MultipleTypeMatchesForNode {
             get {
                 return ResourceManager.GetString("TypeExtensions_MultipleTypeMatchesForNode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to edit XML document..
+        /// </summary>
+        internal static string XPathNavigator_EditNotAllowed {
+            get {
+                return ResourceManager.GetString("XPathNavigator_EditNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to create XML navigator..
+        /// </summary>
+        internal static string XPathNavigator_NavigatorNotCreated {
+            get {
+                return ResourceManager.GetString("XPathNavigator_NavigatorNotCreated", resourceCulture);
             }
         }
     }

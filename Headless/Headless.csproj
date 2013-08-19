@@ -141,6 +141,9 @@
       <DependentUpon>IPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XPathNavigableExtensions.cs">
+      <DependentUpon>Extensions.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

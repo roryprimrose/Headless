@@ -63,10 +63,7 @@
         }
 
         /// <inheritdoc />
-        public IPage GoTo(
-            Uri location, 
-            HttpStatusCode expectedStatusCode, 
-            Func<IBrowser, HttpResponseMessage, HttpResult, IPage> pageFactory)
+        public IPage BrowseTo(Uri location, HttpStatusCode expectedStatusCode, Func<IBrowser, HttpResponseMessage, HttpResult, IPage> pageFactory)
         {
             return ExecuteAction(location, expectedStatusCode, x => _client.GetAsync(x), pageFactory);
         }

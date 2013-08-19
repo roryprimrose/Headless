@@ -1,6 +1,6 @@
 ﻿namespace Headless
 {
-    using System.Xml;
+    using System.Xml.XPath;
 
     /// <summary>
     ///     The <see cref="IHtmlElement" />
@@ -14,7 +14,7 @@
         /// <value>
         ///     The HTML node of the element.
         /// </value>
-        XmlNode Node
+        IXPathNavigable Node
         {
             get;
         }

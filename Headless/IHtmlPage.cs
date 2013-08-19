@@ -1,6 +1,6 @@
 ﻿namespace Headless
 {
-    using System.Xml;
+    using System.Xml.XPath;
 
     /// <summary>
     ///     The <see cref="IHtmlPage" />
@@ -21,7 +21,7 @@
         /// <value>
         ///     The HTML document of the page.
         /// </value>
-        XmlDocument Document
+        IXPathNavigable Document
         {
             get;
         }
@@ -32,7 +32,7 @@
         /// <value>
         ///     The HTML node for the page.
         /// </value>
-        XmlNode Node
+        IXPathNavigable Node
         {
             get;
         }

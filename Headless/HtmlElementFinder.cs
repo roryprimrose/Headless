@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Xml;
+    using System.Xml.XPath;
     using Headless.Activation;
 
     /// <summary>
@@ -19,7 +19,7 @@
         /// <summary>
         ///     The HTML node.
         /// </summary>
-        private readonly XmlNode _node;
+        private readonly IXPathNavigable _node;
 
         /// <summary>
         ///     The owning page.
@@ -43,7 +43,12 @@
             }
 
             _page = page;
-            _node = page.Document.DocumentElement;
+
+            var navigator = page.Document.GetNavigator();
+            
+            navigator.MoveToRoot();
+
+            _node = navigator;
         }
 
         /// <summary>
@@ -81,7 +86,7 @@
         /// <exception cref="System.ArgumentNullException">
         /// The <paramref name="node"/> parameter is <c>null</c>.
         /// </exception>
-        public HtmlElementFinder(IHtmlPage page, XmlNode node)
+        public HtmlElementFinder(IHtmlPage page, IXPathNavigable node)
         {
             if (page == null)
             {
@@ -223,19 +228,16 @@
         /// <returns>
         /// An <see cref="IEnumerable{T}"/> value.
         /// </returns>
-        private static IEnumerable<T> BuildElementResults(IHtmlPage owningPage, XmlNode parentNode, string query)
+        private static IEnumerable<T> BuildElementResults(
+            IHtmlPage owningPage, 
+            IXPathNavigable parentNode, 
+            string query)
         {
-            var nodes = parentNode.SelectNodes(query);
+            var navigator = parentNode.GetNavigator();
 
-            if (nodes == null)
-            {
-                yield break;
-            }
+            var nodes = navigator.Select(query);
 
-            foreach (XmlNode node in nodes)
-            {
-                yield return HtmlElementFactory.Create<T>(owningPage, node);
-            }
+            return from IXPathNavigable node in nodes select HtmlElementFactory.Create<T>(owningPage, node);
         }
 
         /// <summary>

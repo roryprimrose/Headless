@@ -4,6 +4,7 @@
     using System.IO;
     using System.Net.Http;
     using System.Xml;
+    using System.Xml.XPath;
     using Sgml;
 
     /// <summary>
@@ -51,7 +52,7 @@
         }
 
         /// <inheritdoc />
-        public XmlDocument Document
+        public IXPathNavigable Document
         {
             [DebuggerStepThrough]
             get
@@ -61,7 +62,7 @@
         }
 
         /// <inheritdoc />
-        public XmlNode Node
+        public IXPathNavigable Node
         {
             [DebuggerStepThrough]
             get

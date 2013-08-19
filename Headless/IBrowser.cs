@@ -26,7 +26,7 @@
         /// <returns>
         /// An <see cref="IPage"/> value.
         /// </returns>
-        IPage GoTo(
+        IPage BrowseTo(
             Uri location, 
             HttpStatusCode expectedStatusCode, 
             Func<IBrowser, HttpResponseMessage, HttpResult, IPage> pageFactory);

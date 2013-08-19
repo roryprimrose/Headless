@@ -1,6 +1,6 @@
 ﻿namespace Headless
 {
-    using System.Xml;
+    using System.Xml.XPath;
     
     /// <summary>
     ///     The <see cref="HtmlTextElement" />
@@ -36,7 +36,7 @@
         /// <param name="node">
         /// The node.
         /// </param>
-        public HtmlTextElement(IHtmlPage page, XmlNode node) : base(page, node)
+        public HtmlTextElement(IHtmlPage page, IXPathNavigable node) : base(page, node)
         {
         }
     }

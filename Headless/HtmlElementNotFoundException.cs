@@ -2,7 +2,7 @@
 {
     using System;
     using System.Runtime.Serialization;
-    using System.Xml;
+    using System.Xml.XPath;
 
     /// <summary>
     ///     The <see cref="HtmlElementNotFoundException" />
@@ -16,7 +16,7 @@
         ///     The related node.
         /// </summary>
         [NonSerialized]
-        private readonly XmlNode _relatedNode;
+        private readonly IXPathNavigable _relatedNode;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="HtmlElementNotFoundException" /> class.
@@ -58,7 +58,7 @@
         /// <param name="relatedNode">
         /// The related node.
         /// </param>
-        public HtmlElementNotFoundException(string message, XmlNode relatedNode) : base(message)
+        public HtmlElementNotFoundException(string message, IXPathNavigable relatedNode) : base(message)
         {
             _relatedNode = relatedNode;
         }
@@ -84,7 +84,7 @@
         /// <value>
         ///     The related node.
         /// </value>
-        public XmlNode RelatedNode
+        public IXPathNavigable RelatedNode
         {
             get
             {

@@ -1,7 +1,7 @@
 ﻿namespace Headless
 {
     using System;
-    using System.Xml;
+    using System.Xml.XPath;
 
     /// <summary>
     ///     The <see cref="HtmlLink" />
@@ -19,7 +19,8 @@
         /// <param name="node">
         /// The node.
         /// </param>
-        public HtmlLink(IHtmlPage page, XmlNode node) : base(page, node)
+        public HtmlLink(IHtmlPage page, IXPathNavigable node)
+            : base(page, node)
         {
         }
 
@@ -44,7 +45,9 @@
         /// <exception cref="System.InvalidOperationException">The link does not have an href attribute.</exception>
         public T Click<T>() where T : IPage, new()
         {
-            var href = Node.Attributes["href"].Value;
+            var navigator = Node.GetNavigator();
+
+            var href = navigator.GetAttribute("href", string.Empty);
 
             if (string.IsNullOrWhiteSpace(href))
             {

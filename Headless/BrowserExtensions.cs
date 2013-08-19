@@ -67,7 +67,7 @@
                 throw new ArgumentNullException("location");
             }
 
-            return browser.GoTo(location, expectedStatusCode, PageFactory.DynamicPageFactory);
+            return browser.BrowseTo(location, expectedStatusCode, PageFactory.DynamicPageFactory);
         }
 
         /// <summary>
@@ -181,7 +181,7 @@
             }
 
             // NOTE: An explicit cast is OK here because the default factory does return T
-            return (T)browser.GoTo(location, expectedStatusCode, PageFactory.DefaultPageFactory<T>);
+            return (T)browser.BrowseTo(location, expectedStatusCode, PageFactory.DefaultPageFactory<T>);
         }
 
         /// <summary>

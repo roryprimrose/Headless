@@ -6,7 +6,7 @@
     using System.Globalization;
     using System.Linq;
     using System.Reflection;
-    using System.Xml;
+    using System.Xml.XPath;
     using Headless.Properties;
 
     /// <summary>
@@ -52,8 +52,9 @@
         /// <exception cref="InvalidHtmlElementMatchException">
         /// No type could be found to match the node.
         /// </exception>
-        public static Type FindBestMatchingType(this Type elementType, XmlNode node)
+        public static Type FindBestMatchingType(this Type elementType, IXPathNavigable node)
         {
+            var navigator = node.GetNavigator();
             var possibleTypes = GetMatchingTypes(elementType).ToList();
             var matchingTypes = new List<Type>();
 
@@ -63,21 +64,16 @@
 
                 foreach (var attribute in attributes)
                 {
-                    if (node.Name != attribute.TagName)
+                    if (navigator.Name != attribute.TagName)
                     {
                         continue;
                     }
 
                     if (attribute.HasAttributeFilter)
                     {
-                        var matchingAttribute = node.Attributes[attribute.AttributeName];
-
-                        if (matchingAttribute == null)
-                        {
-                            continue;
-                        }
-
-                        if (matchingAttribute.Value == attribute.AttributeValue)
+                        var matchingAttribute = navigator.GetAttribute(attribute.AttributeName, string.Empty);
+                        
+                        if (matchingAttribute == attribute.AttributeValue)
                         {
                             matchingTypes.Add(possibleType);
                         }
@@ -100,8 +96,8 @@
                 var message = string.Format(
                     CultureInfo.CurrentCulture, 
                     Resources.TypeExtensions_MultipleTypeMatchesForNode, 
-                    elementType.FullName, 
-                    node.OuterXml, 
+                    elementType.FullName,
+                    navigator.OuterXml, 
                     matchingTypeNames);
 
                 throw new InvalidHtmlElementMatchException(message);

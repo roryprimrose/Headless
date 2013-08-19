@@ -5,7 +5,7 @@
     using System.Globalization;
     using System.Linq;
     using System.Runtime.Serialization;
-    using System.Xml;
+    using System.Xml.XPath;
 
     /// <summary>
     ///     The <see cref="InvalidHtmlElementException" />
@@ -18,7 +18,7 @@
         ///     Stores the html node relate to the exception.
         /// </summary>
         [NonSerialized]
-        private readonly XmlNode _node;
+        private readonly IXPathNavigable _node;
 
         /// <summary>
         ///     Stores the tags supported by the element.
@@ -42,7 +42,7 @@
         /// <param name="supportedTags">
         /// The supported tags.
         /// </param>
-        public InvalidHtmlElementException(XmlNode node, IReadOnlyCollection<SupportedTagAttribute> supportedTags)
+        public InvalidHtmlElementException(IXPathNavigable node, IReadOnlyCollection<SupportedTagAttribute> supportedTags)
             : this(BuildSupportedTagsMessage(node, supportedTags))
         {
             _node = node;
@@ -99,14 +99,16 @@
         /// <returns>
         /// A <see cref="string"/> value.
         /// </returns>
-        private static string BuildSupportedTagsMessage(XmlNode node, IEnumerable<SupportedTagAttribute> tags)
+        private static string BuildSupportedTagsMessage(IXPathNavigable node, IEnumerable<SupportedTagAttribute> tags)
         {
             var supportedTags = tags.Select(x => x.ToString()).Aggregate((i, j) => i + Environment.NewLine + j);
 
+            var navigator = node.GetNavigator();
+            
             var message = string.Format(
                 CultureInfo.CurrentCulture, 
                 "The specified '{0}' element is invalid. The supported tags for this node are: {1}", 
-                node.Name, 
+                navigator.Name, 
                 supportedTags);
 
             return message;
@@ -118,7 +120,7 @@
         /// <value>
         ///     The node.
         /// </value>
-        public XmlNode Node
+        public IXPathNavigable Node
         {
             get
             {

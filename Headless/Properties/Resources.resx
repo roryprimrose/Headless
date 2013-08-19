@@ -123,9 +123,6 @@
   <data name="HtmlElement_GetHtmlForm_FormNotFound" xml:space="preserve">
     <value>No form element was found for the requested element.</value>
   </data>
-  <data name="HtmlElement_GetHtmlForm_MultipleFormsFound" xml:space="preserve">
-    <value>More than one form element was found for the requested element</value>
-  </data>
   <data name="HtmlElement_NoMatchFound" xml:space="preserve">
     <value>No HTML elements match the criteria.</value>
   </data>
@@ -138,5 +135,11 @@
   </data>
   <data name="Browser_NoLocation" xml:space="preserve">
     <value>No location has been specified for the browser to request.</value>
+  </data>
+  <data name="XPathNavigator_NavigatorNotCreated" xml:space="preserve">
+    <value>Failed to create XML navigator.</value>
+  </data>
+  <data name="XPathNavigator_EditNotAllowed" xml:space="preserve">
+    <value>Unable to edit XML document.</value>
   </data>
 </root>
