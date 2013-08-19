@@ -6,8 +6,8 @@
     using System.Globalization;
     using System.Linq;
     using System.Reflection;
+    using System.Xml;
     using Headless.Properties;
-    using HtmlAgilityPack;
 
     /// <summary>
     ///     The <see cref="TypeExtensions" />
@@ -52,7 +52,7 @@
         /// <exception cref="InvalidHtmlElementMatchException">
         /// No type could be found to match the node.
         /// </exception>
-        public static Type FindBestMatchingType(this Type elementType, HtmlNode node)
+        public static Type FindBestMatchingType(this Type elementType, XmlNode node)
         {
             var possibleTypes = GetMatchingTypes(elementType).ToList();
             var matchingTypes = new List<Type>();
@@ -101,7 +101,7 @@
                     CultureInfo.CurrentCulture, 
                     Resources.TypeExtensions_MultipleTypeMatchesForNode, 
                     elementType.FullName, 
-                    node.OuterHtml, 
+                    node.OuterXml, 
                     matchingTypeNames);
 
                 throw new InvalidHtmlElementMatchException(message);

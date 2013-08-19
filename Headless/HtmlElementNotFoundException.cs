@@ -2,7 +2,7 @@
 {
     using System;
     using System.Runtime.Serialization;
-    using HtmlAgilityPack;
+    using System.Xml;
 
     /// <summary>
     ///     The <see cref="HtmlElementNotFoundException" />
@@ -16,7 +16,7 @@
         ///     The related node.
         /// </summary>
         [NonSerialized]
-        private readonly HtmlNode _relatedNode;
+        private readonly XmlNode _relatedNode;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="HtmlElementNotFoundException" /> class.
@@ -58,7 +58,7 @@
         /// <param name="relatedNode">
         /// The related node.
         /// </param>
-        public HtmlElementNotFoundException(string message, HtmlNode relatedNode) : base(message)
+        public HtmlElementNotFoundException(string message, XmlNode relatedNode) : base(message)
         {
             _relatedNode = relatedNode;
         }
@@ -84,7 +84,7 @@
         /// <value>
         ///     The related node.
         /// </value>
-        public HtmlNode RelatedNode
+        public XmlNode RelatedNode
         {
             get
             {

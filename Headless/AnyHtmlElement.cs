@@ -1,6 +1,6 @@
 ﻿namespace Headless
 {
-    using HtmlAgilityPack;
+    using System.Xml;
 
     /// <summary>
     ///     The <see cref="AnyHtmlElement" />
@@ -18,7 +18,7 @@
         /// <param name="node">
         /// The node.
         /// </param>
-        public AnyHtmlElement(IHtmlPage page, HtmlNode node) : base(page, node)
+        public AnyHtmlElement(IHtmlPage page, XmlNode node) : base(page, node)
         {
         }
     }

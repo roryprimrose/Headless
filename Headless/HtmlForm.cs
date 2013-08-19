@@ -2,7 +2,7 @@
 {
     using System;
     using System.Net;
-    using HtmlAgilityPack;
+    using System.Xml;
 
     /// <summary>
     ///     The <see cref="HtmlForm" />
@@ -20,7 +20,7 @@
         /// <param name="node">
         /// The node.
         /// </param>
-        public HtmlForm(IHtmlPage page, HtmlNode node) : base(page, node)
+        public HtmlForm(IHtmlPage page, XmlNode node) : base(page, node)
         {
         }
 

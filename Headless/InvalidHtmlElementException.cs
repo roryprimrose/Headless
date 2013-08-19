@@ -5,7 +5,7 @@
     using System.Globalization;
     using System.Linq;
     using System.Runtime.Serialization;
-    using HtmlAgilityPack;
+    using System.Xml;
 
     /// <summary>
     ///     The <see cref="InvalidHtmlElementException" />
@@ -18,7 +18,7 @@
         ///     Stores the html node relate to the exception.
         /// </summary>
         [NonSerialized]
-        private readonly HtmlNode _node;
+        private readonly XmlNode _node;
 
         /// <summary>
         ///     Stores the tags supported by the element.
@@ -42,7 +42,7 @@
         /// <param name="supportedTags">
         /// The supported tags.
         /// </param>
-        public InvalidHtmlElementException(HtmlNode node, IReadOnlyCollection<SupportedTagAttribute> supportedTags)
+        public InvalidHtmlElementException(XmlNode node, IReadOnlyCollection<SupportedTagAttribute> supportedTags)
             : this(BuildSupportedTagsMessage(node, supportedTags))
         {
             _node = node;
@@ -99,7 +99,7 @@
         /// <returns>
         /// A <see cref="string"/> value.
         /// </returns>
-        private static string BuildSupportedTagsMessage(HtmlNode node, IEnumerable<SupportedTagAttribute> tags)
+        private static string BuildSupportedTagsMessage(XmlNode node, IEnumerable<SupportedTagAttribute> tags)
         {
             var supportedTags = tags.Select(x => x.ToString()).Aggregate((i, j) => i + Environment.NewLine + j);
 
@@ -118,7 +118,7 @@
         /// <value>
         ///     The node.
         /// </value>
-        public HtmlNode Node
+        public XmlNode Node
         {
             get
             {

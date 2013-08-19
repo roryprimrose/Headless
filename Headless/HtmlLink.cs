@@ -1,7 +1,7 @@
 ﻿namespace Headless
 {
     using System;
-    using HtmlAgilityPack;
+    using System.Xml;
 
     /// <summary>
     ///     The <see cref="HtmlLink" />
@@ -19,7 +19,7 @@
         /// <param name="node">
         /// The node.
         /// </param>
-        public HtmlLink(IHtmlPage page, HtmlNode node) : base(page, node)
+        public HtmlLink(IHtmlPage page, XmlNode node) : base(page, node)
         {
         }
 

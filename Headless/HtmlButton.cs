@@ -1,6 +1,6 @@
 ﻿namespace Headless
 {
-    using HtmlAgilityPack;
+    using System.Xml;
 
     /// <summary>
     ///     The <see cref="HtmlButton" />
@@ -24,7 +24,7 @@
         /// <param name="node">
         /// The node.
         /// </param>
-        public HtmlButton(IHtmlPage page, HtmlNode node) : base(page, node)
+        public HtmlButton(IHtmlPage page, XmlNode node) : base(page, node)
         {
         }
 

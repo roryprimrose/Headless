@@ -3,7 +3,7 @@
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using HtmlAgilityPack;
+    using System.Xml;
 
     /// <summary>
     ///     The <see cref="HtmlElement" />
@@ -14,7 +14,7 @@
         /// <summary>
         ///     Stores a reference to the html node for the element.
         /// </summary>
-        private readonly HtmlNode _node;
+        private readonly XmlNode _node;
 
         /// <summary>
         ///     Stores the reference to the owning page.
@@ -30,7 +30,7 @@
         /// <param name="node">
         /// The node.
         /// </param>
-        protected HtmlElement(IHtmlPage page, HtmlNode node)
+        protected HtmlElement(IHtmlPage page, XmlNode node)
         {
             _page = page;
             _node = node;
@@ -90,7 +90,11 @@
 
             if (attribute == null)
             {
-                Node.Attributes.Add(attributeName, attributeValue);
+                attribute = Node.OwnerDocument.CreateAttribute(attributeName);
+
+                attribute.Value = attributeValue;
+
+                Node.Attributes.Append(attribute);
             }
             else
             {
@@ -165,7 +169,7 @@
             [DebuggerStepThrough]
             get
             {
-                return Node.OuterHtml;
+                return Node.OuterXml;
             }
         }
 
@@ -222,7 +226,7 @@
         /// <value>
         ///     The node.
         /// </value>
-        protected internal HtmlNode Node
+        protected internal XmlNode Node
         {
             [DebuggerStepThrough]
             get

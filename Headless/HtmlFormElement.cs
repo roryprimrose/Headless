@@ -1,6 +1,6 @@
 ﻿namespace Headless
 {
-    using HtmlAgilityPack;
+    using System.Xml;
 
     /// <summary>
     ///     The <see cref="HtmlFormElement" />
@@ -17,7 +17,7 @@
         /// <param name="node">
         /// The node.
         /// </param>
-        protected HtmlFormElement(IHtmlPage page, HtmlNode node) : base(page, node)
+        protected HtmlFormElement(IHtmlPage page, XmlNode node) : base(page, node)
         {
         }
 

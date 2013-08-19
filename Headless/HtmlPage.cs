@@ -1,8 +1,10 @@
 ﻿namespace Headless
 {
     using System.Diagnostics;
+    using System.IO;
     using System.Net.Http;
-    using HtmlAgilityPack;
+    using System.Xml;
+    using Sgml;
 
     /// <summary>
     ///     The <see cref="HtmlPage" />
@@ -13,7 +15,7 @@
         /// <summary>
         ///     Stores the content.
         /// </summary>
-        private HtmlDocument _content;
+        private XmlDocument _content;
 
         /// <inheritdoc />
         public HtmlElementFinder<T> Find<T>() where T : HtmlElement
@@ -25,14 +27,31 @@
         internal override void SetContent(HttpContent content)
         {
             var result = content.ReadAsStreamAsync().Result;
+            
+            using (TextReader reader = new StreamReader(result))
+            {
+                // setup SgmlReader
+                using (var sgmlReader = new SgmlReader())
+                {
+                    sgmlReader.DocType = "HTML";
+                    sgmlReader.WhitespaceHandling = WhitespaceHandling.All;
+                    sgmlReader.CaseFolding = CaseFolding.ToLower;
+                    sgmlReader.InputStream = reader;
 
-            _content = new HtmlDocument();
+                    // create document
+                    _content = new XmlDocument
+                    {
+                        PreserveWhitespace = true,
+                        XmlResolver = null
+                    };
 
-            _content.Load(result);
+                    _content.Load(sgmlReader);
+                }
+            }
         }
 
         /// <inheritdoc />
-        public HtmlDocument Document
+        public XmlDocument Document
         {
             [DebuggerStepThrough]
             get
@@ -42,12 +61,12 @@
         }
 
         /// <inheritdoc />
-        public HtmlNode Node
+        public XmlNode Node
         {
             [DebuggerStepThrough]
             get
             {
-                return _content.DocumentNode;
+                return _content.DocumentElement;
             }
         }
     }

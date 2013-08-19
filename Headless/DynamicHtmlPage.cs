@@ -6,7 +6,7 @@
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using HtmlAgilityPack;
+    using System.Xml;
 
     /// <summary>
     ///     The <see cref="DynamicHtmlPage" />
@@ -135,7 +135,7 @@
         }
 
         /// <inheritdoc />
-        public HtmlDocument Document
+        public XmlDocument Document
         {
             [DebuggerStepThrough]
             get
@@ -155,7 +155,7 @@
         }
 
         /// <inheritdoc />
-        public HtmlNode Node
+        public XmlNode Node
         {
             [DebuggerStepThrough]
             get

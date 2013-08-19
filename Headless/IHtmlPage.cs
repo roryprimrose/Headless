@@ -1,6 +1,6 @@
 ﻿namespace Headless
 {
-    using HtmlAgilityPack;
+    using System.Xml;
 
     /// <summary>
     ///     The <see cref="IHtmlPage" />
@@ -21,7 +21,7 @@
         /// <value>
         ///     The HTML document of the page.
         /// </value>
-        HtmlDocument Document
+        XmlDocument Document
         {
             get;
         }
@@ -32,7 +32,7 @@
         /// <value>
         ///     The HTML node for the page.
         /// </value>
-        HtmlNode Node
+        XmlNode Node
         {
             get;
         }

@@ -81,6 +81,7 @@
     <Compile Include="DynamicPageTests.cs" />
     <Compile Include="TextPageTests.cs" />
     <Compile Include="FormTests.cs" />
+    <Compile Include="LooseHtmlTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Headless\Headless.csproj">

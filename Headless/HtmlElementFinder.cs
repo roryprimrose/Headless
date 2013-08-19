@@ -3,8 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Xml;
     using Headless.Activation;
-    using HtmlAgilityPack;
 
     /// <summary>
     /// The <see cref="HtmlElementFinder{T}"/>
@@ -19,7 +19,7 @@
         /// <summary>
         ///     The HTML node.
         /// </summary>
-        private readonly HtmlNode _node;
+        private readonly XmlNode _node;
 
         /// <summary>
         ///     The owning page.
@@ -43,7 +43,7 @@
             }
 
             _page = page;
-            _node = page.Document.DocumentNode;
+            _node = page.Document.DocumentElement;
         }
 
         /// <summary>
@@ -81,7 +81,7 @@
         /// <exception cref="System.ArgumentNullException">
         /// The <paramref name="node"/> parameter is <c>null</c>.
         /// </exception>
-        public HtmlElementFinder(IHtmlPage page, HtmlNode node)
+        public HtmlElementFinder(IHtmlPage page, XmlNode node)
         {
             if (page == null)
             {
@@ -223,16 +223,19 @@
         /// <returns>
         /// An <see cref="IEnumerable{T}"/> value.
         /// </returns>
-        private static IEnumerable<T> BuildElementResults(IHtmlPage owningPage, HtmlNode parentNode, string query)
+        private static IEnumerable<T> BuildElementResults(IHtmlPage owningPage, XmlNode parentNode, string query)
         {
             var nodes = parentNode.SelectNodes(query);
 
             if (nodes == null)
             {
-                return new List<T>();
+                yield break;
             }
 
-            return nodes.Select(node => HtmlElementFactory.Create<T>(owningPage, node));
+            foreach (XmlNode node in nodes)
+            {
+                yield return HtmlElementFactory.Create<T>(owningPage, node);
+            }
         }
 
         /// <summary>

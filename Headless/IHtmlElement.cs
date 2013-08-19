@@ -1,6 +1,6 @@
 ﻿namespace Headless
 {
-    using HtmlAgilityPack;
+    using System.Xml;
 
     /// <summary>
     ///     The <see cref="IHtmlElement" />
@@ -14,7 +14,7 @@
         /// <value>
         ///     The HTML node of the element.
         /// </value>
-        HtmlNode Node
+        XmlNode Node
         {
             get;
         }

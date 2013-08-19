@@ -77,7 +77,12 @@
             }
 
             // BUG: There is a bug in the agility pack where form elements are not returned as decendents of the current node
-            var forms = element.Node.OwnerDocument.DocumentNode.SelectNodes("//form").ToList();
+            var forms = element.Node.OwnerDocument.DocumentElement.SelectNodes("//form");
+
+            if (forms == null)
+            {
+                throw new HtmlElementNotFoundException(Resources.HtmlElement_GetHtmlForm_FormNotFound, element.Node);
+            }
 
             if (forms.Count == 0)
             {
