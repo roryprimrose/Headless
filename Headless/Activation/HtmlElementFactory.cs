@@ -25,24 +25,10 @@
     ///         own instances and so it does not otherwise pollute intellisense when they don't need it.
     ///     </p>
     /// </remarks>
-    public static class HtmlElementFactory
+    public class HtmlElementFactory : IHtmlElementFactory
     {
-        /// <summary>
-        /// Creates the specified page.
-        /// </summary>
-        /// <typeparam name="T">
-        /// The type of element to return.
-        /// </typeparam>
-        /// <param name="page">
-        /// The page.
-        /// </param>
-        /// <param name="node">
-        /// The node.
-        /// </param>
-        /// <returns>
-        /// A <typeparamref name="T"/> value.
-        /// </returns>
-        public static T Create<T>(IHtmlPage page, IXPathNavigable node) where T : HtmlElement
+        /// <inheritdoc />
+        public T Create<T>(IHtmlPage page, IXPathNavigable node) where T : HtmlElement
         {
             // Find the most appropriate type that supports this node
             var sourceType = typeof(T);
@@ -55,7 +41,7 @@
                 var message = string.Format(
                     CultureInfo.CurrentCulture, 
                     "The instance could not be created because {0} does not inherit from {1}.", 
-                    typeToCreate.FullName,
+                    typeToCreate.FullName, 
                     sourceType.FullName);
 
                 throw new InvalidOperationException(message);

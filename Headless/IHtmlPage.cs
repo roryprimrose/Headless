@@ -1,6 +1,7 @@
 ﻿namespace Headless
 {
     using System.Xml.XPath;
+    using Headless.Activation;
 
     /// <summary>
     ///     The <see cref="IHtmlPage" />
@@ -22,6 +23,17 @@
         ///     The HTML document of the page.
         /// </value>
         IXPathNavigable Document
+        {
+            get;
+        }
+
+        /// <summary>
+        ///     Gets the element factory.
+        /// </summary>
+        /// <value>
+        ///     The element factory.
+        /// </value>
+        IHtmlElementFactory ElementFactory
         {
             get;
         }

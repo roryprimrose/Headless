@@ -28,7 +28,9 @@
             navigator.Name.Returns("input");
             navigator.GetAttribute("type", string.Empty).Returns("text");
 
-            var actual = HtmlElementFactory.Create<HtmlElement>(page, node);
+            var target = new HtmlElementFactory();
+
+            var actual = target.Create<HtmlElement>(page, node);
 
             actual.Should().NotBeNull();
             actual.Should().BeOfType<HtmlTextElement>();
@@ -48,7 +50,9 @@
             navigator.Name.Returns("input");
             navigator.GetAttribute("type", string.Empty).Returns("text");
 
-            var actual = HtmlElementFactory.Create<HtmlTextElement>(page, node);
+            var target = new HtmlElementFactory();
+
+            var actual = target.Create<HtmlTextElement>(page, node);
 
             actual.Should().NotBeNull();
         }
@@ -67,7 +71,9 @@
             navigator.Name.Returns("input");
             navigator.GetAttribute("type", string.Empty).Returns("text");
 
-            Action action = () => HtmlElementFactory.Create<HtmlButton>(page, node);
+            var target = new HtmlElementFactory();
+
+            Action action = () => target.Create<HtmlButton>(page, node);
 
             action.ShouldThrow<InvalidOperationException>();
         }

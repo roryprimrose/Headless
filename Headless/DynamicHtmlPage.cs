@@ -7,6 +7,7 @@
     using System.Net;
     using System.Net.Http;
     using System.Xml.XPath;
+    using Headless.Activation;
 
     /// <summary>
     ///     The <see cref="DynamicHtmlPage" />
@@ -123,7 +124,7 @@
 
             return null;
         }
-        
+
         /// <inheritdoc />
         public IBrowser Browser
         {
@@ -141,6 +142,15 @@
             get
             {
                 return _wrapperPage.Document;
+            }
+        }
+
+        /// <inheritdoc />
+        public IHtmlElementFactory ElementFactory
+        {
+            get
+            {
+                return _wrapperPage.ElementFactory;
             }
         }
 

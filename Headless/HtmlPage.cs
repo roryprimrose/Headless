@@ -5,6 +5,7 @@
     using System.Net.Http;
     using System.Xml;
     using System.Xml.XPath;
+    using Headless.Activation;
     using Sgml;
 
     /// <summary>
@@ -18,6 +19,19 @@
         /// </summary>
         private XmlDocument _content;
 
+        /// <summary>
+        ///     The element factory.
+        /// </summary>
+        private IHtmlElementFactory _elementFactory;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="HtmlPage" /> class.
+        /// </summary>
+        protected HtmlPage()
+        {
+            _elementFactory = new HtmlElementFactory();
+        }
+
         /// <inheritdoc />
         public HtmlElementFinder<T> Find<T>() where T : HtmlElement
         {
@@ -28,7 +42,7 @@
         internal override void SetContent(HttpContent content)
         {
             var result = content.ReadAsStreamAsync().Result;
-            
+
             using (TextReader reader = new StreamReader(result))
             {
                 // setup SgmlReader
@@ -42,7 +56,7 @@
                     // create document
                     _content = new XmlDocument
                     {
-                        PreserveWhitespace = true,
+                        PreserveWhitespace = true, 
                         XmlResolver = null
                     };
 
@@ -58,6 +72,20 @@
             get
             {
                 return _content;
+            }
+        }
+
+        /// <inheritdoc />
+        public virtual IHtmlElementFactory ElementFactory
+        {
+            get
+            {
+                return _elementFactory;
+            }
+
+            protected set
+            {
+                _elementFactory = value;
             }
         }
 

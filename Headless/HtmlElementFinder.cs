@@ -237,7 +237,7 @@
 
             var nodes = navigator.Select(query);
 
-            return from IXPathNavigable node in nodes select HtmlElementFactory.Create<T>(owningPage, node);
+            return from IXPathNavigable node in nodes select owningPage.ElementFactory.Create<T>(owningPage, node);
         }
 
         /// <summary>

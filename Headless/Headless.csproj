@@ -57,6 +57,7 @@
       <DependentUpon>IPageFactory.cs</DependentUpon>
     </Compile>
     <Compile Include="Activation\HtmlElementFactory.cs" />
+    <Compile Include="Activation\IHtmlElementFactory.cs" />
     <Compile Include="Activation\IPageFactory.cs" />
     <Compile Include="BinaryPage.cs">
       <DependentUpon>IPage.cs</DependentUpon>
