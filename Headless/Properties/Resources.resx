@@ -133,9 +133,6 @@
     <value>Multiple types were found matching {0} that supports the HTML {1}. The following types were matching types:
 {2}</value>
   </data>
-  <data name="Browser_NoLocation" xml:space="preserve">
-    <value>No location has been specified for the browser to request.</value>
-  </data>
   <data name="XPathNavigator_NavigatorNotCreated" xml:space="preserve">
     <value>Failed to create XML navigator.</value>
   </data>

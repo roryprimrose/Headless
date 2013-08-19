@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Net;
+    using System.Net.Http;
     using Headless.Activation;
 
     /// <summary>
@@ -67,7 +68,11 @@
                 throw new ArgumentNullException("location");
             }
 
-            return browser.BrowseTo(location, expectedStatusCode, PageFactory.DynamicPageFactory);
+            var pageFactory = new DefaultPageFactory();
+
+            var dynamicPage = browser.GoTo<DynamicResolverPage>(location, expectedStatusCode, pageFactory);
+
+            return dynamicPage.ResolvedPage;
         }
 
         /// <summary>
@@ -180,8 +185,66 @@
                 throw new ArgumentNullException("location");
             }
 
-            // NOTE: An explicit cast is OK here because the default factory does return T
-            return (T)browser.BrowseTo(location, expectedStatusCode, PageFactory.DefaultPageFactory<T>);
+            var pageFactory = new DefaultPageFactory();
+
+            return browser.GoTo<T>(location, expectedStatusCode, pageFactory);
+        }
+
+        /// <summary>
+        /// Browses to the specified location and validates the status code.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of page to return.
+        /// </typeparam>
+        /// <param name="browser">
+        /// The browser.
+        /// </param>
+        /// <param name="location">
+        /// The location.
+        /// </param>
+        /// <param name="expectedStatusCode">
+        /// The expected status code.
+        /// </param>
+        /// <param name="pageFactory">
+        /// The page factory.
+        /// </param>
+        /// <returns>
+        /// A <see cref="IPage"/> value.
+        /// </returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="browser"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="location"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="pageFactory"/> parameter is <c>null</c>.
+        /// </exception>
+        public static T GoTo<T>(
+            this IBrowser browser, 
+            Uri location, 
+            HttpStatusCode expectedStatusCode, 
+            IPageFactory pageFactory) where T : IPage, new()
+        {
+            if (browser == null)
+            {
+                throw new ArgumentNullException("browser");
+            }
+
+            if (location == null)
+            {
+                throw new ArgumentNullException("location");
+            }
+
+            if (pageFactory == null)
+            {
+                throw new ArgumentNullException("pageFactory");
+            }
+
+            using (var request = new HttpRequestMessage(HttpMethod.Get, location))
+            {
+                return browser.Execute<T>(request, expectedStatusCode, pageFactory);
+            }
         }
 
         /// <summary>
@@ -261,7 +324,11 @@
                 throw new ArgumentNullException("location");
             }
 
-            return browser.PostTo(parameters, location, expectedStatusCode, PageFactory.DynamicPageFactory);
+            var pageFactory = new DefaultPageFactory();
+
+            var dynamicPage = browser.PostTo<DynamicResolverPage>(parameters, location, expectedStatusCode, pageFactory);
+
+            return dynamicPage.ResolvedPage;
         }
 
         /// <summary>
@@ -410,8 +477,75 @@
                 throw new ArgumentNullException("location");
             }
 
-            // NOTE: An explicit cast is OK here because the default factory does return T
-            return (T)browser.PostTo(parameters, location, expectedStatusCode, PageFactory.DefaultPageFactory<T>);
+            var pageFactory = new DefaultPageFactory();
+
+            return browser.PostTo<T>(parameters, location, expectedStatusCode, pageFactory);
+        }
+
+        /// <summary>
+        /// Posts the parameters to the specified location and validates the status code.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of page to return.
+        /// </typeparam>
+        /// <param name="browser">
+        /// The browser.
+        /// </param>
+        /// <param name="parameters">
+        /// The post parameters.
+        /// </param>
+        /// <param name="location">
+        /// The location to post to.
+        /// </param>
+        /// <param name="expectedStatusCode">
+        /// The expected status code.
+        /// </param>
+        /// <param name="pageFactory">
+        /// The page factory.
+        /// </param>
+        /// <returns>
+        /// A <typeparamref name="T"/> value.
+        /// </returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="browser"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="parameters"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="location"/> parameter is <c>null</c>.
+        /// </exception>
+        public static T PostTo<T>(
+            this IBrowser browser, 
+            IDictionary<string, string> parameters, 
+            Uri location, 
+            HttpStatusCode expectedStatusCode, 
+            IPageFactory pageFactory) where T : IPage, new()
+        {
+            if (browser == null)
+            {
+                throw new ArgumentNullException("browser");
+            }
+
+            if (parameters == null)
+            {
+                throw new ArgumentNullException("parameters");
+            }
+
+            if (location == null)
+            {
+                throw new ArgumentNullException("location");
+            }
+
+            using (var formData = new FormUrlEncodedContent(parameters))
+            {
+                using (var request = new HttpRequestMessage(HttpMethod.Post, location))
+                {
+                    request.Content = formData;
+
+                    return browser.Execute<T>(request, expectedStatusCode, pageFactory);
+                }
+            }
         }
     }
 }

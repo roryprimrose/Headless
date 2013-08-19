@@ -53,8 +53,11 @@
     <Compile Include="..\Solution Items\ProductInfo.cs">
       <Link>Properties\ProductInfo.cs</Link>
     </Compile>
+    <Compile Include="Activation\DefaultPageFactory.cs">
+      <DependentUpon>IPageFactory.cs</DependentUpon>
+    </Compile>
     <Compile Include="Activation\HtmlElementFactory.cs" />
-    <Compile Include="Activation\PageFactory.cs" />
+    <Compile Include="Activation\IPageFactory.cs" />
     <Compile Include="BinaryPage.cs">
       <DependentUpon>IPage.cs</DependentUpon>
     </Compile>
@@ -73,9 +76,7 @@
     <Compile Include="DynamicHtmlPage.cs">
       <DependentUpon>IPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="DynamicResolverPage.cs">
-      <DependentUpon>IPage.cs</DependentUpon>
-    </Compile>
+    <Compile Include="DynamicResolverPage.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="HtmlElementFinder.cs" />
     <Compile Include="HtmlElementNotFoundException.cs" />

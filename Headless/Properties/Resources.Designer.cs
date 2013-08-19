@@ -70,15 +70,6 @@ namespace Headless.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No location has been specified for the browser to request..
-        /// </summary>
-        internal static string Browser_NoLocation {
-            get {
-                return ResourceManager.GetString("Browser_NoLocation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to No form element was found for the requested element..
         /// </summary>
         internal static string HtmlElement_GetHtmlForm_FormNotFound {

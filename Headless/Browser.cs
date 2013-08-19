@@ -7,7 +7,7 @@
     using System.Globalization;
     using System.Net;
     using System.Net.Http;
-    using System.Threading.Tasks;
+    using Headless.Activation;
     using Headless.Properties;
 
     /// <summary>
@@ -63,66 +63,13 @@
         }
 
         /// <inheritdoc />
-        public IPage BrowseTo(Uri location, HttpStatusCode expectedStatusCode, Func<IBrowser, HttpResponseMessage, HttpResult, IPage> pageFactory)
+        public T Execute<T>(HttpRequestMessage request, HttpStatusCode expectedStatusCode, IPageFactory pageFactory) where T : IPage, new()
         {
-            return ExecuteAction(location, expectedStatusCode, x => _client.GetAsync(x), pageFactory);
-        }
+            var page = default(T);
 
-        /// <inheritdoc />
-        public IPage PostTo(IDictionary<string, string> parameters, Uri location, HttpStatusCode expectedStatusCode, Func<IBrowser, HttpResponseMessage, HttpResult, IPage> pageFactory)
-        {
-            using (var formData = new FormUrlEncodedContent(parameters))
+            if (request == null)
             {
-                return ExecuteAction(location, expectedStatusCode, x => _client.PostAsync(x, formData), pageFactory);
-            }
-        }
-
-        /// <summary>
-        /// Executes the action.
-        /// </summary>
-        /// <param name="location">
-        /// The specific location to request rather than that identified by the page.
-        /// </param>
-        /// <param name="expectedStatusCode">
-        /// The expected status code.
-        /// </param>
-        /// <param name="action">
-        /// The action.
-        /// </param>
-        /// <param name="pageFactory">
-        /// The page factory.
-        /// </param>
-        /// <returns>
-        /// An <see cref="IPage"/> value.
-        /// </returns>
-        /// <exception cref="System.InvalidOperationException">
-        /// No location has been specified for the browser to request.
-        ///     or
-        /// </exception>
-        /// <exception cref="System.ArgumentNullException">
-        /// action
-        ///     or
-        ///     pageFactory
-        /// </exception>
-        /// <exception cref="HttpOutcomeException">
-        /// An unexpected HTTP outcome was encountered.
-        /// </exception>
-        internal IPage ExecuteAction(
-            Uri location, 
-            HttpStatusCode expectedStatusCode, 
-            Func<Uri, Task<HttpResponseMessage>> action, 
-            Func<IBrowser, HttpResponseMessage, HttpResult, IPage> pageFactory)
-        {
-            IPage page = null;
-
-            if (location == null)
-            {
-                throw new InvalidOperationException(Resources.Browser_NoLocation);
-            }
-
-            if (action == null)
-            {
-                throw new ArgumentNullException("action");
+                throw new ArgumentNullException("request");
             }
 
             if (pageFactory == null)
@@ -130,13 +77,13 @@
                 throw new ArgumentNullException("pageFactory");
             }
 
-            var currentResourceLocation = location;
+            var currentResourceLocation = request.RequestUri;
 
             var outcomes = new List<HttpOutcome>();
 
             var stopwatch = Stopwatch.StartNew();
 
-            var task = action(currentResourceLocation);
+            var task = _client.SendAsync(request);
 
             Uri redirectLocation = null;
             bool requiresRedirect;
@@ -165,7 +112,7 @@
                     // This the final response
                     var result = new HttpResult(outcomes);
 
-                    page = pageFactory(this, response, result);
+                    page = pageFactory.Create<T>(this, response, result);
                 }
             }
 
@@ -185,7 +132,7 @@
 
                 currentResourceLocation = fullRedirectLocation;
                 stopwatch = Stopwatch.StartNew();
-                task = action(currentResourceLocation);
+                task = _client.GetAsync(currentResourceLocation);
 
                 using (var response = task.Result)
                 {
@@ -211,7 +158,7 @@
                         // This the final response
                         var result = new HttpResult(outcomes);
 
-                        page = pageFactory(this, response, result);
+                        page = pageFactory.Create<T>(this, response, result);
                     }
                 }
             }

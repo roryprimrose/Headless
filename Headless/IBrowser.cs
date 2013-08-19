@@ -1,9 +1,8 @@
 ﻿namespace Headless
 {
-    using System;
-    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
+    using Headless.Activation;
 
     /// <summary>
     ///     The <see cref="IBrowser" />
@@ -12,10 +11,13 @@
     public interface IBrowser
     {
         /// <summary>
-        /// Executes a GET request to the specified location.
+        /// Executes the specified request and returns a page.
         /// </summary>
-        /// <param name="location">
-        /// The location to request.
+        /// <typeparam name="T">
+        /// The type of page to return.
+        /// </typeparam>
+        /// <param name="request">
+        /// The request.
         /// </param>
         /// <param name="expectedStatusCode">
         /// The expected status code.
@@ -24,35 +26,9 @@
         /// The page factory.
         /// </param>
         /// <returns>
-        /// An <see cref="IPage"/> value.
+        /// An <typeparamref name="T"/> value.
         /// </returns>
-        IPage BrowseTo(
-            Uri location, 
-            HttpStatusCode expectedStatusCode, 
-            Func<IBrowser, HttpResponseMessage, HttpResult, IPage> pageFactory);
-
-        /// <summary>
-        /// Executes a POST request to the specified location.
-        /// </summary>
-        /// <param name="parameters">
-        /// The POST parameters.
-        /// </param>
-        /// <param name="location">
-        /// The location to request.
-        /// </param>
-        /// <param name="expectedStatusCode">
-        /// The expected status code.
-        /// </param>
-        /// <param name="pageFactory">
-        /// The page factory.
-        /// </param>
-        /// <returns>
-        /// An <see cref="IPage"/> value.
-        /// </returns>
-        IPage PostTo(
-            IDictionary<string, string> parameters, 
-            Uri location, 
-            HttpStatusCode expectedStatusCode, 
-            Func<IBrowser, HttpResponseMessage, HttpResult, IPage> pageFactory);
+        T Execute<T>(HttpRequestMessage request, HttpStatusCode expectedStatusCode, IPageFactory pageFactory)
+            where T : IPage, new();
     }
 }
