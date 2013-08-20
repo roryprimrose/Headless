@@ -1,5 +1,6 @@
 ﻿namespace Headless
 {
+    using System;
     using System.Xml.XPath;
     using Headless.Activation;
 
@@ -13,7 +14,6 @@
     [SupportedTag("input", "type", "datetime")]
     [SupportedTag("input", "type", "datetime-local")]
     [SupportedTag("input", "type", "email")]
-    [SupportedTag("input", "type", "file")]
     [SupportedTag("input", "type", "hidden")]
     [SupportedTag("input", "type", "month")]
     [SupportedTag("input", "type", "number")]
@@ -39,6 +39,46 @@
         /// </param>
         public HtmlTextElement(IHtmlPage page, IXPathNavigable node) : base(page, node)
         {
+        }
+
+        /// <inheritdoc />
+        public override string Value
+        {
+            get
+            {
+                var navigator = Node.GetNavigator();
+
+                if (navigator.Name.Equals("textarea", StringComparison.OrdinalIgnoreCase))
+                {
+                    // Return the content of the node
+                    var value = navigator.InnerXml;
+
+                    if (value.StartsWith(Environment.NewLine, StringComparison.OrdinalIgnoreCase))
+                    {
+                        // Textarea tags render with a new line that is not part of the value
+                        return value.Substring(2);
+                    }
+
+                    return value;
+                }
+
+                return base.Value;
+            }
+
+            set
+            {
+                var navigator = Node.GetNavigator();
+
+                if (navigator.Name.Equals("textarea", StringComparison.OrdinalIgnoreCase))
+                {
+                    // Return the content of the node
+                    navigator.InnerXml = Environment.NewLine + value;
+                }
+                else
+                {
+                    base.Value = value;
+                }
+            }
         }
     }
 }
