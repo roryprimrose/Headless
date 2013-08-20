@@ -48,7 +48,7 @@
             </li>
             <li>
                 @Html.LabelFor(m => m.Password)
-                @Html.TextBoxFor(m => m.Password, new { @type = "password"})
+                @Html.PasswordFor(m => m.Password)
                 @Html.ValidationMessageFor(m => m.Password)
             </li>
             <li>
@@ -90,6 +90,11 @@
                 @Html.LabelFor(m => m.Week)
                 @Html.TextBoxFor(m => m.Week, new { @type = "week"})
                 @Html.ValidationMessageFor(m => m.Week)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.Toggle)
+                @Html.CheckBoxFor(m => m.Toggle)
+                @Html.ValidationMessageFor(m => m.Toggle)
             </li>
         </ol>
         <input type="submit" value="Submit" name="Submit" />

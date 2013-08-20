@@ -245,6 +245,20 @@
         }
 
         /// <summary>
+        ///     Gets the toggle.
+        /// </summary>
+        /// <value>
+        ///     The toggle.
+        /// </value>
+        public HtmlCheckBox Toggle
+        {
+            get
+            {
+                return Find<HtmlCheckBox>().FindByName("Toggle");
+            }
+        }
+
+        /// <summary>
         ///     Gets the URL.
         /// </summary>
         /// <value>

@@ -45,9 +45,13 @@
             }
 
             // Find all the form elements that are not buttons
-            var formElements = form.Find<HtmlFormElement>().All().Where(x => x is HtmlButton == false);
+            var availableElements = form.Find<HtmlFormElement>().All().Where(x => x is HtmlButton == false);
 
-            var parameters = formElements.ToDictionary(element => element.Name, element => element.Value);
+            // strip out checkboxes that are not checked
+            var withoutUncheckedCheckboxes =
+                availableElements.Where(x => x is HtmlCheckBox == false || ((HtmlCheckBox)x).Checked);
+
+            var parameters = withoutUncheckedCheckboxes.ToDictionary(element => element.Name, element => element.Value);
 
             if (string.IsNullOrWhiteSpace(sourceButton.Name) == false)
             {

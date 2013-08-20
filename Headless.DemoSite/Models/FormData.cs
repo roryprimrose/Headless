@@ -166,10 +166,10 @@
         }
 
         /// <summary>
-        /// Gets or sets the text block.
+        ///     Gets or sets the text block.
         /// </summary>
         /// <value>
-        /// The text block.
+        ///     The text block.
         /// </value>
         [DataType(DataType.MultilineText)]
         public string TextBlock
@@ -185,6 +185,18 @@
         ///     The time.
         /// </value>
         public string Time
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether this <see cref="FormData" /> is toggle.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if toggle; otherwise, <c>false</c>.
+        /// </value>
+        public bool Toggle
         {
             get;
             set;

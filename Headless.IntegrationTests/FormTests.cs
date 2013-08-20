@@ -37,10 +37,14 @@
                 const string TimeValue = "01:59";
                 var urlValue = Guid.NewGuid().ToString();
                 const string WeekValue = "2013-W05";
+                var toggleValue = Guid.NewGuid().ToString();
+                const bool Toggle = true;
 
                 var page = browser.GoTo(Form.Index);
 
                 ((IPage)page).Result.TraceResults();
+
+                ((bool)page.Toggle.Checked).Should().BeFalse();
 
                 page.Color.Value = ColorValue;
                 page.Date.Value = DateValue;
@@ -59,6 +63,8 @@
                 page.Time.Value = TimeValue;
                 page.Url.Value = urlValue;
                 page.Week.Value = WeekValue;
+                page.Toggle.Value = toggleValue;
+                page.Toggle.Checked = Toggle;
 
                 var postedPage = page.Submit.Click();
 
@@ -80,6 +86,8 @@
                 ((string)postedPage.Time.Value).Should().Be(TimeValue);
                 ((string)postedPage.Url.Value).Should().Be(urlValue);
                 ((string)postedPage.Week.Value).Should().Be(WeekValue);
+                ((string)postedPage.Toggle.Value).Should().Be(toggleValue);
+                ((bool)postedPage.Toggle.Checked).Should().Be(Toggle);
             }
         }
 
@@ -108,10 +116,14 @@
                 const string TimeValue = "01:59";
                 var urlValue = Guid.NewGuid().ToString();
                 const string WeekValue = "2013-W05";
+                var toggleValue = Guid.NewGuid().ToString();
+                const bool Toggle = true;
 
                 var page = browser.GoTo<FormIndexPage>();
 
                 page.Result.TraceResults();
+
+                page.Toggle.Checked.Should().BeFalse();
 
                 page.Color.Value = ColorValue;
                 page.Date.Value = DateValue;
@@ -130,6 +142,8 @@
                 page.Time.Value = TimeValue;
                 page.Url.Value = urlValue;
                 page.Week.Value = WeekValue;
+                page.Toggle.Value = toggleValue;
+                page.Toggle.Checked = Toggle;
 
                 var postedPage = page.Submit.Click<FormIndexPage>();
 
@@ -151,6 +165,8 @@
                 postedPage.Time.Value.Should().Be(TimeValue);
                 postedPage.Url.Value.Should().Be(urlValue);
                 postedPage.Week.Value.Should().Be(WeekValue);
+                postedPage.Toggle.Value.Should().Be(toggleValue);
+                postedPage.Toggle.Checked.Should().Be(Toggle);
             }
         }
     }
