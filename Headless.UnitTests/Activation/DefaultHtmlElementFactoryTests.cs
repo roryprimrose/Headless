@@ -8,11 +8,11 @@
     using NSubstitute;
 
     /// <summary>
-    ///     The <see cref="HtmlElementFactoryTests" />
-    ///     class tests the <see cref="HtmlElementFactory" /> class.
+    ///     The <see cref="DefaultHtmlElementFactoryTests" />
+    ///     class tests the <see cref="DefaultHtmlElementFactory" /> class.
     /// </summary>
     [TestClass]
-    public class HtmlElementFactoryTests
+    public class DefaultHtmlElementFactoryTests
     {
         /// <summary>
         ///     Runs a test for create returns best matching type.
@@ -28,7 +28,7 @@
             navigator.Name.Returns("input");
             navigator.GetAttribute("type", string.Empty).Returns("text");
 
-            var target = new HtmlElementFactory();
+            var target = new DefaultHtmlElementFactory();
 
             var actual = target.Create<HtmlElement>(page, node);
 
@@ -50,7 +50,7 @@
             navigator.Name.Returns("input");
             navigator.GetAttribute("type", string.Empty).Returns("text");
 
-            var target = new HtmlElementFactory();
+            var target = new DefaultHtmlElementFactory();
 
             var actual = target.Create<HtmlTextElement>(page, node);
 
@@ -71,7 +71,7 @@
             navigator.Name.Returns("input");
             navigator.GetAttribute("type", string.Empty).Returns("text");
 
-            var target = new HtmlElementFactory();
+            var target = new DefaultHtmlElementFactory();
 
             Action action = () => target.Create<HtmlButton>(page, node);
 

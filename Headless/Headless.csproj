@@ -56,7 +56,9 @@
     <Compile Include="Activation\DefaultPageFactory.cs">
       <DependentUpon>IPageFactory.cs</DependentUpon>
     </Compile>
-    <Compile Include="Activation\HtmlElementFactory.cs" />
+    <Compile Include="Activation\DefaultHtmlElementFactory.cs">
+      <DependentUpon>IHtmlElementFactory.cs</DependentUpon>
+    </Compile>
     <Compile Include="Activation\IHtmlElementFactory.cs" />
     <Compile Include="Activation\IPageFactory.cs" />
     <Compile Include="BinaryPage.cs">
@@ -128,8 +130,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SupportedTagAttribute.cs" />
-    <Compile Include="SupportedTagAttributeComparer.cs" />
+    <Compile Include="Activation\SupportedTagAttribute.cs" />
+    <Compile Include="Activation\SupportedTagAttributeComparer.cs" />
     <Compile Include="TextPage.cs">
       <DependentUpon>IPage.cs</DependentUpon>
     </Compile>

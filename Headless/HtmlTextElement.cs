@@ -1,7 +1,8 @@
 ﻿namespace Headless
 {
     using System.Xml.XPath;
-    
+    using Headless.Activation;
+
     /// <summary>
     ///     The <see cref="HtmlTextElement" />
     ///     is used to represent input type=text and textarea elements.

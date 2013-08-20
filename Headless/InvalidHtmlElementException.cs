@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml.XPath;
+    using Headless.Activation;
 
     /// <summary>
     ///     The <see cref="InvalidHtmlElementException" />

@@ -126,7 +126,7 @@
         /// <returns>
         /// An <see cref="IEnumerable{T}"/> value.
         /// </returns>
-        public static IEnumerable<Type> GetMatchingTypes(Type elementType)
+        public static IReadOnlyCollection<Type> GetMatchingTypes(this Type elementType)
         {
             if (elementType == null)
             {

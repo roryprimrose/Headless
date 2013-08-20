@@ -29,7 +29,7 @@
         /// </summary>
         protected HtmlPage()
         {
-            _elementFactory = new HtmlElementFactory();
+            _elementFactory = new DefaultHtmlElementFactory();
         }
 
         /// <inheritdoc />

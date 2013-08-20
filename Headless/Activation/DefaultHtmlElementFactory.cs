@@ -5,7 +5,7 @@
     using System.Xml.XPath;
 
     /// <summary>
-    ///     The <see cref="HtmlElementFactory" />
+    ///     The <see cref="DefaultHtmlElementFactory" />
     ///     class is used to create <see cref="HtmlElement" /> instances.
     /// </summary>
     /// <remarks>
@@ -25,7 +25,7 @@
     ///         own instances and so it does not otherwise pollute intellisense when they don't need it.
     ///     </p>
     /// </remarks>
-    public class HtmlElementFactory : IHtmlElementFactory
+    public class DefaultHtmlElementFactory : IHtmlElementFactory
     {
         /// <inheritdoc />
         public T Create<T>(IHtmlPage page, IXPathNavigable node) where T : HtmlElement

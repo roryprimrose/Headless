@@ -1,4 +1,4 @@
-﻿namespace Headless
+﻿namespace Headless.Activation
 {
     using System;
     using System.Globalization;

@@ -1,4 +1,4 @@
-﻿namespace Headless
+﻿namespace Headless.Activation
 {
     using System;
     using System.Collections.Generic;
@@ -7,7 +7,7 @@
     ///     The <see cref="SupportedTagAttributeComparer" />
     ///     class is used to provide comparison support for the <see cref="SupportedTagAttribute" /> class.
     /// </summary>
-    internal class SupportedTagAttributeComparer : IEqualityComparer<SupportedTagAttribute>
+    public class SupportedTagAttributeComparer : IEqualityComparer<SupportedTagAttribute>
     {
         /// <inheritdoc />
         public bool Equals(SupportedTagAttribute x, SupportedTagAttribute y)
@@ -27,12 +27,22 @@
                 return false;
             }
 
-            if (SafeString(x.AttributeName) != SafeString(y.AttributeName))
+            if (x.HasAttributeFilter != y.HasAttributeFilter)
             {
                 return false;
             }
 
-            if (SafeString(x.AttributeValue) != SafeString(y.AttributeValue))
+            if (x.HasAttributeFilter == false)
+            {
+                return true;
+            }
+
+            if (x.AttributeName != y.AttributeName)
+            {
+                return false;
+            }
+
+            if (x.AttributeValue != y.AttributeValue)
             {
                 return false;
             }

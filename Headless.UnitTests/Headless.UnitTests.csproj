@@ -64,7 +64,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Activation\HtmlElementFactoryTests.cs" />
+    <Compile Include="Activation\SecondConflictType.cs" />
+    <Compile Include="Activation\DefaultHtmlElementFactoryTests.cs" />
+    <Compile Include="Activation\DefaultPageFactoryTests.cs" />
+    <Compile Include="Activation\FirstConflictType.cs" />
+    <Compile Include="Activation\TypeExtensionsTests.cs" />
+    <Compile Include="Activation\SupportedTagAttributeTests.cs" />
+    <Compile Include="Activation\SupportedTagAttributeComparerTests.cs" />
     <Compile Include="PageWrapper.cs" />
     <Compile Include="InvalidHtmlElementMatchExceptionTests.cs" />
     <Compile Include="HtmlElementNotFoundExceptionTests.cs" />

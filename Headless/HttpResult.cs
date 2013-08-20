@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Diagnostics;
     using System.Linq;
 
@@ -22,9 +23,14 @@
         /// <param name="outcomes">
         /// The http request outcomes.
         /// </param>
-        internal HttpResult(IReadOnlyCollection<HttpOutcome> outcomes)
+        public HttpResult(IEnumerable<HttpOutcome> outcomes)
         {
-            _outcomes = outcomes;
+            if (outcomes == null)
+            {
+                throw new ArgumentNullException("outcomes");
+            }
+
+            _outcomes = new ReadOnlyCollection<HttpOutcome>(outcomes.ToList());
         }
 
         /// <summary>

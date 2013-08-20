@@ -1,6 +1,7 @@
 ﻿namespace Headless
 {
     using System.Xml.XPath;
+    using Headless.Activation;
 
     /// <summary>
     ///     The <see cref="AnyHtmlElement" />
