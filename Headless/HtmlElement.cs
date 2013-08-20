@@ -45,11 +45,11 @@
         ///     Provides a finding implementation for searching for child <see cref="HtmlElement" /> values.
         /// </summary>
         /// <typeparam name="T">The type of <see cref="HtmlElement" /> to find.</typeparam>
-        /// <returns>A <see cref="HtmlElementFinder{T}" /> value.</returns>
+        /// <returns>A <see cref="IHtmlElementFinder{T}" /> value.</returns>
         [DebuggerStepThrough]
-        public HtmlElementFinder<T> Find<T>() where T : HtmlElement
+        public IHtmlElementFinder<T> Find<T>() where T : HtmlElement
         {
-            return new HtmlElementFinder<T>(this);
+            return new DefaultHtmlElementFinder<T>(this);
         }
 
         /// <summary>

@@ -79,9 +79,16 @@
     <Compile Include="DynamicHtmlPage.cs">
       <DependentUpon>IPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="DynamicResolverPage.cs" />
+    <Compile Include="DynamicResolverPage.cs">
+      <DependentUpon>IPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="HtmlElementFinder.cs" />
+    <Compile Include="DefaultHtmlElementFinder.cs">
+      <DependentUpon>IHtmlElementFinder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HtmlElementFinderExtensions.cs">
+      <DependentUpon>Extensions.cs</DependentUpon>
+    </Compile>
     <Compile Include="HtmlElementNotFoundException.cs" />
     <Compile Include="HtmlForm.cs">
       <DependentUpon>IHtmlElement.cs</DependentUpon>
@@ -119,6 +126,7 @@
     </Compile>
     <Compile Include="IBrowser.cs" />
     <Compile Include="IHtmlElement.cs" />
+    <Compile Include="IHtmlElementFinder.cs" />
     <Compile Include="IHtmlPage.cs">
       <DependentUpon>IPage.cs</DependentUpon>
     </Compile>

@@ -21,9 +21,9 @@
         private HtmlPageWrapper _wrapperPage;
 
         /// <inheritdoc />
-        public HtmlElementFinder<T> Find<T>() where T : HtmlElement
+        public IHtmlElementFinder<T> Find<T>() where T : HtmlElement
         {
-            return new HtmlElementFinder<T>(this);
+            return new DefaultHtmlElementFinder<T>(this);
         }
 
         /// <inheritdoc />
@@ -94,7 +94,7 @@
         /// </exception>
         private HtmlElement FindElement(string value)
         {
-            var finder = new HtmlElementFinder<HtmlElement>(this);
+            var finder = new DefaultHtmlElementFinder<HtmlElement>(this);
 
             var elementsById = finder.ByAttribute("id", value).ToList();
 

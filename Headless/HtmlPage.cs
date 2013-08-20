@@ -33,9 +33,9 @@
         }
 
         /// <inheritdoc />
-        public HtmlElementFinder<T> Find<T>() where T : HtmlElement
+        public IHtmlElementFinder<T> Find<T>() where T : HtmlElement
         {
-            return new HtmlElementFinder<T>(this);
+            return new DefaultHtmlElementFinder<T>(this);
         }
 
         /// <inheritdoc />
