@@ -32,7 +32,7 @@
         /// </exception>
         [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", 
             Justification = "The types here are logically correct for the purpose of the method.")]
-        public static IDictionary<string, string> BuildPostParameters(this HtmlForm form, HtmlButton sourceButton)
+        public static IEnumerable<KeyValuePair<string, string>> BuildPostParameters(this HtmlForm form, HtmlButton sourceButton)
         {
             if (form == null)
             {
@@ -51,12 +51,12 @@
             var withoutUncheckedCheckboxes =
                 availableElements.Where(x => x is HtmlCheckBox == false || ((HtmlCheckBox)x).Checked);
 
-            var parameters = withoutUncheckedCheckboxes.ToDictionary(element => element.Name, element => element.Value);
+            var parameters = withoutUncheckedCheckboxes.Select(element => new KeyValuePair<string, string>(element.Name, element.Value)).ToList();
 
             if (string.IsNullOrWhiteSpace(sourceButton.Name) == false)
             {
                 // The source button can be identified to the server so it must be added to the post data
-                parameters.Add(sourceButton.Name, sourceButton.Value);
+                parameters.Add(new KeyValuePair<string, string>(sourceButton.Name, sourceButton.Value));
             }
 
             return parameters;

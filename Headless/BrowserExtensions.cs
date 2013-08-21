@@ -251,7 +251,7 @@
         /// <exception cref="System.ArgumentNullException">
         /// The <paramref name="location"/> parameter is <c>null</c>.
         /// </exception>
-        public static dynamic PostTo(this IBrowser browser, IDictionary<string, string> parameters, Uri location)
+        public static dynamic PostTo(this IBrowser browser, IEnumerable<KeyValuePair<string, string>> parameters, Uri location)
         {
             return browser.PostTo(parameters, location, HttpStatusCode.OK);
         }
@@ -285,7 +285,7 @@
         /// </exception>
         public static dynamic PostTo(
             this IBrowser browser, 
-            IDictionary<string, string> parameters, 
+            IEnumerable<KeyValuePair<string, string>> parameters, 
             Uri location, 
             HttpStatusCode expectedStatusCode)
         {
@@ -317,7 +317,7 @@
         /// <exception cref="System.ArgumentNullException">
         /// The <paramref name="parameters"/> parameter is <c>null</c>.
         /// </exception>
-        public static T PostTo<T>(this IBrowser browser, IDictionary<string, string> parameters) where T : IPage, new()
+        public static T PostTo<T>(this IBrowser browser, IEnumerable<KeyValuePair<string, string>> parameters) where T : IPage, new()
         {
             var page = new T();
 
@@ -351,7 +351,7 @@
         /// <exception cref="System.ArgumentNullException">
         /// The <paramref name="location"/> parameter is <c>null</c>.
         /// </exception>
-        public static T PostTo<T>(this IBrowser browser, IDictionary<string, string> parameters, Uri location)
+        public static T PostTo<T>(this IBrowser browser, IEnumerable<KeyValuePair<string, string>> parameters, Uri location)
             where T : IPage, new()
         {
             return browser.PostTo<T>(parameters, location, HttpStatusCode.OK);
@@ -383,7 +383,7 @@
         /// </exception>
         public static T PostTo<T>(
             this IBrowser browser, 
-            IDictionary<string, string> parameters, 
+            IEnumerable<KeyValuePair<string, string>> parameters, 
             HttpStatusCode expectedStatusCode) where T : IPage, new()
         {
             var page = new T();
@@ -423,7 +423,7 @@
         /// </exception>
         public static T PostTo<T>(
             this IBrowser browser, 
-            IDictionary<string, string> parameters, 
+            IEnumerable<KeyValuePair<string, string>> parameters, 
             Uri location, 
             HttpStatusCode expectedStatusCode) where T : IPage, new()
         {
@@ -467,7 +467,7 @@
         /// </exception>
         public static T PostTo<T>(
             this IBrowser browser, 
-            IDictionary<string, string> parameters, 
+            IEnumerable<KeyValuePair<string, string>> parameters, 
             Uri location, 
             HttpStatusCode expectedStatusCode, 
             IPageFactory pageFactory) where T : IPage, new()
