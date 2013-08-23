@@ -241,8 +241,8 @@
 
             if (ignoreCase)
             {
-                textFilter = "[translate(./text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = '" +
-                             text + "']";
+                textFilter = "[translate(./text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = translate('" +
+                             text + "', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')]";
             }
             else
             {
