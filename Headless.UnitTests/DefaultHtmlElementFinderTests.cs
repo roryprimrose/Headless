@@ -50,10 +50,10 @@
         }
 
         /// <summary>
-        ///     Runs a test for execute returns any elements from type hierarchy.
+        ///     Runs a test for execute returns any elements from type hierarchy from root.
         /// </summary>
         [TestMethod]
-        public void ExecuteReturnsAnyElementsFromTypeHierarchyTest()
+        public void ExecuteReturnsAnyElementsFromTypeHierarchyFromRootTest()
         {
             var doc = new XmlDocument();
 
@@ -77,10 +77,10 @@
         }
 
         /// <summary>
-        ///     Runs a test for execute returns elements from type hierarchy.
+        ///     Runs a test for execute returns any elements from type hierarchy from specific node.
         /// </summary>
         [TestMethod]
-        public void ExecuteReturnsElementsFromTypeHierarchyTest()
+        public void ExecuteReturnsAnyElementsFromTypeHierarchyFromSpecificNodeTest()
         {
             var doc = new XmlDocument();
 
@@ -89,7 +89,9 @@
 
             var page = new HtmlPageStub(doc);
 
-            var target = new DefaultHtmlElementFinder<HtmlFormElement>(page);
+            var form = page.Find<HtmlForm>().ByName("Test");
+
+            var target = new DefaultHtmlElementFinder<HtmlElement>(form);
 
             var query = target.BuildElementQuery();
 
@@ -99,6 +101,52 @@
 
             actual.OfType<HtmlInput>().Any().Should().BeTrue();
             actual.OfType<HtmlCheckBox>().Any().Should().BeTrue();
+        }
+
+        /// <summary>
+        ///     Runs a test for execute returns elements from type hierarchy from root.
+        /// </summary>
+        [TestMethod]
+        public void ExecuteReturnsElementsFromTypeHierarchyFromRootTest()
+        {
+            var doc = new XmlDocument();
+
+            doc.LoadXml(
+                "<html><head /><body><form name='Test'><input type='text' name='Data' /><input type='checkbox' name='IsSet' /></form><form name='Second'><input type='text' name='Data2' /><input type='checkbox' name='IsSet3' /></form></body></html>");
+
+            var page = new HtmlPageStub(doc);
+
+            var target = new DefaultHtmlElementFinder<HtmlInput>(page);
+
+            var query = target.BuildElementQuery();
+
+            var actual = target.Execute(query).ToList();
+
+            actual.Count.Should().Be(2);
+        }
+
+        /// <summary>
+        ///     Runs a test for execute returns elements from type hierarchy from specific node.
+        /// </summary>
+        [TestMethod]
+        public void ExecuteReturnsElementsFromTypeHierarchyFromSpecificNodeTest()
+        {
+            var doc = new XmlDocument();
+
+            doc.LoadXml(
+                "<html><head /><body><form name='Test'><input type='text' name='Data' /><input type='checkbox' name='IsSet' /></form></body></html>");
+
+            var page = new HtmlPageStub(doc);
+
+            var form = page.Find<HtmlForm>().ByName("Test");
+
+            var target = new DefaultHtmlElementFinder<HtmlInput>(form);
+
+            var query = target.BuildElementQuery();
+
+            var actual = target.Execute(query).ToList();
+
+            actual.Count.Should().Be(1);
         }
 
         /// <summary>

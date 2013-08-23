@@ -177,7 +177,7 @@
                 throw new ArgumentException(Resources.Guard_NoValueProvided, "tagName");
             }
 
-            return finder.Execute("//" + tagName);
+            return finder.Execute(".//" + tagName);
         }
 
         /// <summary>
@@ -200,13 +200,56 @@
         /// </exception>
         public static IEnumerable<T> AllByText<T>(this IHtmlElementFinder<T> finder, string text) where T : HtmlElement
         {
+            return finder.AllByText(text, true);
+        }
+
+        /// <summary>
+        /// Finds the elements by text anywhere under this node.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of <see cref="HtmlElement"/> to return.
+        /// </typeparam>
+        /// <param name="finder">
+        /// The finder.
+        /// </param>
+        /// <param name="text">
+        /// The text.
+        /// </param>
+        /// <param name="ignoreCase">
+        /// if set to <c>true</c> the text comparison will be case insensitive; otherwise a case sensitive
+        ///     comparison is made.
+        /// </param>
+        /// <returns>
+        /// An <see cref="IEnumerable{T}"/> value.
+        /// </returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// finder
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// The <paramref name="finder"/> parameter is <c>null</c>.
+        /// </exception>
+        public static IEnumerable<T> AllByText<T>(this IHtmlElementFinder<T> finder, string text, bool ignoreCase)
+            where T : HtmlElement
+        {
             if (finder == null)
             {
                 throw new ArgumentNullException("finder");
             }
 
             var tagSelector = finder.BuildElementQuery();
-            var query = tagSelector + "[./text() = '" + text + "']";
+            string textFilter;
+
+            if (ignoreCase)
+            {
+                textFilter = "[translate(./text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = '" +
+                             text + "']";
+            }
+            else
+            {
+                textFilter = "[./text() = '" + text + "']";
+            }
+
+            var query = tagSelector + textFilter;
 
             return finder.Execute(query);
         }

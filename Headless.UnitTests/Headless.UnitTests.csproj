@@ -81,6 +81,7 @@
     <Compile Include="BrowserTests.cs" />
     <Compile Include="DefaultHtmlElementFinderTests.cs" />
     <Compile Include="HtmlElementExtensionsTests.cs" />
+    <Compile Include="HtmlElementFinderExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Headless\Headless.csproj">

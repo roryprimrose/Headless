@@ -82,17 +82,17 @@
                 // There is a wildcard tag name that does not filter by attributes
                 // This filter alone will return all HTML elements within the current scope
                 // There is no need to execute overly complex XPath queries based on all the available supported tags
-                return "//*";
+                return ".//*";
             }
 
             if (supportedTags.Count == 1)
             {
                 // This is the base form which will be in the format //p[@class='sam']
-                return "//" + BuildTagExpression(supportedTags.First());
+                return ".//" + BuildTagExpression(supportedTags.First());
             }
 
             // This expression is much more complex and will be in the format //*[self::p[@class='sam'] or self::div][@id='asdf']
-            var selector = "//*[";
+            var selector = ".//*[";
 
             for (var index = 0; index < supportedTags.Count; index++)
             {
