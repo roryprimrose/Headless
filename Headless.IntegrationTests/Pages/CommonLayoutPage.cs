@@ -16,7 +16,7 @@
         {
             get
             {
-                return Find<HtmlLink>().ByText("About").EnsureSingle();
+                return Find<HtmlLink>().AllByText("About").EnsureSingle();
             }
         }
     }

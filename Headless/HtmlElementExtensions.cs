@@ -26,6 +26,9 @@
         /// The single matching <typeparamref name="T"/> element.
         /// </returns>
         /// <exception cref="InvalidHtmlElementMatchException">
+        /// No elements were found.
+        /// </exception>
+        /// <exception cref="InvalidHtmlElementMatchException">
         /// More than one element was found.
         /// </exception>
         public static T EnsureSingle<T>(this IEnumerable<T> elements) where T : HtmlElement

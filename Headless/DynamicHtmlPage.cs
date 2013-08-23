@@ -96,14 +96,14 @@
         {
             var finder = new DefaultHtmlElementFinder<HtmlElement>(this);
 
-            var elementsById = finder.ByAttribute("id", value).ToList();
+            var elementsById = finder.AllByAttribute("id", value).ToList();
 
             if (elementsById.Count == 1)
             {
                 return elementsById[0];
             }
 
-            var elementsByName = finder.ByAttribute("name", value).ToList();
+            var elementsByName = finder.AllByAttribute("name", value).ToList();
 
             if (elementsByName.Count == 1)
             {
@@ -115,7 +115,7 @@
                 throw new NotImplementedException("Need to support radio buttons here that use the same name");
             }
 
-            var elementsByText = finder.ByText(value).ToList();
+            var elementsByText = finder.AllByText(value).ToList();
 
             if (elementsByText.Count == 1)
             {

@@ -19,7 +19,7 @@
         {
             get
             {
-                return Find<HtmlInput>().FindByName("Color");
+                return Find<HtmlInput>().ByName("Color");
             }
         }
 
@@ -33,7 +33,7 @@
         {
             get
             {
-                return Find<HtmlInput>().FindByName("Date");
+                return Find<HtmlInput>().ByName("Date");
             }
         }
 
@@ -47,7 +47,7 @@
         {
             get
             {
-                return Find<HtmlInput>().FindByName("DateTime");
+                return Find<HtmlInput>().ByName("DateTime");
             }
         }
 
@@ -61,7 +61,7 @@
         {
             get
             {
-                return Find<HtmlInput>().FindByName("DateTimeLocal");
+                return Find<HtmlInput>().ByName("DateTimeLocal");
             }
         }
 
@@ -75,7 +75,7 @@
         {
             get
             {
-                return Find<HtmlInput>().FindByName("Email");
+                return Find<HtmlInput>().ByName("Email");
             }
         }
 
@@ -89,7 +89,7 @@
         {
             get
             {
-                return Find<HtmlInput>().FindByName("Hidden");
+                return Find<HtmlInput>().ByName("Hidden");
             }
         }
 
@@ -114,7 +114,7 @@
         {
             get
             {
-                return Find<HtmlInput>().FindByName("Month");
+                return Find<HtmlInput>().ByName("Month");
             }
         }
 
@@ -128,7 +128,7 @@
         {
             get
             {
-                return Find<HtmlInput>().FindByName("Number");
+                return Find<HtmlInput>().ByName("Number");
             }
         }
 
@@ -142,7 +142,7 @@
         {
             get
             {
-                return Find<HtmlInput>().FindByName("Password");
+                return Find<HtmlInput>().ByName("Password");
             }
         }
 
@@ -156,7 +156,7 @@
         {
             get
             {
-                return Find<HtmlRadioButton>().FindByName("Radio");
+                return Find<HtmlRadioButton>().ByName("Radio");
             }
         }
 
@@ -170,7 +170,7 @@
         {
             get
             {
-                return Find<HtmlInput>().FindByName("Range");
+                return Find<HtmlInput>().ByName("Range");
             }
         }
 
@@ -184,7 +184,7 @@
         {
             get
             {
-                return Find<HtmlInput>().FindByName("Search");
+                return Find<HtmlInput>().ByName("Search");
             }
         }
 
@@ -212,7 +212,7 @@
         {
             get
             {
-                return Find<HtmlInput>().FindByName("Tel");
+                return Find<HtmlInput>().ByName("Tel");
             }
         }
 
@@ -226,7 +226,7 @@
         {
             get
             {
-                return Find<HtmlInput>().FindByName("Text");
+                return Find<HtmlInput>().ByName("Text");
             }
         }
 
@@ -240,7 +240,7 @@
         {
             get
             {
-                return Find<HtmlInput>().FindByName("TextBlock");
+                return Find<HtmlInput>().ByName("TextBlock");
             }
         }
 
@@ -254,7 +254,7 @@
         {
             get
             {
-                return Find<HtmlInput>().FindByName("Time");
+                return Find<HtmlInput>().ByName("Time");
             }
         }
 
@@ -268,7 +268,7 @@
         {
             get
             {
-                return Find<HtmlCheckBox>().FindByName("Toggle");
+                return Find<HtmlCheckBox>().ByName("Toggle");
             }
         }
 
@@ -282,7 +282,7 @@
         {
             get
             {
-                return Find<HtmlInput>().FindByName("Url");
+                return Find<HtmlInput>().ByName("Url");
             }
         }
 
@@ -296,7 +296,7 @@
         {
             get
             {
-                return Find<HtmlInput>().FindByName("Week");
+                return Find<HtmlInput>().ByName("Week");
             }
         }
     }

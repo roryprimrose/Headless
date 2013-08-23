@@ -60,7 +60,7 @@
         /// <exception cref="ArgumentNullException">
         /// The <paramref name="finder"/> parameter is <c>null</c>.
         /// </exception>
-        public static IEnumerable<T> ByAttribute<T>(
+        public static IEnumerable<T> AllByAttribute<T>(
             this IHtmlElementFinder<T> finder, 
             string attributeName, 
             string attributeValue) where T : HtmlElement
@@ -99,14 +99,14 @@
         /// <exception cref="ArgumentNullException">
         /// The <paramref name="finder"/> parameter is <c>null</c>.
         /// </exception>
-        public static IEnumerable<T> ByName<T>(this IHtmlElementFinder<T> finder, string name) where T : HtmlElement
+        public static IEnumerable<T> AllByName<T>(this IHtmlElementFinder<T> finder, string name) where T : HtmlElement
         {
             if (finder == null)
             {
                 throw new ArgumentNullException("finder");
             }
 
-            return finder.ByAttribute("name", name);
+            return finder.AllByAttribute("name", name);
         }
 
         /// <summary>
@@ -127,7 +127,7 @@
         /// <exception cref="ArgumentNullException">
         /// The <paramref name="finder"/> parameter is <c>null</c>.
         /// </exception>
-        public static IEnumerable<T> ByPredicate<T>(this IHtmlElementFinder<T> finder, Func<T, bool> predicate)
+        public static IEnumerable<T> AllByPredicate<T>(this IHtmlElementFinder<T> finder, Func<T, bool> predicate)
             where T : HtmlElement
         {
             if (finder == null)
@@ -161,7 +161,10 @@
         /// <exception cref="ArgumentNullException">
         /// The <paramref name="finder"/> parameter is <c>null</c>.
         /// </exception>
-        public static IEnumerable<T> ByTagName<T>(this IHtmlElementFinder<T> finder, string tagName)
+        /// <exception cref="ArgumentException">
+        /// The <paramref name="tagName"/> parameter is <c>null</c>, empty or only contains white-space.
+        /// </exception>
+        public static IEnumerable<T> AllByTagName<T>(this IHtmlElementFinder<T> finder, string tagName)
             where T : AnyHtmlElement
         {
             if (finder == null)
@@ -195,7 +198,7 @@
         /// <exception cref="ArgumentNullException">
         /// The <paramref name="finder"/> parameter is <c>null</c>.
         /// </exception>
-        public static IEnumerable<T> ByText<T>(this IHtmlElementFinder<T> finder, string text) where T : HtmlElement
+        public static IEnumerable<T> AllByText<T>(this IHtmlElementFinder<T> finder, string text) where T : HtmlElement
         {
             if (finder == null)
             {
@@ -226,14 +229,20 @@
         /// <exception cref="ArgumentNullException">
         /// The <paramref name="finder"/> parameter is <c>null</c>.
         /// </exception>
-        public static T FindById<T>(this IHtmlElementFinder<T> finder, string id) where T : HtmlElement
+        /// <exception cref="InvalidHtmlElementMatchException">
+        /// No elements were found.
+        /// </exception>
+        /// <exception cref="InvalidHtmlElementMatchException">
+        /// More than one element was found.
+        /// </exception>
+        public static T ById<T>(this IHtmlElementFinder<T> finder, string id) where T : HtmlElement
         {
             if (finder == null)
             {
                 throw new ArgumentNullException("finder");
             }
 
-            var matches = finder.ByAttribute("id", id);
+            var matches = finder.AllByAttribute("id", id);
 
             return matches.EnsureSingle();
         }
@@ -256,14 +265,59 @@
         /// <exception cref="ArgumentNullException">
         /// The <paramref name="finder"/> parameter is <c>null</c>.
         /// </exception>
-        public static T FindByName<T>(this IHtmlElementFinder<T> finder, string name) where T : HtmlElement
+        /// <exception cref="InvalidHtmlElementMatchException">
+        /// No elements were found.
+        /// </exception>
+        /// <exception cref="InvalidHtmlElementMatchException">
+        /// More than one element was found.
+        /// </exception>
+        public static T ByName<T>(this IHtmlElementFinder<T> finder, string name) where T : HtmlElement
         {
             if (finder == null)
             {
                 throw new ArgumentNullException("finder");
             }
 
-            var matches = finder.ByAttribute("name", name);
+            var matches = finder.AllByAttribute("name", name);
+
+            return matches.EnsureSingle();
+        }
+
+        /// <summary>
+        /// Finds the element by tag name under this node.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of element to return.
+        /// </typeparam>
+        /// <param name="finder">
+        /// The finder.
+        /// </param>
+        /// <param name="tagName">
+        /// The tag name.
+        /// </param>
+        /// <returns>
+        /// An <typeparamref name="T"/> value.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// The <paramref name="finder"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The <paramref name="tagName"/> parameter is <c>null</c>, empty or only contains white-space.
+        /// </exception>
+        /// <exception cref="InvalidHtmlElementMatchException">
+        /// No elements were found.
+        /// </exception>
+        /// <exception cref="InvalidHtmlElementMatchException">
+        /// More than one element was found.
+        /// </exception>
+        public static T ByTagName<T>(this IHtmlElementFinder<T> finder, string tagName) where T : AnyHtmlElement
+        {
+            if (finder == null)
+            {
+                throw new ArgumentNullException("finder");
+            }
+
+            var matches = finder.AllByTagName(tagName);
 
             return matches.EnsureSingle();
         }

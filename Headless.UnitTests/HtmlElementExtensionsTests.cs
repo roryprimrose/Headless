@@ -86,7 +86,7 @@
 
             var page = new HtmlPageStub(doc);
 
-            var input = page.Find<HtmlInput>().FindByName("Data");
+            var input = page.Find<HtmlInput>().ByName("Data");
             var actual = input.GetHtmlForm();
 
             actual.Should().NotBeNull();
@@ -106,7 +106,7 @@
 
             var page = new HtmlPageStub(doc);
 
-            var target = page.Find<HtmlForm>().FindByName("Test");
+            var target = page.Find<HtmlForm>().ByName("Test");
 
             var actual = target.GetHtmlForm();
 
@@ -126,7 +126,7 @@
 
             var page = new HtmlPageStub(doc);
 
-            var target = page.Find<AnyHtmlElement>().ByTagName("body").EnsureSingle();
+            var target = page.Find<AnyHtmlElement>().AllByTagName("body").EnsureSingle();
 
             Action action = () => target.GetHtmlForm();
 
