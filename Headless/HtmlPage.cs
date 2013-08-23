@@ -33,7 +33,7 @@
         }
 
         /// <inheritdoc />
-        public IHtmlElementFinder<T> Find<T>() where T : HtmlElement
+        public virtual IHtmlElementFinder<T> Find<T>() where T : HtmlElement
         {
             return new DefaultHtmlElementFinder<T>(this);
         }
@@ -66,7 +66,7 @@
         }
 
         /// <inheritdoc />
-        public IXPathNavigable Document
+        public virtual IXPathNavigable Document
         {
             [DebuggerStepThrough]
             get
@@ -90,7 +90,7 @@
         }
 
         /// <inheritdoc />
-        public IXPathNavigable Node
+        public virtual IXPathNavigable Node
         {
             [DebuggerStepThrough]
             get

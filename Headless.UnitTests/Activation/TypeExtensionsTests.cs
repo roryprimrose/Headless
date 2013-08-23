@@ -70,7 +70,7 @@
 
             var actual = target.FindBestMatchingType(node);
 
-            actual.Should().Be(typeof(HtmlTextElement));
+            actual.Should().Be(typeof(HtmlInput));
         }
 
         /// <summary>
@@ -176,7 +176,7 @@
         [TestMethod]
         public void GetSupportedTagsAttributesWithTagsAndAttributesTest()
         {
-            var actual = typeof(HtmlTextElement).GetSupportedTags();
+            var actual = typeof(HtmlInput).GetSupportedTags();
 
             actual.Any(x => x.TagName == "textarea").Should().BeTrue();
             actual.Any(x => x.TagName == "input" && x.AttributeName == "type" && x.AttributeValue == "text")

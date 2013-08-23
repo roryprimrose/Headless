@@ -1,6 +1,8 @@
 ﻿namespace Headless.IntegrationTests
 {
     using System;
+    using System.Globalization;
+    using System.Linq;
     using FluentAssertions;
     using Headless.IntegrationTests.Pages;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -29,7 +31,7 @@
                 const string MonthValue = "2013-08";
                 const string NumberValue = "-1";
                 var passwordValue = Guid.NewGuid().ToString();
-                var rangeValue = Environment.TickCount.ToString();
+                var rangeValue = Environment.TickCount.ToString(CultureInfo.InvariantCulture);
                 var searchValue = Guid.NewGuid().ToString();
                 var telValue = Guid.NewGuid().ToString();
                 var textValue = Guid.NewGuid().ToString();
@@ -105,7 +107,7 @@
                 const string MonthValue = "2013-08";
                 const string NumberValue = "-1";
                 var passwordValue = Guid.NewGuid().ToString();
-                var rangeValue = Environment.TickCount.ToString();
+                var rangeValue = Environment.TickCount.ToString(CultureInfo.InvariantCulture);
                 var searchValue = Guid.NewGuid().ToString();
                 var telValue = Guid.NewGuid().ToString();
                 var textValue = Guid.NewGuid().ToString();
@@ -161,6 +163,85 @@
                 postedPage.Url.Value.Should().Be(urlValue);
                 postedPage.Week.Value.Should().Be(WeekValue);
                 postedPage.Toggle.Checked.Should().Be(Toggle);
+            }
+        }
+
+        /// <summary>
+        ///     Runs a test for radio buttons on dynamic page.
+        /// </summary>
+        [TestMethod]
+        public void RadioButtonsOnDynamicPageTest()
+        {
+            var testValues = new[]
+            {
+                "First", "Second", "Third", "Fourth", "Fifth"
+            };
+
+            using (var browser = new Browser())
+            {
+                var page = browser.GoTo(Form.Index);
+
+                ((IPage)page).Result.TraceResults();
+
+                var radio = page.Radio as HtmlRadioButton;
+
+                radio.Should().NotBeNull();
+                radio.Values.SequenceEqual(testValues).Should().BeTrue();
+
+                ((string)page.Radio.Value).Should().BeNull();
+
+                for (var index = 0; index < testValues.Length; index++)
+                {
+                    page.Radio.Value = testValues[index];
+
+                    page = page.Submit.Click();
+
+                    ((string)page.Radio.Value).Should().Be(testValues[index]);
+                }
+
+                page.Radio.Value = null;
+
+                page = page.Submit.Click();
+
+                ((string)page.Radio.Value).Should().BeNull();
+            }
+        }
+
+        /// <summary>
+        ///     Runs a test for radio buttons on page model.
+        /// </summary>
+        [TestMethod]
+        public void RadioButtonsOnPageModelTest()
+        {
+            var testValues = new[]
+            {
+                "First", "Second", "Third", "Fourth", "Fifth"
+            };
+
+            using (var browser = new Browser())
+            {
+                var page = browser.GoTo<FormIndexPage>();
+
+                page.Result.TraceResults();
+
+                page.Radio.Values.SequenceEqual(testValues).Should().BeTrue();
+
+                page.Radio.Value.Should().BeNull();
+
+                for (var index = 0; index < testValues.Length; index++)
+                {
+                    page.Radio.Value = testValues[index];
+
+                    page = page.Submit.Click<FormIndexPage>();
+
+                    page.Radio.Value.Should().Be(testValues[index]);
+                }
+
+                page.Radio.Value = null;
+
+                page = page.Submit.Click<FormIndexPage>();
+
+                page.Radio.Value.Should().BeNull();
             }
         }
     }

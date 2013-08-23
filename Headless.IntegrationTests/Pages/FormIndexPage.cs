@@ -15,11 +15,11 @@
         /// <value>
         ///     The color.
         /// </value>
-        public HtmlTextElement Color
+        public HtmlInput Color
         {
             get
             {
-                return Find<HtmlTextElement>().FindByName("Color");
+                return Find<HtmlInput>().FindByName("Color");
             }
         }
 
@@ -29,11 +29,11 @@
         /// <value>
         ///     The date.
         /// </value>
-        public HtmlTextElement Date
+        public HtmlInput Date
         {
             get
             {
-                return Find<HtmlTextElement>().FindByName("Date");
+                return Find<HtmlInput>().FindByName("Date");
             }
         }
 
@@ -43,11 +43,11 @@
         /// <value>
         ///     The date time.
         /// </value>
-        public HtmlTextElement DateTime
+        public HtmlInput DateTime
         {
             get
             {
-                return Find<HtmlTextElement>().FindByName("DateTime");
+                return Find<HtmlInput>().FindByName("DateTime");
             }
         }
 
@@ -57,11 +57,11 @@
         /// <value>
         ///     The date time local.
         /// </value>
-        public HtmlTextElement DateTimeLocal
+        public HtmlInput DateTimeLocal
         {
             get
             {
-                return Find<HtmlTextElement>().FindByName("DateTimeLocal");
+                return Find<HtmlInput>().FindByName("DateTimeLocal");
             }
         }
 
@@ -71,11 +71,11 @@
         /// <value>
         ///     The email.
         /// </value>
-        public HtmlTextElement Email
+        public HtmlInput Email
         {
             get
             {
-                return Find<HtmlTextElement>().FindByName("Email");
+                return Find<HtmlInput>().FindByName("Email");
             }
         }
 
@@ -85,11 +85,11 @@
         /// <value>
         ///     The text.
         /// </value>
-        public HtmlTextElement Hidden
+        public HtmlInput Hidden
         {
             get
             {
-                return Find<HtmlTextElement>().FindByName("Hidden");
+                return Find<HtmlInput>().FindByName("Hidden");
             }
         }
 
@@ -110,11 +110,11 @@
         /// <value>
         ///     The month.
         /// </value>
-        public HtmlTextElement Month
+        public HtmlInput Month
         {
             get
             {
-                return Find<HtmlTextElement>().FindByName("Month");
+                return Find<HtmlInput>().FindByName("Month");
             }
         }
 
@@ -124,11 +124,11 @@
         /// <value>
         ///     The number.
         /// </value>
-        public HtmlTextElement Number
+        public HtmlInput Number
         {
             get
             {
-                return Find<HtmlTextElement>().FindByName("Number");
+                return Find<HtmlInput>().FindByName("Number");
             }
         }
 
@@ -138,11 +138,25 @@
         /// <value>
         ///     The password.
         /// </value>
-        public HtmlTextElement Password
+        public HtmlInput Password
         {
             get
             {
-                return Find<HtmlTextElement>().FindByName("Password");
+                return Find<HtmlInput>().FindByName("Password");
+            }
+        }
+
+        /// <summary>
+        ///     Gets the radio.
+        /// </summary>
+        /// <value>
+        ///     The radio.
+        /// </value>
+        public HtmlRadioButton Radio
+        {
+            get
+            {
+                return Find<HtmlRadioButton>().FindByName("Radio");
             }
         }
 
@@ -152,11 +166,11 @@
         /// <value>
         ///     The range.
         /// </value>
-        public HtmlTextElement Range
+        public HtmlInput Range
         {
             get
             {
-                return Find<HtmlTextElement>().FindByName("Range");
+                return Find<HtmlInput>().FindByName("Range");
             }
         }
 
@@ -166,11 +180,11 @@
         /// <value>
         ///     The search.
         /// </value>
-        public HtmlTextElement Search
+        public HtmlInput Search
         {
             get
             {
-                return Find<HtmlTextElement>().FindByName("Search");
+                return Find<HtmlInput>().FindByName("Search");
             }
         }
 
@@ -194,11 +208,11 @@
         /// <value>
         ///     The tel.
         /// </value>
-        public HtmlTextElement Tel
+        public HtmlInput Tel
         {
             get
             {
-                return Find<HtmlTextElement>().FindByName("Tel");
+                return Find<HtmlInput>().FindByName("Tel");
             }
         }
 
@@ -208,11 +222,11 @@
         /// <value>
         ///     The text.
         /// </value>
-        public HtmlTextElement Text
+        public HtmlInput Text
         {
             get
             {
-                return Find<HtmlTextElement>().FindByName("Text");
+                return Find<HtmlInput>().FindByName("Text");
             }
         }
 
@@ -222,11 +236,11 @@
         /// <value>
         ///     The text block.
         /// </value>
-        public HtmlTextElement TextBlock
+        public HtmlInput TextBlock
         {
             get
             {
-                return Find<HtmlTextElement>().FindByName("TextBlock");
+                return Find<HtmlInput>().FindByName("TextBlock");
             }
         }
 
@@ -236,11 +250,11 @@
         /// <value>
         ///     The time.
         /// </value>
-        public HtmlTextElement Time
+        public HtmlInput Time
         {
             get
             {
-                return Find<HtmlTextElement>().FindByName("Time");
+                return Find<HtmlInput>().FindByName("Time");
             }
         }
 
@@ -264,11 +278,11 @@
         /// <value>
         ///     The URL.
         /// </value>
-        public HtmlTextElement Url
+        public HtmlInput Url
         {
             get
             {
-                return Find<HtmlTextElement>().FindByName("Url");
+                return Find<HtmlInput>().FindByName("Url");
             }
         }
 
@@ -278,11 +292,11 @@
         /// <value>
         ///     The week.
         /// </value>
-        public HtmlTextElement Week
+        public HtmlInput Week
         {
             get
             {
-                return Find<HtmlTextElement>().FindByName("Week");
+                return Find<HtmlInput>().FindByName("Week");
             }
         }
     }

@@ -116,7 +116,10 @@
     <Compile Include="HtmlElementExtensions.cs">
       <DependentUpon>Extensions.cs</DependentUpon>
     </Compile>
-    <Compile Include="HtmlTextElement.cs">
+    <Compile Include="HtmlInput.cs">
+      <DependentUpon>IHtmlElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HtmlRadioButton.cs">
       <DependentUpon>IHtmlElement.cs</DependentUpon>
     </Compile>
     <Compile Include="HttpOutcome.cs" />

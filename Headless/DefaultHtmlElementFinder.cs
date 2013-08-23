@@ -71,18 +71,19 @@
             _node = element.Node;
         }
 
-        /// <summary>
-        /// Builds the tag name xpath selector.
-        /// </summary>
-        /// <param name="elementType">
-        /// Type of the element.
-        /// </param>
-        /// <returns>
-        /// A <see cref="string"/> value.
-        /// </returns>
-        public string BuildElementQuery(Type elementType)
+        /// <inheritdoc />
+        public virtual string BuildElementQuery()
         {
+            var elementType = typeof(T);
             var supportedTags = elementType.GetSupportedTags().ToList();
+
+            if (supportedTags.Any(x => x.TagName == "*" && x.HasAttributeFilter == false))
+            {
+                // There is a wildcard tag name that does not filter by attributes
+                // This filter alone will return all HTML elements within the current scope
+                // There is no need to execute overly complex XPath queries based on all the available supported tags
+                return "//*";
+            }
 
             if (supportedTags.Count == 1)
             {
@@ -108,22 +109,38 @@
             return selector;
         }
 
-        /// <summary>
-        /// Builds the element results.
-        /// </summary>
-        /// <param name="query">
-        /// The query.
-        /// </param>
-        /// <returns>
-        /// An <see cref="IEnumerable{T}"/> value.
-        /// </returns>
-        public IEnumerable<T> Execute(string query)
+        /// <inheritdoc />
+        public virtual IEnumerable<T> Execute(string query)
         {
             var navigator = _node.GetNavigator();
 
             var nodes = navigator.Select(query);
 
-            return from IXPathNavigable node in nodes select _page.ElementFactory.Create<T>(_page, node);
+            var htmlElements = (from IXPathNavigable node in nodes select _page.ElementFactory.Create<T>(_page, node)).ToList();
+
+            var radioButtonNames = new List<string>();
+
+            // Radio buttons are expressed as multiple HTML tags, but need to be returned as a single HtmlRadioButton instance
+            // The factory above has already created multiple instances based on the multiple nodes found
+            // so we now need to find any radio buttons and filter out the duplicates
+            // This is a little inefficient because there is the overhead of creating and initializing the radio button 
+            // multiple times however this code is much cleaner
+            foreach (var element in htmlElements)
+            {
+                var radioButton = element as HtmlRadioButton;
+
+                if (radioButton == null)
+                {
+                    // Not a radio button so no filtering is required
+                    yield return element;
+                }
+                else if (radioButtonNames.Contains(radioButton.Name) == false)
+                {
+                    radioButtonNames.Add(radioButton.Name);
+
+                    yield return element;
+                }
+            }
         }
 
         /// <summary>

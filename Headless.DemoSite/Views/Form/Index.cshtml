@@ -13,57 +13,57 @@
         <ol>
             <li>
                 @Html.LabelFor(m => m.Color)
-                @Html.TextBoxFor(m => m.Color, new { @type = "color"})
+                @Html.TextBoxFor(m => m.Color, new { @type = "color" })
                 @Html.ValidationMessageFor(m => m.Color)
             </li>
             <li>
                 @Html.LabelFor(m => m.Date)
-                @Html.TextBoxFor(m => m.Date, new { @type = "date"})
+                @Html.TextBoxFor(m => m.Date, new { @type = "date" })
                 @Html.ValidationMessageFor(m => m.Date)
             </li>
             <li>
                 @Html.LabelFor(m => m.DateTime)
-                @Html.TextBoxFor(m => m.DateTime, new { @type = "datetime"})
+                @Html.TextBoxFor(m => m.DateTime, new { @type = "datetime" })
                 @Html.ValidationMessageFor(m => m.DateTime)
             </li>
             <li>
                 @Html.LabelFor(m => m.DateTimeLocal)
-                @Html.TextBoxFor(m => m.DateTimeLocal, new { @type = "datetime-local"})
+                @Html.TextBoxFor(m => m.DateTimeLocal, new { @type = "datetime-local" })
                 @Html.ValidationMessageFor(m => m.DateTimeLocal)
             </li>
             <li>
                 @Html.LabelFor(m => m.Email)
-                @Html.TextBoxFor(m => m.Email, new { @type = "email"})
+                @Html.TextBoxFor(m => m.Email, new { @type = "email" })
                 @Html.ValidationMessageFor(m => m.Email)
             </li>
             <li>
                 @Html.LabelFor(m => m.Month)
-                @Html.TextBoxFor(m => m.Month, new { @type = "month"})
+                @Html.TextBoxFor(m => m.Month, new { @type = "month" })
                 @Html.ValidationMessageFor(m => m.Month)
             </li>
             <li>
                 @Html.LabelFor(m => m.Number)
-                @Html.TextBoxFor(m => m.Number, new { @type = "number"})
+                @Html.TextBoxFor(m => m.Number, new { @type = "number" })
                 @Html.ValidationMessageFor(m => m.Number)
             </li>
             <li>
                 @Html.LabelFor(m => m.Password)
-                @Html.TextBoxFor(m => m.Password, new { @type = "password"})
+                @Html.TextBoxFor(m => m.Password, new { @type = "password" })
                 @Html.ValidationMessageFor(m => m.Password)
             </li>
             <li>
                 @Html.LabelFor(m => m.Range)
-                @Html.TextBoxFor(m => m.Range, new { @type = "range"})
+                @Html.TextBoxFor(m => m.Range, new { @type = "range" })
                 @Html.ValidationMessageFor(m => m.Range)
             </li>
             <li>
                 @Html.LabelFor(m => m.Search)
-                @Html.TextBoxFor(m => m.Search, new { @type = "search"})
+                @Html.TextBoxFor(m => m.Search, new { @type = "search" })
                 @Html.ValidationMessageFor(m => m.Search)
             </li>
             <li>
                 @Html.LabelFor(m => m.Tel)
-                @Html.TextBoxFor(m => m.Tel, new { @type = "tel"})
+                @Html.TextBoxFor(m => m.Tel, new { @type = "tel" })
                 @Html.ValidationMessageFor(m => m.Tel)
             </li>
             <li>
@@ -78,17 +78,17 @@
             </li>
             <li>
                 @Html.LabelFor(m => m.Time)
-                @Html.TextBoxFor(m => m.Time, new { @type = "time"})
+                @Html.TextBoxFor(m => m.Time, new { @type = "time" })
                 @Html.ValidationMessageFor(m => m.Time)
             </li>
             <li>
                 @Html.LabelFor(m => m.Url)
-                @Html.TextBoxFor(m => m.Url, new { @type = "url"})
+                @Html.TextBoxFor(m => m.Url, new { @type = "url" })
                 @Html.ValidationMessageFor(m => m.Url)
             </li>
             <li>
                 @Html.LabelFor(m => m.Week)
-                @Html.TextBoxFor(m => m.Week, new { @type = "week"})
+                @Html.TextBoxFor(m => m.Week, new { @type = "week" })
                 @Html.ValidationMessageFor(m => m.Week)
             </li>
             <li>
@@ -96,6 +96,14 @@
                 @Html.CheckBoxFor(m => m.Toggle)
                 @Html.ValidationMessageFor(m => m.Toggle)
             </li>
+            @foreach (var value in Model.RadioValues)
+            {
+                <li>
+                    @Html.LabelFor(m => m.Radio, value.ToString())
+                    @Html.RadioButtonFor(m => m.Radio, value)
+                    @Html.ValidationMessageFor(m => m.Radio)
+                </li>   
+            }
         </ol>
         <input type="submit" value="Submit" name="Submit" />
     </fieldset>

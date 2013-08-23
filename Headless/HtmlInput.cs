@@ -5,8 +5,8 @@
     using Headless.Activation;
 
     /// <summary>
-    ///     The <see cref="HtmlTextElement" />
-    ///     is used to represent input type=text and textarea elements.
+    ///     The <see cref="HtmlInput" />
+    ///     is used to represent text related input elements and textarea elements.
     ///     It is also the default fallback type for input elements.
     /// </summary>
     [SupportedTag("input", "type", "color")]
@@ -26,10 +26,10 @@
     [SupportedTag("input", "type", "url")]
     [SupportedTag("input", "type", "week")]
     [SupportedTag("textarea")]
-    public class HtmlTextElement : HtmlFormElement
+    public class HtmlInput : HtmlFormElement
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="HtmlTextElement"/> class.
+        /// Initializes a new instance of the <see cref="HtmlInput"/> class.
         /// </summary>
         /// <param name="page">
         /// The owning page.
@@ -37,7 +37,7 @@
         /// <param name="node">
         /// The node.
         /// </param>
-        public HtmlTextElement(IHtmlPage page, IXPathNavigable node) : base(page, node)
+        public HtmlInput(IHtmlPage page, IXPathNavigable node) : base(page, node)
         {
         }
 

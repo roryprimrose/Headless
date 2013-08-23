@@ -33,8 +33,7 @@
                 throw new ArgumentNullException("finder");
             }
 
-            var tagSelector = finder.BuildElementQuery(typeof(T));
-            var query = tagSelector;
+            var query = finder.BuildElementQuery();
 
             return finder.Execute(query);
         }
@@ -70,7 +69,7 @@
                 throw new ArgumentNullException("finder");
             }
 
-            var tagSelector = finder.BuildElementQuery(typeof(T));
+            var tagSelector = finder.BuildElementQuery();
             var query = tagSelector + "[@" + attributeName + "='" + attributeValue + "']";
 
             return finder.Execute(query);
@@ -158,7 +157,7 @@
                 throw new ArgumentNullException("finder");
             }
 
-            var tagSelector = finder.BuildElementQuery(typeof(T));
+            var tagSelector = finder.BuildElementQuery();
             var query = tagSelector + "[./text() = '" + text + "']";
 
             return finder.Execute(query);

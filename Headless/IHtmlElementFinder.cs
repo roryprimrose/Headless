@@ -1,6 +1,5 @@
 ﻿namespace Headless
 {
-    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -14,15 +13,12 @@
     public interface IHtmlElementFinder<out T> where T : HtmlElement
     {
         /// <summary>
-        /// Builds the tag name xpath selector.
+        ///     Builds the tag name xpath selector.
         /// </summary>
-        /// <param name="elementType">
-        /// Type of the element.
-        /// </param>
         /// <returns>
-        /// A <see cref="string"/> value.
+        ///     A <see cref="string" /> value.
         /// </returns>
-        string BuildElementQuery(Type elementType);
+        string BuildElementQuery();
 
         /// <summary>
         /// Builds the element results.

@@ -41,6 +41,24 @@
         }
 
         /// <summary>
+        /// Determines whether the specified navigable is checked.
+        /// </summary>
+        /// <param name="navigable">
+        /// The navigable.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified navigable is checked; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsChecked(this IXPathNavigable navigable)
+        {
+            var navigator = navigable.GetNavigator();
+
+            var checkedFound = navigator.MoveToAttribute("checked", string.Empty);
+
+            return checkedFound;
+        }
+
+        /// <summary>
         /// Sets the attribute value against the specified navigable instance.
         /// </summary>
         /// <param name="navigable">
@@ -94,6 +112,39 @@
             {
                 // Does not exist, create the new attribute
                 navigator.CreateAttribute(prefix, localName, namespaceUri, value);
+            }
+        }
+
+        /// <summary>
+        /// Sets the checked state of the specified navigable instance.
+        /// </summary>
+        /// <param name="navigable">
+        /// The navigable.
+        /// </param>
+        /// <param name="value">
+        /// if set to <c>true</c> [value].
+        /// </param>
+        public static void SetChecked(this IXPathNavigable navigable, bool value)
+        {
+            var navigator = navigable.GetNavigator();
+
+            var checkedFound = navigator.MoveToAttribute("checked", string.Empty);
+
+            if (checkedFound == value)
+            {
+                // No change is required
+                return;
+            }
+
+            if (value)
+            {
+                // Set the attribute
+                navigator.SetAttribute(string.Empty, "checked", string.Empty, "checked");
+            }
+            else
+            {
+                // Remove the checked attribute if it exists
+                navigator.DeleteSelf();
             }
         }
     }

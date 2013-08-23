@@ -30,35 +30,12 @@
         {
             get
             {
-                var navigator = Node.GetNavigator();
-
-                var checkedFound = navigator.MoveToAttribute("checked", string.Empty);
-
-                return checkedFound;
+                return Node.IsChecked();
             }
 
             set
             {
-                var navigator = Node.GetNavigator();
-
-                var checkedFound = navigator.MoveToAttribute("checked", string.Empty);
-
-                if (checkedFound == value)
-                {
-                    // No change is required
-                    return;
-                }
-
-                if (value)
-                {
-                    // Set the attribute
-                    navigator.SetAttribute(string.Empty, "checked", string.Empty, "checked");
-                }
-                else
-                {
-                    // Remove the checked attribute if it exists
-                    navigator.DeleteSelf();
-                }
+                Node.SetChecked(value);
             }
         }
     }

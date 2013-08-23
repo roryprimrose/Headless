@@ -33,7 +33,7 @@
             var actual = target.Create<HtmlElement>(page, node);
 
             actual.Should().NotBeNull();
-            actual.Should().BeOfType<HtmlTextElement>();
+            actual.Should().BeOfType<HtmlInput>();
         }
 
         /// <summary>
@@ -52,7 +52,7 @@
 
             var target = new DefaultHtmlElementFactory();
 
-            var actual = target.Create<HtmlTextElement>(page, node);
+            var actual = target.Create<HtmlInput>(page, node);
 
             actual.Should().NotBeNull();
         }

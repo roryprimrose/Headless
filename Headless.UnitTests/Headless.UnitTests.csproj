@@ -78,6 +78,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BrowserExtensionsTests.cs" />
     <Compile Include="BrowserTests.cs" />
+    <Compile Include="DefaultHtmlElementFinderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Headless\Headless.csproj">

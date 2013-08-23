@@ -1,6 +1,9 @@
 ﻿namespace Headless.DemoSite.Models
 {
+    using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Linq;
 
     /// <summary>
     ///     The <see cref="FormData" />
@@ -115,6 +118,34 @@
         {
             get;
             set;
+        }
+
+        /// <summary>
+        ///     Gets or sets the radio.
+        /// </summary>
+        /// <value>
+        ///     The radio.
+        /// </value>
+        public Selection? Radio
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        ///     Gets the radio values.
+        /// </summary>
+        /// <value>
+        ///     The radio values.
+        /// </value>
+        public IEnumerable<Selection> RadioValues
+        {
+            get
+            {
+                var values = Enum.GetValues(typeof(Selection));
+
+                return values.Cast<Selection>();
+            }
         }
 
         /// <summary>
