@@ -71,6 +71,7 @@
     <Compile Include="Activation\TypeExtensionsTests.cs" />
     <Compile Include="Activation\SupportedTagAttributeTests.cs" />
     <Compile Include="Activation\SupportedTagAttributeComparerTests.cs" />
+    <Compile Include="HtmlPageStub.cs" />
     <Compile Include="PageWrapper.cs" />
     <Compile Include="InvalidHtmlElementMatchExceptionTests.cs" />
     <Compile Include="HtmlElementNotFoundExceptionTests.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="BrowserExtensionsTests.cs" />
     <Compile Include="BrowserTests.cs" />
     <Compile Include="DefaultHtmlElementFinderTests.cs" />
+    <Compile Include="HtmlElementExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Headless\Headless.csproj">

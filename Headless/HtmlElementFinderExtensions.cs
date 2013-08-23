@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Headless.Properties;
 
     /// <summary>
     ///     The <see cref="HtmlElementFinderExtensions" />
@@ -69,6 +70,11 @@
                 throw new ArgumentNullException("finder");
             }
 
+            if (string.IsNullOrWhiteSpace(attributeName))
+            {
+                throw new ArgumentException(Resources.Guard_NoValueProvided, "attributeName");
+            }
+
             var tagSelector = finder.BuildElementQuery();
             var query = tagSelector + "[@" + attributeName + "='" + attributeValue + "']";
 
@@ -129,7 +135,46 @@
                 throw new ArgumentNullException("finder");
             }
 
+            if (predicate == null)
+            {
+                throw new ArgumentNullException("predicate");
+            }
+
             return finder.All().Where(predicate);
+        }
+
+        /// <summary>
+        /// Finds the elements by their tag name under this node.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of element to return.
+        /// </typeparam>
+        /// <param name="finder">
+        /// The finder.
+        /// </param>
+        /// <param name="tagName">
+        /// The tag name.
+        /// </param>
+        /// <returns>
+        /// An <see cref="IEnumerable{T}"/> value.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// The <paramref name="finder"/> parameter is <c>null</c>.
+        /// </exception>
+        public static IEnumerable<T> ByTagName<T>(this IHtmlElementFinder<T> finder, string tagName)
+            where T : AnyHtmlElement
+        {
+            if (finder == null)
+            {
+                throw new ArgumentNullException("finder");
+            }
+
+            if (string.IsNullOrWhiteSpace(tagName))
+            {
+                throw new ArgumentException(Resources.Guard_NoValueProvided, "tagName");
+            }
+
+            return finder.Execute("//" + tagName);
         }
 
         /// <summary>

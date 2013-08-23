@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Xml.XPath;
     using Headless.Activation;
@@ -16,7 +17,7 @@
         /// <summary>
         ///     The related nodes.
         /// </summary>
-        private readonly IList<IXPathNavigable> _relatedNodes;
+        private readonly IReadOnlyCollection<IXPathNavigable> _relatedNodes;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HtmlRadioButton"/> class.
@@ -44,7 +45,7 @@
         /// <returns>
         /// The <see cref="IList{T}"/>.
         /// </returns>
-        private IList<IXPathNavigable> FindRelatedNodes(IHtmlPage page, IXPathNavigable node)
+        private IReadOnlyCollection<IXPathNavigable> FindRelatedNodes(IHtmlPage page, IXPathNavigable node)
         {
             var form = node.GetHtmlForm(page);
 
@@ -55,26 +56,22 @@
 
             var matchingNodes = navigator.Select(query);
 
-            return new List<IXPathNavigable>(matchingNodes.OfType<IXPathNavigable>());
+            var results = matchingNodes.OfType<IXPathNavigable>().ToList();
+
+            return new ReadOnlyCollection<IXPathNavigable>(results);
         }
 
         /// <summary>
-        /// Gets the values available by the radio button set.
+        ///     Gets the nodes.
         /// </summary>
         /// <value>
-        /// The values available by the radio button set.
+        ///     The nodes.
         /// </value>
-        public IEnumerable<string> Values
+        protected IReadOnlyCollection<IXPathNavigable> Nodes
         {
             get
             {
-                for (var index = 0; index < _relatedNodes.Count; index++)
-                {
-                    var node = _relatedNodes[index];
-                    var navigator = node.GetNavigator();
-
-                    yield return navigator.GetAttribute("value", string.Empty);
-                }
+                return _relatedNodes;
             }
         }
 
@@ -83,9 +80,8 @@
         {
             get
             {
-                for (var index = 0; index < _relatedNodes.Count; index++)
+                foreach (var node in _relatedNodes)
                 {
-                    var node = _relatedNodes[index];
                     var navigator = node.GetNavigator();
 
                     if (navigator.IsChecked())
@@ -99,9 +95,8 @@
 
             set
             {
-                for (var index = 0; index < _relatedNodes.Count; index++)
+                foreach (var node in _relatedNodes)
                 {
-                    var node = _relatedNodes[index];
                     var navigator = node.GetNavigator();
 
                     if (value == null)
@@ -121,6 +116,23 @@
                     {
                         navigator.SetChecked(false);
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Gets the values available by the radio button set.
+        /// </summary>
+        /// <value>
+        ///     The values available by the radio button set.
+        /// </value>
+        public IEnumerable<string> Values
+        {
+            get
+            {
+                foreach (var node in _relatedNodes)
+                {
+                    yield return node.GetNavigator().GetAttribute("value", string.Empty);
                 }
             }
         }

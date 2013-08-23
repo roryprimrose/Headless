@@ -4,9 +4,7 @@
     using System.Linq;
     using System.Xml;
     using FluentAssertions;
-    using Headless.Activation;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using NSubstitute;
 
     /// <summary>
     ///     The <see cref="DefaultHtmlElementFinderTests" />
@@ -25,7 +23,7 @@
 
             doc.LoadXml("<form name='Test' />");
 
-            var page = Substitute.For<IHtmlPage>();
+            var page = new HtmlPageStub(doc);
 
             var element = new HtmlForm(page, doc.DocumentElement);
 
@@ -44,10 +42,7 @@
 
             doc.LoadXml("<html><head /><body><form name='Test' /></body></html>");
 
-            var page = Substitute.For<HtmlPage>();
-
-            page.Document.Returns(doc);
-            page.Node.Returns(doc.DocumentElement);
+            var page = new HtmlPageStub(doc);
 
             Action action = () => new DefaultHtmlElementFinder<HtmlForm>(page);
 
@@ -65,11 +60,7 @@
             doc.LoadXml(
                 "<html><head /><body><form name='Test'><input type='text' name='Data' /><input type='checkbox' name='IsSet' /></form></body></html>");
 
-            var page = Substitute.For<HtmlPage>();
-
-            page.Document.Returns(doc);
-            page.Node.Returns(doc.DocumentElement);
-            page.ElementFactory.Returns(new DefaultHtmlElementFactory());
+            var page = new HtmlPageStub(doc);
 
             var target = new DefaultHtmlElementFinder<HtmlElement>(page);
 
@@ -96,11 +87,7 @@
             doc.LoadXml(
                 "<html><head /><body><form name='Test'><input type='text' name='Data' /><input type='checkbox' name='IsSet' /></form></body></html>");
 
-            var page = Substitute.For<HtmlPage>();
-
-            page.Document.Returns(doc);
-            page.Node.Returns(doc.DocumentElement);
-            page.ElementFactory.Returns(new DefaultHtmlElementFactory());
+            var page = new HtmlPageStub(doc);
 
             var target = new DefaultHtmlElementFinder<HtmlFormElement>(page);
 
@@ -125,11 +112,7 @@
             doc.LoadXml(
                 "<html><head /><body><form name='Test'><input type='radio' name='Data' /><input type='radio' name='Data' /></form></body></html>");
 
-            var page = Substitute.For<HtmlPage>();
-
-            page.Document.Returns(doc);
-            page.Node.Returns(doc.DocumentElement);
-            page.ElementFactory.Returns(new DefaultHtmlElementFactory());
+            var page = new HtmlPageStub(doc);
 
             var target = new DefaultHtmlElementFinder<HtmlRadioButton>(page);
 
@@ -153,11 +136,7 @@
 
             doc.LoadXml("<html><head /><body><form name='Test' /></body></html>");
 
-            var page = Substitute.For<HtmlPage>();
-
-            page.Document.Returns(doc);
-            page.Node.Returns(doc.DocumentElement);
-            page.ElementFactory.Returns(new DefaultHtmlElementFactory());
+            var page = new HtmlPageStub(doc);
 
             var target = new DefaultHtmlElementFinder<HtmlForm>(page);
 

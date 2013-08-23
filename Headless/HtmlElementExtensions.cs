@@ -153,6 +153,11 @@
                 throw new ArgumentNullException("element");
             }
 
+            if (string.IsNullOrWhiteSpace(cssClass))
+            {
+                throw new ArgumentException(Resources.Guard_NoValueProvided, "cssClass");
+            }
+
             var css = element.CssClass;
 
             if (string.IsNullOrWhiteSpace(css))

@@ -70,6 +70,15 @@ namespace Headless.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No value has been provided..
+        /// </summary>
+        internal static string Guard_NoValueProvided {
+            get {
+                return ResourceManager.GetString("Guard_NoValueProvided", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No form element was found for the requested element..
         /// </summary>
         internal static string HtmlElement_GetHtmlForm_FormNotFound {

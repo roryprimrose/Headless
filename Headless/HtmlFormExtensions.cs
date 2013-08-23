@@ -32,7 +32,9 @@
         /// </exception>
         [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", 
             Justification = "The types here are logically correct for the purpose of the method.")]
-        public static IEnumerable<KeyValuePair<string, string>> BuildPostParameters(this HtmlForm form, HtmlButton sourceButton)
+        public static IEnumerable<KeyValuePair<string, string>> BuildPostParameters(
+            this HtmlForm form, 
+            HtmlButton sourceButton)
         {
             if (form == null)
             {
@@ -48,10 +50,22 @@
             var availableElements = form.Find<HtmlFormElement>().All().Where(x => x is HtmlButton == false);
 
             // strip out checkboxes that are not checked
-            var withoutUncheckedCheckboxes =
-                availableElements.Where(x => x is HtmlCheckBox == false || ((HtmlCheckBox)x).Checked);
+            var withoutUncheckedCheckboxes = availableElements.Where(
+                delegate(HtmlFormElement x)
+                {
+                    var checkBox = x as HtmlCheckBox;
 
-            var parameters = withoutUncheckedCheckboxes.Select(element => new KeyValuePair<string, string>(element.Name, element.Value)).ToList();
+                    if (checkBox == null)
+                    {
+                        return true;
+                    }
+
+                    return checkBox.Checked;
+                });
+
+            var parameters =
+                withoutUncheckedCheckboxes.Select(
+                    element => new KeyValuePair<string, string>(element.Name, element.Value)).ToList();
 
             if (string.IsNullOrWhiteSpace(sourceButton.Name) == false)
             {

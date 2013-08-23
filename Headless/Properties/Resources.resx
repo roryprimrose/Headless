@@ -139,4 +139,7 @@
   <data name="XPathNavigator_EditNotAllowed" xml:space="preserve">
     <value>Unable to edit XML document.</value>
   </data>
+  <data name="Guard_NoValueProvided" xml:space="preserve">
+    <value>No value has been provided.</value>
+  </data>
 </root>
