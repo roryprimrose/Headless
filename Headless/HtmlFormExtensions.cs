@@ -22,7 +22,7 @@
         /// The source button.
         /// </param>
         /// <returns>
-        /// A <see cref="IDictionary{TKey, TValue}"/> value.
+        /// A <see cref="IEnumerable{T}"/> value.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
         /// The <paramref name="form"/> parameter is <c>null</c>.
@@ -32,7 +32,7 @@
         /// </exception>
         [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", 
             Justification = "The types here are logically correct for the purpose of the method.")]
-        public static IEnumerable<KeyValuePair<string, string>> BuildPostParameters(
+        public static IEnumerable<PostEntry> BuildPostParameters(
             this HtmlForm form, 
             HtmlButton sourceButton)
         {
@@ -47,33 +47,17 @@
             }
 
             // Find all the form elements that are not buttons
-            var availableElements = form.Find<HtmlFormElement>().All().Where(x => x is HtmlButton == false);
-
-            // strip out checkboxes that are not checked
-            var withoutUncheckedCheckboxes = availableElements.Where(
-                delegate(HtmlFormElement x)
-                {
-                    var checkBox = x as HtmlCheckBox;
-
-                    if (checkBox == null)
-                    {
-                        return true;
-                    }
-
-                    return checkBox.Checked;
-                });
-
-            var parameters =
-                withoutUncheckedCheckboxes.Select(
-                    element => new KeyValuePair<string, string>(element.Name, element.Value)).ToList();
+            var availableElements = form.Find<HtmlFormElement>().All().Where(x => x is HtmlButton == false).ToList();
 
             if (string.IsNullOrWhiteSpace(sourceButton.Name) == false)
             {
                 // The source button can be identified to the server so it must be added to the post data
-                parameters.Add(new KeyValuePair<string, string>(sourceButton.Name, sourceButton.Value));
+                availableElements.Add(sourceButton);
             }
 
-            return parameters;
+            var postData = availableElements.SelectMany(x => x.BuildPostData());
+
+            return postData;
         }
 
         /// <summary>

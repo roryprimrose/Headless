@@ -33,6 +33,26 @@
             _relatedNodes = FindRelatedNodes(page, node);
         }
 
+        /// <inheritdoc />
+        protected internal override IEnumerable<PostEntry> BuildPostData()
+        {
+            foreach (var node in _relatedNodes)
+            {
+                var navigator = node.GetNavigator();
+
+                if (navigator.IsChecked() == false)
+                {
+                    continue;
+                }
+
+                var value = navigator.GetAttribute("value", string.Empty);
+
+                yield return new PostEntry(Name, value);
+
+                yield break;
+            }
+        }
+
         /// <summary>
         /// Finds the related nodes.
         /// </summary>
@@ -59,20 +79,6 @@
             var results = matchingNodes.OfType<IXPathNavigable>().ToList();
 
             return new ReadOnlyCollection<IXPathNavigable>(results);
-        }
-
-        /// <summary>
-        ///     Gets the nodes.
-        /// </summary>
-        /// <value>
-        ///     The nodes.
-        /// </value>
-        protected IReadOnlyCollection<IXPathNavigable> Nodes
-        {
-            get
-            {
-                return _relatedNodes;
-            }
         }
 
         /// <inheritdoc />
@@ -134,6 +140,20 @@
                 {
                     yield return node.GetNavigator().GetAttribute("value", string.Empty);
                 }
+            }
+        }
+
+        /// <summary>
+        ///     Gets the nodes.
+        /// </summary>
+        /// <value>
+        ///     The nodes.
+        /// </value>
+        protected IReadOnlyCollection<IXPathNavigable> Nodes
+        {
+            get
+            {
+                return _relatedNodes;
             }
         }
     }

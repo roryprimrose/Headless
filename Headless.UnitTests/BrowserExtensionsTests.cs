@@ -127,7 +127,7 @@
         {
             var location = new Uri("http://www.somwhere.com");
             var expected = new PageWrapper();
-            IDictionary<string, string> parameters = new Dictionary<string, string>();
+            IList<PostEntry> parameters = new List<PostEntry>();
 
             var target = Substitute.For<IBrowser>();
 
@@ -147,7 +147,7 @@
         [TestMethod]
         public void PostToStaticNavigatesToPageLocationTest()
         {
-            IDictionary<string, string> parameters = new Dictionary<string, string>();
+            IList<PostEntry> parameters = new List<PostEntry>();
             var expected = new PageWrapper();
 
             var target = Substitute.For<IBrowser>();
@@ -168,7 +168,7 @@
         [TestMethod]
         public void PostToStaticWithStatusNavigatesToPageLocationTest()
         {
-            IDictionary<string, string> parameters = new Dictionary<string, string>();
+            IList<PostEntry> parameters = new List<PostEntry>();
             var expected = new PageWrapper();
 
             var target = Substitute.For<IBrowser>();
@@ -189,7 +189,7 @@
         [TestMethod]
         public void PostToThrowsExceptionWithNullBrowserTest()
         {
-            IDictionary<string, string> parameters = new Dictionary<string, string>();
+            IList<PostEntry> parameters = new List<PostEntry>();
             IBrowser target = null;
 
             var location = new Uri("https://google.com");
@@ -205,7 +205,7 @@
         [TestMethod]
         public void PostToThrowsExceptionWithNullLocationTest()
         {
-            IDictionary<string, string> parameters = new Dictionary<string, string>();
+            IList<PostEntry> parameters = new List<PostEntry>();
 
             var target = Substitute.For<IBrowser>();
 
@@ -220,7 +220,7 @@
         [TestMethod]
         public void PostToThrowsExceptionWithNullPageFactoryTest()
         {
-            IDictionary<string, string> parameters = new Dictionary<string, string>();
+            IList<PostEntry> parameters = new List<PostEntry>();
             var location = new Uri("https://google.com");
 
             var target = Substitute.For<IBrowser>();

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using Headless.Activation;
@@ -251,7 +252,7 @@
         /// <exception cref="System.ArgumentNullException">
         /// The <paramref name="location"/> parameter is <c>null</c>.
         /// </exception>
-        public static dynamic PostTo(this IBrowser browser, IEnumerable<KeyValuePair<string, string>> parameters, Uri location)
+        public static dynamic PostTo(this IBrowser browser, IEnumerable<PostEntry> parameters, Uri location)
         {
             return browser.PostTo(parameters, location, HttpStatusCode.OK);
         }
@@ -285,7 +286,7 @@
         /// </exception>
         public static dynamic PostTo(
             this IBrowser browser, 
-            IEnumerable<KeyValuePair<string, string>> parameters, 
+            IEnumerable<PostEntry> parameters, 
             Uri location, 
             HttpStatusCode expectedStatusCode)
         {
@@ -317,7 +318,7 @@
         /// <exception cref="System.ArgumentNullException">
         /// The <paramref name="parameters"/> parameter is <c>null</c>.
         /// </exception>
-        public static T PostTo<T>(this IBrowser browser, IEnumerable<KeyValuePair<string, string>> parameters) where T : IPage, new()
+        public static T PostTo<T>(this IBrowser browser, IEnumerable<PostEntry> parameters) where T : IPage, new()
         {
             var page = new T();
 
@@ -351,7 +352,7 @@
         /// <exception cref="System.ArgumentNullException">
         /// The <paramref name="location"/> parameter is <c>null</c>.
         /// </exception>
-        public static T PostTo<T>(this IBrowser browser, IEnumerable<KeyValuePair<string, string>> parameters, Uri location)
+        public static T PostTo<T>(this IBrowser browser, IEnumerable<PostEntry> parameters, Uri location)
             where T : IPage, new()
         {
             return browser.PostTo<T>(parameters, location, HttpStatusCode.OK);
@@ -383,7 +384,7 @@
         /// </exception>
         public static T PostTo<T>(
             this IBrowser browser, 
-            IEnumerable<KeyValuePair<string, string>> parameters, 
+            IEnumerable<PostEntry> parameters, 
             HttpStatusCode expectedStatusCode) where T : IPage, new()
         {
             var page = new T();
@@ -423,7 +424,7 @@
         /// </exception>
         public static T PostTo<T>(
             this IBrowser browser, 
-            IEnumerable<KeyValuePair<string, string>> parameters, 
+            IEnumerable<PostEntry> parameters, 
             Uri location, 
             HttpStatusCode expectedStatusCode) where T : IPage, new()
         {
@@ -467,7 +468,7 @@
         /// </exception>
         public static T PostTo<T>(
             this IBrowser browser, 
-            IEnumerable<KeyValuePair<string, string>> parameters, 
+            IEnumerable<PostEntry> parameters, 
             Uri location, 
             HttpStatusCode expectedStatusCode, 
             IPageFactory pageFactory) where T : IPage, new()
@@ -492,7 +493,9 @@
                 throw new ArgumentNullException("pageFactory");
             }
 
-            using (var formData = new FormUrlEncodedContent(parameters))
+            var pairs = parameters.Select(x => new KeyValuePair<string, string>(x.Name, x.Value));
+
+            using (var formData = new FormUrlEncodedContent(pairs))
             {
                 using (var request = new HttpRequestMessage(HttpMethod.Post, location))
                 {

@@ -139,6 +139,7 @@
     <Compile Include="InvalidHtmlElementException.cs" />
     <Compile Include="InvalidHtmlElementMatchException.cs" />
     <Compile Include="IPage.cs" />
+    <Compile Include="PostEntry.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

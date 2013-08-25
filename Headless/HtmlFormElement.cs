@@ -1,5 +1,6 @@
 ﻿namespace Headless
 {
+    using System.Collections.Generic;
     using System.Xml.XPath;
 
     /// <summary>
@@ -19,6 +20,15 @@
         /// </param>
         protected HtmlFormElement(IHtmlPage page, IXPathNavigable node) : base(page, node)
         {
+        }
+
+        /// <summary>
+        ///     Builds the post data.
+        /// </summary>
+        /// <returns>An <see cref="IEnumerable{T}" /> value.</returns>
+        protected internal virtual IEnumerable<PostEntry> BuildPostData()
+        {
+            yield return new PostEntry(Name, Value);
         }
 
         /// <summary>
