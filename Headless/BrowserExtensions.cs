@@ -2,9 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.IO;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Web;
     using Headless.Activation;
 
     /// <summary>
@@ -492,18 +496,118 @@
             {
                 throw new ArgumentNullException("pageFactory");
             }
+            
+            var parameterSet = parameters.ToList();
 
-            var pairs = parameters.Select(x => new KeyValuePair<string, string>(x.Name, x.Value));
-
-            using (var formData = new FormUrlEncodedContent(pairs))
+            try
             {
                 using (var request = new HttpRequestMessage(HttpMethod.Post, location))
                 {
-                    request.Content = formData;
+                    using (var multiPart = BuildPostContent(parameterSet))
+                    {
+                        request.Content = multiPart;
 
-                    return browser.Execute<T>(request, expectedStatusCode, pageFactory);
+                        return browser.Execute<T>(request, expectedStatusCode, pageFactory);
+                    }
                 }
             }
+            finally
+            {
+                // Ensure that any stream based file post entries are disposed
+                var streamEntries = parameterSet.OfType<PostFileStreamEntry>();
+
+                foreach (var streamEntry in streamEntries)
+                {
+                    streamEntry.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Builds the content of the multipart.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <returns>
+        /// A <see cref="MultipartFormDataContent"/> value.
+        /// </returns>
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", 
+            Justification = "All content types and streams are disposed when the HTTP Request is disposed.")]
+        private static MultipartFormDataContent BuildMultipartContent(IReadOnlyList<PostEntry> parameters)
+        {
+            var multiPart = new MultipartFormDataContent();
+
+            for (var index = 0; index < parameters.Count; index++)
+            {
+                var entry = parameters[index];
+                var fileEntry = entry as PostFileEntry;
+
+                if (fileEntry == null)
+                {
+                    var formDataContent = new StringContent(entry.Value);
+
+                    formDataContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                    {
+                        Name = "\"" + entry.Name + "\""
+                    };
+
+                    multiPart.Add(formDataContent);
+                }
+                else if (fileEntry.IsValid == false)
+                {
+                    var fileContent = new StringContent(string.Empty);
+
+                    fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                    {
+                        Name = "\"" + fileEntry.Name + "\"", 
+                        FileName = "\"\""
+                    };
+                    fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+
+                    multiPart.Add(fileContent);
+                }
+                else
+                {
+                    var fileStream = fileEntry.ReadContent();
+                    var fileContent = new StreamContent(fileStream);
+                    var fileName = Path.GetFileName(fileEntry.Value);
+                    var contentType = MimeMapping.GetMimeMapping(fileEntry.Value);
+
+                    fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                    {
+                        Name = "\"" + fileEntry.Name + "\"", 
+                        FileName = "\"" + fileName + "\""
+                    };
+                    fileContent.Headers.ContentType = new MediaTypeHeaderValue(contentType);
+
+                    multiPart.Add(fileContent);
+                }
+            }
+
+            return multiPart;
+        }
+
+        /// <summary>
+        /// Builds the content of the post.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <returns>
+        /// A <see cref="HttpContent"/> value.
+        /// </returns>
+        private static HttpContent BuildPostContent(IReadOnlyList<PostEntry> parameters)
+        {
+            if (parameters.OfType<PostFileEntry>().Any())
+            {
+                return BuildMultipartContent(parameters);
+            }
+
+            // There are no files to post so this is going to be url encoded form data
+            var pairs = parameters.Select(x => new KeyValuePair<string, string>(x.Name, x.Value));
+
+            return new FormUrlEncodedContent(pairs);
         }
     }
 }

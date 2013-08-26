@@ -71,6 +71,8 @@
     <Compile Include="Activation\TypeExtensionsTests.cs" />
     <Compile Include="Activation\SupportedTagAttributeTests.cs" />
     <Compile Include="Activation\SupportedTagAttributeComparerTests.cs" />
+    <Compile Include="PostFileStreamEntryTests.cs" />
+    <Compile Include="PostFileEntryTests.cs" />
     <Compile Include="HtmlPageStub.cs" />
     <Compile Include="PageWrapper.cs" />
     <Compile Include="InvalidHtmlElementMatchExceptionTests.cs" />
@@ -82,6 +84,7 @@
     <Compile Include="DefaultHtmlElementFinderTests.cs" />
     <Compile Include="HtmlElementExtensionsTests.cs" />
     <Compile Include="HtmlElementFinderExtensionsTests.cs" />
+    <Compile Include="PostEntryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Headless\Headless.csproj">

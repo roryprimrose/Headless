@@ -61,6 +61,7 @@
     <Compile Include="Content.cs" />
     <Compile Include="Form.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Pages\FormFilePage.cs" />
     <Compile Include="Pages\FormIndexPage.cs" />
     <Compile Include="Pages\RedirectIndexPage.cs" />
     <Compile Include="Home.cs" />

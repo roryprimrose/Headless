@@ -1,0 +1,41 @@
+﻿@using Headless.DemoSite.Models
+@model FileData
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <p>Files uploaded: <span id="FileCount">@Model.FileCount</span></p>
+    
+    <fieldset>
+        <legend>Edit form</legend>
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.SomeData)
+                @Html.TextBoxFor(m => m.SomeData)
+                @Html.ValidationMessageFor(m => m.SomeData)
+            </li>
+
+            <li>
+                <label for="files1">
+                    Files: 
+                </label>
+                <input type="file" id="files1" name="files" />
+            </li>
+            <li>
+                <label for="files2">
+                    Files: 
+                </label>
+                <input type="file" id="files2" name="files" />
+            </li>
+            <li>
+                <label for="files3">
+                    Files: 
+                </label>
+                <input type="file" id="files3" name="files" />
+            </li>
+        </ol>
+        <input type="submit" value="Submit" name="Submit" />
+    </fieldset>
+}

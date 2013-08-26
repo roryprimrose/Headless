@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Net;
     using System.Net.Http;
     using FluentAssertions;
@@ -147,7 +148,10 @@
         [TestMethod]
         public void PostToStaticNavigatesToPageLocationTest()
         {
-            IList<PostEntry> parameters = new List<PostEntry>();
+            IList<PostEntry> parameters = new List<PostEntry>
+            {
+                new PostEntry("test", "value")
+            };
             var expected = new PageWrapper();
 
             var target = Substitute.For<IBrowser>();
@@ -160,6 +164,44 @@
             var actual = target.PostTo<PageWrapper>(parameters);
 
             actual.Should().BeSameAs(expected);
+        }
+
+        /// <summary>
+        ///     Runs a test for post to static with file entries navigates to page location.
+        /// </summary>
+        [TestMethod]
+        public void PostToStaticWithFileEntriesNavigatesToPageLocationTest()
+        {
+            var tempFile = Path.GetTempFileName();
+
+            try
+            {
+                File.WriteAllText(tempFile, Guid.NewGuid().ToString());
+
+                IList<PostEntry> parameters = new List<PostEntry>
+                {
+                    new PostEntry("test", "value"), 
+                    new PostFileEntry("files", tempFile), 
+                    new PostFileStreamEntry("files", "dynamicFile.txt", new MemoryStream()),
+                    new PostFileEntry("files", null)
+                };
+                var expected = new PageWrapper();
+
+                var target = Substitute.For<IBrowser>();
+
+                target.Execute<PageWrapper>(
+                    Arg.Is<HttpRequestMessage>(x => x.RequestUri == expected.Location && x.Method == HttpMethod.Post), 
+                    HttpStatusCode.OK, 
+                    Arg.Any<IPageFactory>()).Returns(expected);
+
+                var actual = target.PostTo<PageWrapper>(parameters);
+
+                actual.Should().BeSameAs(expected);
+            }
+            finally
+            {
+                File.Delete(tempFile);
+            }
         }
 
         /// <summary>

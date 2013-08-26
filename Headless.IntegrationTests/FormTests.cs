@@ -2,6 +2,7 @@
 {
     using System;
     using System.Globalization;
+    using System.IO;
     using System.Linq;
     using FluentAssertions;
     using Headless.IntegrationTests.Pages;
@@ -14,6 +15,88 @@
     [TestClass]
     public class FormTests
     {
+        /// <summary>
+        ///     Runs a test for files on dynamic page.
+        /// </summary>
+        [TestMethod]
+        public void FilesOnDynamicPageTest()
+        {
+            var firstFile = Path.GetTempFileName();
+            var secondFile = Path.GetTempFileName();
+
+            try
+            {
+                File.WriteAllText(firstFile, Guid.NewGuid().ToString());
+                File.WriteAllText(secondFile, Guid.NewGuid().ToString());
+
+                using (var browser = new Browser())
+                {
+                    var textValue = Guid.NewGuid().ToString();
+
+                    var page = browser.GoTo(Form.Files);
+
+                    ((IPage)page).Result.TraceResults();
+
+                    page.SomeData.Value = textValue;
+                    page.files1.Value = firstFile;
+                    page.files2.Value = secondFile;
+
+                    var postedPage = page.Submit.Click();
+
+                    ((IPage)postedPage).Result.TraceResults();
+
+                    ((string)postedPage.SomeData.Value).Should().Be(textValue);
+                    ((string)postedPage.FileCount.Text).Should().Be("2");
+                }
+            }
+            finally
+            {
+                File.Delete(firstFile);
+                File.Delete(secondFile);
+            }
+        }
+
+        /// <summary>
+        ///     Runs a test for files on static page.
+        /// </summary>
+        [TestMethod]
+        public void FilesOnStaticPageTest()
+        {
+            var firstFile = Path.GetTempFileName();
+            var secondFile = Path.GetTempFileName();
+
+            try
+            {
+                File.WriteAllText(firstFile, Guid.NewGuid().ToString());
+                File.WriteAllText(secondFile, Guid.NewGuid().ToString());
+
+                using (var browser = new Browser())
+                {
+                    var textValue = Guid.NewGuid().ToString();
+
+                    var page = browser.GoTo<FormFilePage>();
+
+                    page.Result.TraceResults();
+
+                    page.SomeData.Value = textValue;
+                    page.File1.Value = firstFile;
+                    page.File2.Value = secondFile;
+
+                    var postedPage = page.Submit.Click<FormFilePage>();
+
+                    postedPage.Result.TraceResults();
+
+                    postedPage.SomeData.Value.Should().Be(textValue);
+                    postedPage.FileCount.Text.Should().Be("2");
+                }
+            }
+            finally
+            {
+                File.Delete(firstFile);
+                File.Delete(secondFile);
+            }
+        }
+
         /// <summary>
         ///     Runs a test for form on dynamic page.
         /// </summary>

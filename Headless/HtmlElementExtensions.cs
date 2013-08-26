@@ -149,6 +149,12 @@
         /// <returns>
         /// <c>true</c> if the element contains the specified CSS class; otherwise, <c>false</c>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// The <paramref name="element"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The <paramref name="cssClass"/> parameter is <c>null</c>, empty or only contains white-space.
+        /// </exception>
         public static bool HasClass(this HtmlElement element, string cssClass)
         {
             if (element == null)

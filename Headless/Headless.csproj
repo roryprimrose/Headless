@@ -93,6 +93,9 @@
       <DependentUpon>Extensions.cs</DependentUpon>
     </Compile>
     <Compile Include="HtmlElementNotFoundException.cs" />
+    <Compile Include="HtmlFile.cs">
+      <DependentUpon>IHtmlElement.cs</DependentUpon>
+    </Compile>
     <Compile Include="HtmlForm.cs">
       <DependentUpon>IHtmlElement.cs</DependentUpon>
     </Compile>
@@ -140,6 +143,12 @@
     <Compile Include="InvalidHtmlElementMatchException.cs" />
     <Compile Include="IPage.cs" />
     <Compile Include="PostEntry.cs" />
+    <Compile Include="PostFileEntry.cs">
+      <DependentUpon>PostEntry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PostFileStreamEntry.cs">
+      <DependentUpon>PostEntry.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

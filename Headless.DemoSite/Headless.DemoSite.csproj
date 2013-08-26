@@ -192,6 +192,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\FileData.cs" />
     <Compile Include="Models\FormData.cs" />
     <Compile Include="Models\Selection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -310,6 +311,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Redirect\Index.cshtml" />
     <Content Include="Views\Form\Index.cshtml" />
+    <Content Include="Views\Form\Files.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

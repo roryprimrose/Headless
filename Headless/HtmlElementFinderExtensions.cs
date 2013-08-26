@@ -60,6 +60,9 @@
         /// <exception cref="ArgumentNullException">
         /// The <paramref name="finder"/> parameter is <c>null</c>.
         /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The <paramref name="attributeName"/> parameter is <c>null</c>, empty or only contains white-space.
+        /// </exception>
         public static IEnumerable<T> AllByAttribute<T>(
             this IHtmlElementFinder<T> finder, 
             string attributeName, 
