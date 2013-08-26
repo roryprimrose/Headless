@@ -1,6 +1,7 @@
 ﻿namespace Headless.IntegrationTests
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -15,6 +16,85 @@
     [TestClass]
     public class FormTests
     {
+        /// <summary>
+        ///     Runs a test for drop down on dynamic page.
+        /// </summary>
+        [TestMethod]
+        public void DropDownOnDynamicPageTest()
+        {
+            var testValues = new[]
+            {
+                string.Empty, "First", "Second", "Third", "Fourth", "Fifth"
+            };
+
+            using (var browser = new Browser())
+            {
+                var page = browser.GoTo(Form.Index);
+
+                ((IPage)page).Result.TraceResults();
+
+                var dropDown = page.DropDown as HtmlList;
+
+                dropDown.Should().NotBeNull();
+                dropDown.Values.SequenceEqual(testValues).Should().BeTrue();
+
+                ((string)page.DropDown.Value).Should().BeNullOrEmpty();
+
+                for (var index = 0; index < testValues.Length; index++)
+                {
+                    page.DropDown.Value = testValues[index];
+
+                    page = page.Submit.Click();
+
+                    ((string)page.DropDown.Value).Should().Be(testValues[index]);
+                }
+
+                page.DropDown.Value = null;
+
+                page = page.Submit.Click();
+
+                ((string)page.DropDown.Value).Should().BeNullOrEmpty();
+            }
+        }
+
+        /// <summary>
+        ///     Runs a test for drop down on page model.
+        /// </summary>
+        [TestMethod]
+        public void DropDownOnPageModelTest()
+        {
+            var testValues = new[]
+            {
+                string.Empty, "First", "Second", "Third", "Fourth", "Fifth"
+            };
+
+            using (var browser = new Browser())
+            {
+                var page = browser.GoTo<FormIndexPage>();
+
+                page.Result.TraceResults();
+
+                page.DropDown.Values.SequenceEqual(testValues).Should().BeTrue();
+
+                page.DropDown.Value.Should().BeNullOrEmpty();
+
+                for (var index = 0; index < testValues.Length; index++)
+                {
+                    page.DropDown.Value = testValues[index];
+
+                    page = page.Submit.Click<FormIndexPage>();
+
+                    page.DropDown.Value.Should().Be(testValues[index]);
+                }
+
+                page.DropDown.Value = null;
+
+                page = page.Submit.Click<FormIndexPage>();
+
+                page.DropDown.Value.Should().BeNullOrEmpty();
+            }
+        }
+
         /// <summary>
         ///     Runs a test for files on dynamic page.
         /// </summary>
@@ -246,6 +326,103 @@
                 postedPage.Url.Value.Should().Be(urlValue);
                 postedPage.Week.Value.Should().Be(WeekValue);
                 postedPage.Toggle.Checked.Should().Be(Toggle);
+            }
+        }
+
+        /// <summary>
+        ///     Runs a test for list on dynamic page.
+        /// </summary>
+        [TestMethod]
+        public void ListOnDynamicPageTest()
+        {
+            var testValues = new[]
+            {
+                "First", "Second", "Third", "Fourth", "Fifth"
+            };
+
+            using (var browser = new Browser())
+            {
+                var page = browser.GoTo(Form.Index);
+
+                ((IPage)page).Result.TraceResults();
+
+                var list = page.List as HtmlList;
+
+                list.Should().NotBeNull();
+                list.Values.SequenceEqual(testValues).Should().BeTrue();
+
+                ((string)page.List.Value).Should().BeNullOrEmpty();
+
+                for (var index = 0; index < testValues.Length; index++)
+                {
+                    var expectedValues = new List<string>();
+
+                    for (var innerLoop = 0; innerLoop <= index; innerLoop++)
+                    {
+                        page.List.Select(testValues[innerLoop]);
+
+                        expectedValues.Add(testValues[innerLoop]);
+                    }
+
+                    page = page.Submit.Click();
+
+                    var values = ((IEnumerable<string>)page.List.SelectedValues).ToList();
+
+                    values.SequenceEqual(expectedValues).Should().BeTrue();
+                }
+
+                page.List.Value = null;
+
+                page = page.Submit.Click();
+
+                ((string)page.List.Value).Should().BeNullOrEmpty();
+            }
+        }
+
+        /// <summary>
+        ///     Runs a test for list on page model.
+        /// </summary>
+        [TestMethod]
+        public void ListOnPageModelTest()
+        {
+            var testValues = new[]
+            {
+                "First", "Second", "Third", "Fourth", "Fifth"
+            };
+
+            using (var browser = new Browser())
+            {
+                var page = browser.GoTo<FormIndexPage>();
+
+                page.Result.TraceResults();
+
+                page.List.Values.SequenceEqual(testValues).Should().BeTrue();
+
+                page.List.Value.Should().BeNullOrEmpty();
+
+                for (var index = 0; index < testValues.Length; index++)
+                {
+                    var expectedValues = new List<string>();
+
+                    for (var innerLoop = 0; innerLoop <= index; innerLoop++)
+                    {
+                        page.List.Select(testValues[innerLoop]);
+
+                        expectedValues.Add(testValues[innerLoop]);
+                    }
+
+                    page = page.Submit.Click<FormIndexPage>();
+
+                    var values = page.List.SelectedValues.ToList();
+
+                    values.SequenceEqual(expectedValues).Should().BeTrue();
+                }
+
+                page.List.Value = null;
+
+                page = page.Submit.Click<FormIndexPage>();
+
+                page.List.Value.Should().BeNullOrEmpty();
             }
         }
 

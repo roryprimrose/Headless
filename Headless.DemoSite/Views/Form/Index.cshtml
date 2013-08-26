@@ -96,7 +96,7 @@
                 @Html.CheckBoxFor(m => m.Toggle)
                 @Html.ValidationMessageFor(m => m.Toggle)
             </li>
-            @foreach (var value in Model.RadioValues)
+            @foreach (var value in Model.DataSetValues)
             {
                 <li>
                     @Html.LabelFor(m => m.Radio, value.ToString())
@@ -104,6 +104,23 @@
                     @Html.ValidationMessageFor(m => m.Radio)
                 </li>   
             }
+            <li>
+                @Html.LabelFor(m => m.DropDown)
+                
+                @{
+                    var dropDownValues = Model.DataSetValues.Select(x => new SelectListItem(){Selected = Model.DropDown == x, Text = x.ToString(), Value = x.ToString()}).ToList();
+                    
+                    dropDownValues.Insert(0, new SelectListItem());
+                }
+
+                @Html.DropDownListFor(m => m.DropDown, dropDownValues)
+                @Html.ValidationMessageFor(m => m.DropDown)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.List)
+                @Html.ListBoxFor(m => m.List, Model.DataSetValues.Select(x => new SelectListItem(){Selected = Model.List.Contains(x), Text = x.ToString(), Value = x.ToString()}))
+                @Html.ValidationMessageFor(m => m.List)
+            </li>
         </ol>
         <input type="submit" value="Submit" name="Submit" />
     </fieldset>

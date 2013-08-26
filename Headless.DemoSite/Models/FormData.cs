@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
 
@@ -12,6 +13,14 @@
     public class FormData
     {
         /// <summary>
+        ///     Initializes a new instance of the <see cref="FormData" /> class.
+        /// </summary>
+        public FormData()
+        {
+            List = new Collection<Selection>();
+        }
+
+        /// <summary>
         ///     Gets or sets the color.
         /// </summary>
         /// <value>
@@ -21,6 +30,22 @@
         {
             get;
             set;
+        }
+
+        /// <summary>
+        ///     Gets the data set values.
+        /// </summary>
+        /// <value>
+        ///     The data set values.
+        /// </value>
+        public IEnumerable<Selection> DataSetValues
+        {
+            get
+            {
+                var values = Enum.GetValues(typeof(Selection));
+
+                return values.Cast<Selection>();
+            }
         }
 
         /// <summary>
@@ -60,6 +85,18 @@
         }
 
         /// <summary>
+        ///     Gets or sets the drop down.
+        /// </summary>
+        /// <value>
+        ///     The drop down.
+        /// </value>
+        public Selection? DropDown
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         ///     Gets or sets the email.
         /// </summary>
         /// <value>
@@ -79,6 +116,18 @@
         ///     The hidden.
         /// </value>
         public string Hidden
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        ///     Gets or sets the list.
+        /// </summary>
+        /// <value>
+        ///     The list.
+        /// </value>
+        public Collection<Selection> List
         {
             get;
             set;
@@ -130,22 +179,6 @@
         {
             get;
             set;
-        }
-
-        /// <summary>
-        ///     Gets the radio values.
-        /// </summary>
-        /// <value>
-        ///     The radio values.
-        /// </value>
-        public IEnumerable<Selection> RadioValues
-        {
-            get
-            {
-                var values = Enum.GetValues(typeof(Selection));
-
-                return values.Cast<Selection>();
-            }
         }
 
         /// <summary>

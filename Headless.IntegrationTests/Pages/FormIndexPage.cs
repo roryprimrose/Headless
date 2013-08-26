@@ -66,6 +66,20 @@
         }
 
         /// <summary>
+        ///     Gets the drop down.
+        /// </summary>
+        /// <value>
+        ///     The drop down.
+        /// </value>
+        public HtmlList DropDown
+        {
+            get
+            {
+                return Find<HtmlList>().ByName("DropDown");
+            }
+        }
+
+        /// <summary>
         ///     Gets the email.
         /// </summary>
         /// <value>
@@ -90,6 +104,20 @@
             get
             {
                 return Find<HtmlInput>().ByName("Hidden");
+            }
+        }
+
+        /// <summary>
+        ///     Gets the list.
+        /// </summary>
+        /// <value>
+        ///     The list.
+        /// </value>
+        public HtmlList List
+        {
+            get
+            {
+                return Find<HtmlList>().ByName("List");
             }
         }
 

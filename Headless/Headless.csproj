@@ -108,6 +108,9 @@
     <Compile Include="HtmlLink.cs">
       <DependentUpon>IHtmlElement.cs</DependentUpon>
     </Compile>
+    <Compile Include="HtmlList.cs">
+      <DependentUpon>IHtmlElement.cs</DependentUpon>
+    </Compile>
     <Compile Include="HtmlPage.cs">
       <DependentUpon>IPage.cs</DependentUpon>
     </Compile>

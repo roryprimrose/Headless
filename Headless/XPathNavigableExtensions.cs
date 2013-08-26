@@ -41,6 +41,27 @@
         }
 
         /// <summary>
+        /// Determines whether the specified navigable has the specified attribute.
+        /// </summary>
+        /// <param name="navigable">
+        /// The navigable.
+        /// </param>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified navigable has the attribute; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool HasAttribute(this IXPathNavigable navigable, string name)
+        {
+            var navigator = navigable.GetNavigator();
+
+            var checkedFound = navigator.MoveToAttribute(name, string.Empty);
+
+            return checkedFound;
+        }
+
+        /// <summary>
         /// Determines whether the specified navigable is checked.
         /// </summary>
         /// <param name="navigable">
@@ -51,11 +72,21 @@
         /// </returns>
         public static bool IsChecked(this IXPathNavigable navigable)
         {
-            var navigator = navigable.GetNavigator();
+            return HasAttribute(navigable, "checked");
+        }
 
-            var checkedFound = navigator.MoveToAttribute("checked", string.Empty);
-
-            return checkedFound;
+        /// <summary>
+        /// Determines whether the specified navigable is selected.
+        /// </summary>
+        /// <param name="navigable">
+        /// The navigable.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified navigable is selected; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsSelected(this IXPathNavigable navigable)
+        {
+            return HasAttribute(navigable, "selected");
         }
 
         /// <summary>
@@ -128,9 +159,9 @@
         {
             var navigator = navigable.GetNavigator();
 
-            var checkedFound = navigator.MoveToAttribute("checked", string.Empty);
+            var hasAttribute = navigator.MoveToAttribute("checked", string.Empty);
 
-            if (checkedFound == value)
+            if (hasAttribute == value)
             {
                 // No change is required
                 return;
@@ -140,6 +171,39 @@
             {
                 // Set the attribute
                 navigator.SetAttribute(string.Empty, "checked", string.Empty, "checked");
+            }
+            else
+            {
+                // Remove the checked attribute if it exists
+                navigator.DeleteSelf();
+            }
+        }
+
+        /// <summary>
+        /// Sets the selected.
+        /// </summary>
+        /// <param name="navigable">
+        /// The navigable.
+        /// </param>
+        /// <param name="value">
+        /// if set to <c>true</c> [value].
+        /// </param>
+        public static void SetSelected(this IXPathNavigable navigable, bool value)
+        {
+            var navigator = navigable.GetNavigator();
+
+            var hasAttribute = navigator.MoveToAttribute("selected", string.Empty);
+
+            if (hasAttribute == value)
+            {
+                // No change is required
+                return;
+            }
+
+            if (value)
+            {
+                // Set the attribute
+                navigator.SetAttribute(string.Empty, "selected", string.Empty, "selected");
             }
             else
             {
