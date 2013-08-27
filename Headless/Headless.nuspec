@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>Headless</id>
+    <version>1.0.0-alpha</version>
+    <title>Headless</title>
+    <authors>Rory Primrose, Jon Wagner</authors>
+    <description>A web browser replacement for testing websites without the browser overhead.</description>
+    <language>en-US</language>
+    <projectUrl>https://github.com/roryprimrose/Headless</projectUrl>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <tags>headless browser test automation http web integrationtesting unittesting cookies dotnet</tags>
+    <releaseNotes>See important release notes at: https://github.com/roryprimrose/Headless/wiki/Change-Log</releaseNotes>
+  </metadata>
+  <files>
+    <file src="\bin\Release\Headless.dll" target="lib\NET45" />
+    <file src="\bin\Release\Headless.pdb" target="lib\NET45" />
+    <file src="\bin\Release\Headless.xml" target="lib\NET45" />
+  </files>
+</package>
