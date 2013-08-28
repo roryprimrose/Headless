@@ -15,7 +15,6 @@
         /// </summary>
         /// <remarks>This test is ignored because the associated DTD causes a timeout when a download if it is attempted.</remarks>
         [TestMethod]
-        [Ignore]
         public void CanReadPageWithoutBodyTest()
         {
             using (var browser = new Browser())

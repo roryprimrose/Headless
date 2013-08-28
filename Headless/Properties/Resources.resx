@@ -142,4 +142,19 @@
   <data name="Guard_NoValueProvided" xml:space="preserve">
     <value>No value has been provided.</value>
   </data>
+  <data name="HtmlElement_MultipleMatchesFoundForId" xml:space="preserve">
+    <value>Multiple elements were found for the id '{0}'.</value>
+  </data>
+  <data name="HtmlElement_MultipleMatchesFoundForName" xml:space="preserve">
+    <value>Multiple elements were found for the name '{0}'.</value>
+  </data>
+  <data name="HtmlElement_MultipleMatchesFoundForText" xml:space="preserve">
+    <value>Multiple elements were found for the text '{0}'</value>
+  </data>
+  <data name="DynamicHtmlPage_MembersAreReadOnly" xml:space="preserve">
+    <value>Members that represent HTML elements on the page are read-only. Did you mean to assign a value to the HTML element instance instead of the page? For example: page.InputElement.Value = "test" rather than page.InputElement = "test"..</value>
+  </data>
+  <data name="DynamicHtmlPage_DynamicElementNotFound" xml:space="preserve">
+    <value>No HTML element was found with a matching id, name or text of '{0}'.</value>
+  </data>
 </root>

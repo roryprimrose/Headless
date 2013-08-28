@@ -70,6 +70,24 @@ namespace Headless.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No HTML element was found with a matching id, name or text of &apos;{0}&apos;..
+        /// </summary>
+        internal static string DynamicHtmlPage_DynamicElementNotFound {
+            get {
+                return ResourceManager.GetString("DynamicHtmlPage_DynamicElementNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Members that represent HTML elements on the page are read-only. Did you mean to assign a value to the HTML element instance instead of the page? For example: page.InputElement.Value = &quot;test&quot; rather than page.InputElement = &quot;test&quot;...
+        /// </summary>
+        internal static string DynamicHtmlPage_MembersAreReadOnly {
+            get {
+                return ResourceManager.GetString("DynamicHtmlPage_MembersAreReadOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No value has been provided..
         /// </summary>
         internal static string Guard_NoValueProvided {
@@ -93,6 +111,33 @@ namespace Headless.Properties {
         internal static string HtmlElement_MultipleMatchesFound {
             get {
                 return ResourceManager.GetString("HtmlElement_MultipleMatchesFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Multiple elements were found for the id &apos;{0}&apos;..
+        /// </summary>
+        internal static string HtmlElement_MultipleMatchesFoundForId {
+            get {
+                return ResourceManager.GetString("HtmlElement_MultipleMatchesFoundForId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Multiple elements were found for the name &apos;{0}&apos;..
+        /// </summary>
+        internal static string HtmlElement_MultipleMatchesFoundForName {
+            get {
+                return ResourceManager.GetString("HtmlElement_MultipleMatchesFoundForName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Multiple elements were found for the text &apos;{0}&apos;.
+        /// </summary>
+        internal static string HtmlElement_MultipleMatchesFoundForText {
+            get {
+                return ResourceManager.GetString("HtmlElement_MultipleMatchesFoundForText", resourceCulture);
             }
         }
         

@@ -49,6 +49,7 @@
                 using (var sgmlReader = new SgmlReader())
                 {
                     sgmlReader.DocType = "HTML";
+                    sgmlReader.IgnoreDtd = true;
                     sgmlReader.WhitespaceHandling = WhitespaceHandling.All;
                     sgmlReader.CaseFolding = CaseFolding.ToLower;
                     sgmlReader.InputStream = reader;

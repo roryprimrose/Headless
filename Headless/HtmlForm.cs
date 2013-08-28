@@ -26,6 +26,17 @@
         }
 
         /// <summary>
+        ///     Submits the specified form.
+        /// </summary>
+        /// <returns>
+        ///     A <see cref="IPage" /> value.
+        /// </returns>
+        public IPage Submit()
+        {
+            return Submit(null);
+        }
+
+        /// <summary>
         /// Submits the specified form.
         /// </summary>
         /// <param name="sourceButton">
@@ -34,16 +45,8 @@
         /// <returns>
         /// A <see cref="IPage"/> value.
         /// </returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="sourceButton"/> parameter is <c>null</c>.
-        /// </exception>
         public IPage Submit(HtmlButton sourceButton)
         {
-            if (sourceButton == null)
-            {
-                throw new ArgumentNullException("sourceButton");
-            }
-
             var parameters = this.BuildPostParameters(sourceButton);
 
             return Page.Browser.PostTo(parameters, PostLocation, HttpStatusCode.OK);

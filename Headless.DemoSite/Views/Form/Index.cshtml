@@ -1,7 +1,7 @@
 ﻿@using Headless.DemoSite.Models
 @model FormData
 
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new { name = "TestForm"}))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)

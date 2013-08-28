@@ -9,6 +9,22 @@
     /// </summary>
     public class FormIndexPage : HtmlPage
     {
+        /// <inheritdoc />
+        public override bool IsOn(Uri location)
+        {
+            var value = base.IsOn(location);
+
+            if (value)
+            {
+                return true;
+            }
+
+            var additionalAddress = new Uri(Config.BaseWebAddress, "form");
+
+            // We need additional logic to test other routes that MVC could use
+            return additionalAddress.IsBaseOf(location);
+        }
+
         /// <summary>
         ///     Gets the color.
         /// </summary>

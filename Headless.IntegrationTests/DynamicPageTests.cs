@@ -1,5 +1,6 @@
 ﻿namespace Headless.IntegrationTests
 {
+    using System;
     using System.Net;
     using FluentAssertions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -119,6 +120,38 @@
 
                 page.IsOn(Home.About).Should().BeTrue();
                 page.StatusCode.Should().Be(HttpStatusCode.OK);
+            }
+        }
+
+        /// <summary>
+        ///     Runs a test for page throws exception when attempting to assign to dynamic member.
+        /// </summary>
+        [TestMethod]
+        public void PageThrowsExceptionWhenAttemptingToAssignToDynamicMemberTest()
+        {
+            using (var browser = new Browser())
+            {
+                var result = browser.GoTo(Form.Index);
+
+                Action action = () => result.Text = "Test";
+
+                action.ShouldThrow<InvalidOperationException>();
+            }
+        }
+
+        /// <summary>
+        ///     Runs a test for page throws exception when requested element does not exist.
+        /// </summary>
+        [TestMethod]
+        public void PageThrowsExceptionWhenRequestedElementDoesNotExistTest()
+        {
+            using (var browser = new Browser())
+            {
+                var result = browser.GoTo(Home.Index);
+
+                Action action = () => result.ElementNotFound.Click();
+
+                action.ShouldThrow<HtmlElementNotFoundException>();
             }
         }
     }

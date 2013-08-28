@@ -96,6 +96,58 @@
         }
 
         /// <summary>
+        ///     Runs a test for dynamic page can submit from form directly including button reference.
+        /// </summary>
+        [TestMethod]
+        public void DynamicPageCanSubmitFromFormDirectlyIncludingButtonReferenceTest()
+        {
+            using (var browser = new Browser())
+            {
+                var textValue = Guid.NewGuid().ToString();
+
+                var page = browser.GoTo(Form.Index);
+
+                ((IPage)page).Result.TraceResults();
+
+                ((bool)page.Toggle.Checked).Should().BeFalse();
+
+                page.Text.Value = textValue;
+
+                var postedPage = page.TestForm.Submit(page.Submit);
+
+                ((IPage)postedPage).Result.TraceResults();
+
+                ((string)postedPage.Text.Value).Should().Be(textValue);
+            }
+        }
+
+        /// <summary>
+        ///     Runs a test for dynamic page can submit from form directly.
+        /// </summary>
+        [TestMethod]
+        public void DynamicPageCanSubmitFromFormDirectlyTest()
+        {
+            using (var browser = new Browser())
+            {
+                var textValue = Guid.NewGuid().ToString();
+
+                var page = browser.GoTo(Form.Index);
+
+                ((IPage)page).Result.TraceResults();
+
+                ((bool)page.Toggle.Checked).Should().BeFalse();
+
+                page.Text.Value = textValue;
+
+                var postedPage = page.TestForm.Submit();
+
+                ((IPage)postedPage).Result.TraceResults();
+
+                ((string)postedPage.Text.Value).Should().Be(textValue);
+            }
+        }
+
+        /// <summary>
         ///     Runs a test for files on dynamic page.
         /// </summary>
         [TestMethod]

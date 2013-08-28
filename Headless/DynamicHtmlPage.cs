@@ -3,11 +3,13 @@
     using System;
     using System.Diagnostics;
     using System.Dynamic;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Xml.XPath;
     using Headless.Activation;
+    using Headless.Properties;
 
     /// <summary>
     ///     The <see cref="DynamicHtmlPage" />
@@ -70,10 +72,21 @@
 
             if (result == null)
             {
-                return false;
+                var failureMessage = string.Format(
+                    CultureInfo.CurrentCulture, 
+                    Resources.DynamicHtmlPage_DynamicElementNotFound, 
+                    binder.Name);
+
+                throw new HtmlElementNotFoundException(failureMessage);
             }
 
             return true;
+        }
+
+        /// <inheritdoc />
+        public override bool TrySetMember(SetMemberBinder binder, object value)
+        {
+            throw new InvalidOperationException(Resources.DynamicHtmlPage_MembersAreReadOnly);
         }
 
         /// <summary>
@@ -103,6 +116,16 @@
                 return elementsById[0];
             }
 
+            if (elementsById.Count > 1)
+            {
+                var failureMessage = string.Format(
+                    CultureInfo.CurrentCulture, 
+                    Resources.HtmlElement_MultipleMatchesFoundForId, 
+                    value);
+
+                throw new InvalidHtmlElementMatchException(failureMessage);
+            }
+
             var elementsByName = finder.AllByAttribute("name", value).ToList();
 
             if (elementsByName.Count == 1)
@@ -112,14 +135,49 @@
 
             if (elementsByName.Count > 1)
             {
-                throw new NotImplementedException("Need to support radio buttons here that use the same name");
+                var failureMessage = string.Format(
+                    CultureInfo.CurrentCulture, 
+                    Resources.HtmlElement_MultipleMatchesFoundForName, 
+                    value);
+
+                throw new InvalidHtmlElementMatchException(failureMessage);
             }
 
-            var elementsByText = finder.AllByText(value).ToList();
+            var elementsBySensitiveText = finder.AllByText(value, false).ToList();
 
-            if (elementsByText.Count == 1)
+            if (elementsBySensitiveText.Count == 1)
             {
-                return elementsByText[0];
+                return elementsBySensitiveText[0];
+            }
+
+            if (elementsBySensitiveText.Count > 1)
+            {
+                var failureMessage = string.Format(
+                    CultureInfo.CurrentCulture, 
+                    Resources.HtmlElement_MultipleMatchesFoundForText, 
+                    value);
+
+                throw new InvalidHtmlElementMatchException(failureMessage);
+            }
+
+            // The reason for running this as two seperate operations is that an insensitive search
+            // may find multiple matches where the sensitive search would have returned the single expect element
+            // This additional operation is just trying to be that little bit more helpful where the case sensitive match wasn't found
+            var elementsByInsensitiveText = finder.AllByText(value, true).ToList();
+
+            if (elementsByInsensitiveText.Count == 1)
+            {
+                return elementsByInsensitiveText[0];
+            }
+
+            if (elementsByInsensitiveText.Count > 1)
+            {
+                var failureMessage = string.Format(
+                    CultureInfo.CurrentCulture, 
+                    Resources.HtmlElement_MultipleMatchesFoundForText, 
+                    value);
+
+                throw new InvalidHtmlElementMatchException(failureMessage);
             }
 
             return null;

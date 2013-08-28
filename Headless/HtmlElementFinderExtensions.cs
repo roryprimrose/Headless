@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using Headless.Properties;
 
@@ -290,7 +291,12 @@
 
             var matches = finder.AllByAttribute("id", id);
 
-            return matches.EnsureSingle();
+            var failureMessage = string.Format(
+                CultureInfo.CurrentCulture,
+                Resources.HtmlElement_MultipleMatchesFoundForId,
+                id);
+
+            return matches.EnsureSingle(failureMessage);
         }
 
         /// <summary>
@@ -326,7 +332,12 @@
 
             var matches = finder.AllByAttribute("name", name);
 
-            return matches.EnsureSingle();
+            var failureMessage = string.Format(
+                CultureInfo.CurrentCulture,
+                Resources.HtmlElement_MultipleMatchesFoundForName,
+                name);
+
+            return matches.EnsureSingle(failureMessage);
         }
 
         /// <summary>
