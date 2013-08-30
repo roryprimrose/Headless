@@ -108,7 +108,9 @@
 
             if (
                 attributedSupportingTags.Any(
-                    x => x.TagName == TagName && x.AttributeValue == GetAttributeValue(x.AttributeName)))
+                    x =>
+                        x.TagName.Equals(TagName, StringComparison.OrdinalIgnoreCase) &&
+                        x.AttributeValue.Equals(GetAttributeValue(x.AttributeName), StringComparison.OrdinalIgnoreCase)))
             {
                 // We have a match between this element type and the HTML content of the node
                 return;
@@ -116,7 +118,7 @@
 
             var tagOnlySupportingTags = supportedTags.Where(x => x.HasAttributeFilter == false);
 
-            if (tagOnlySupportingTags.Any(x => x.TagName == TagName))
+            if (tagOnlySupportingTags.Any(x => x.TagName.Equals(TagName, StringComparison.OrdinalIgnoreCase)))
             {
                 // We have a match between this element type and the HTML content of the node
                 return;

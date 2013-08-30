@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Xml.XPath;
@@ -51,6 +52,8 @@
         /// <exception cref="InvalidHtmlElementMatchException">
         /// No type could be found to match the node.
         /// </exception>
+        [SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase", 
+            Justification = "HTML references are lower-case by convention.")]
         public static Type FindBestMatchingType(this Type elementType, IXPathNavigable node)
         {
             if (elementType == null)
@@ -66,6 +69,8 @@
             var navigator = node.GetNavigator();
             var possibleTypes = GetMatchingTypes(elementType).ToList();
             var matchingTypes = new List<Type>();
+            
+            // The node name should already be folded to lower case when the HTML was read
             var nodeName = navigator.Name;
 
             foreach (var possibleType in possibleTypes)
@@ -74,16 +79,19 @@
 
                 foreach (var attribute in attributes)
                 {
-                    if (nodeName != attribute.TagName)
+                    if (nodeName.Equals(attribute.TagName, StringComparison.OrdinalIgnoreCase) == false)
                     {
                         continue;
                     }
 
                     if (attribute.HasAttributeFilter)
                     {
-                        var matchingAttribute = navigator.GetAttribute(attribute.AttributeName, string.Empty);
+                        // The attribute name should already be folded to lower case when the HTML was read
+                        var queryAttributeName = attribute.AttributeName.ToLowerInvariant();
                         
-                        if (matchingAttribute == attribute.AttributeValue)
+                        var matchingAttribute = navigator.GetAttribute(queryAttributeName, string.Empty);
+                        
+                        if (matchingAttribute.Equals(attribute.AttributeValue, StringComparison.OrdinalIgnoreCase))
                         {
                             matchingTypes.Add(possibleType);
                         }

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Xml.XPath;
@@ -154,21 +155,34 @@
         /// <returns>
         /// A <see cref="string"/> value.
         /// </returns>
+        [SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase", 
+            Justification = "HTML references are lower-case by convention.")]
         private static string BuildTagExpression(SupportedTagAttribute supportedTag)
         {
+            // HTML tag names are case folded to lower case 
+            var queryTagName = supportedTag.TagName.ToLowerInvariant();
+
             if (supportedTag.HasAttributeFilter)
             {
-                const string AttributeFilterQuery = "*[local-name() = '{0}' and @{1}='{2}']";
+                const string AttributeFilterQuery = "*[local-name() = '{0}' and {1}='{2}']";
+
+                // HTML attribute names are case folded to lower case 
+                // Searching by the SupportedTagAttribute attribute value must be case insensitive
+                var attributeName = supportedTag.AttributeName.ToLowerInvariant();
+                var queryAttributeName = QueryFactory.CaseQuery("@" + attributeName, true);
+
+                // This literal value can be converted to lower case here rather than within the execution of the XPath query
+                var queryAttributeValue = supportedTag.AttributeValue.ToLowerInvariant();
 
                 return string.Format(
                     CultureInfo.CurrentCulture, 
                     AttributeFilterQuery, 
-                    supportedTag.TagName, 
-                    supportedTag.AttributeName, 
-                    supportedTag.AttributeValue);
+                    queryTagName, 
+                    queryAttributeName, 
+                    queryAttributeValue);
             }
 
-            return "*[local-name() = '" + supportedTag.TagName + "']";
+            return "*[local-name() = '" + queryTagName + "']";
         }
     }
 }

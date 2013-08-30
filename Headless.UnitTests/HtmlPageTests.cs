@@ -38,6 +38,34 @@
         }
 
         /// <summary>
+        ///     Runs a test for processes content with case insensitive attribute values.
+        /// </summary>
+        [TestMethod]
+        public void ProcessesContentWithCaseInsensitiveAttributeValuesTest()
+        {
+            const string Html = @"
+<html>
+<body>
+<form name='test'>
+<input type='Submit' name='Login' value='Submit' />
+</form>
+</body>
+</html>
+";
+
+            using (var content = StreamContentFactory.FromHtml(Html))
+            {
+                var page = new HtmlPageWrapper();
+
+                page.AssignContent(content);
+
+                var actual = page.Find<HtmlButton>().ByName("login");
+
+                actual.Value.Should().Be("Submit");
+            }
+        }
+
+        /// <summary>
         ///     Runs a test for processes content with case insensitive tag names.
         /// </summary>
         [TestMethod]

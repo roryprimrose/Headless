@@ -167,6 +167,7 @@
     </Compile>
     <Compile Include="Activation\SupportedTagAttribute.cs" />
     <Compile Include="Activation\SupportedTagAttributeComparer.cs" />
+    <Compile Include="QueryFactory.cs" />
     <Compile Include="TextPage.cs">
       <DependentUpon>IPage.cs</DependentUpon>
     </Compile>

@@ -16,6 +16,25 @@
     public class TypeExtensionsTests
     {
         /// <summary>
+        ///     Runs a test for find best matching type matches case insensitive tag names.
+        /// </summary>
+        [TestMethod]
+        public void FindBestMatchingTypeMatchesCaseInsensitiveTagNamesTest()
+        {
+            var node = Substitute.For<IXPathNavigable>();
+            var navigator = Substitute.For<XPathNavigator>();
+
+            node.CreateNavigator().Returns(navigator);
+            navigator.Name.Returns("TEXTarea");
+
+            var target = typeof(HtmlElement);
+
+            var actual = target.FindBestMatchingType(node);
+
+            actual.Should().Be(typeof(HtmlInput));
+        }
+
+        /// <summary>
         ///     Runs a test for find best matching type returns any HTML element when no match found.
         /// </summary>
         [TestMethod]
@@ -32,6 +51,26 @@
             var actual = target.FindBestMatchingType(node);
 
             actual.Should().Be(typeof(AnyHtmlElement));
+        }
+
+        /// <summary>
+        ///     Runs a test for find best matching type returns type matching case insensitive tag name and attribute.
+        /// </summary>
+        [TestMethod]
+        public void FindBestMatchingTypeReturnsTypeMatchingCaseInsensitiveTagNameAndAttributeTest()
+        {
+            var node = Substitute.For<IXPathNavigable>();
+            var navigator = Substitute.For<XPathNavigator>();
+
+            node.CreateNavigator().Returns(navigator);
+            navigator.Name.Returns("inPUT");
+            navigator.GetAttribute("type", string.Empty).Returns("suBMit");
+
+            var target = typeof(HtmlElement);
+
+            var actual = target.FindBestMatchingType(node);
+
+            actual.Should().Be(typeof(HtmlButton));
         }
 
         /// <summary>

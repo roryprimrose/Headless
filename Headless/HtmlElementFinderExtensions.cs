@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using Headless.Properties;
@@ -69,6 +70,43 @@
             string attributeName, 
             string attributeValue) where T : HtmlElement
         {
+            return finder.AllByAttribute(attributeName, attributeValue, true);
+        }
+
+        /// <summary>
+        /// Finds the elements by attribute anywhere under this node.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of <see cref="HtmlElement"/> to return.
+        /// </typeparam>
+        /// <param name="finder">
+        /// The finder.
+        /// </param>
+        /// <param name="attributeName">
+        /// Name of the attribute.
+        /// </param>
+        /// <param name="attributeValue">
+        /// The attribute value.
+        /// </param>
+        /// <param name="ignoreCase">
+        /// if set to <c>true</c>, the case sensitivity on the attribute value is ignored.
+        /// </param>
+        /// <returns>
+        /// An <see cref="IEnumerable{T}"/> value.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// The <paramref name="finder"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The <paramref name="attributeName"/> parameter is <c>null</c>, empty or only
+        ///     contains white-space.
+        /// </exception>
+        public static IEnumerable<T> AllByAttribute<T>(
+            this IHtmlElementFinder<T> finder, 
+            string attributeName, 
+            string attributeValue, 
+            bool ignoreCase) where T : HtmlElement
+        {
             if (finder == null)
             {
                 throw new ArgumentNullException("finder");
@@ -80,9 +118,9 @@
             }
 
             var tagSelector = finder.BuildElementQuery();
-            var query = tagSelector + "[@" + attributeName + "='" + attributeValue + "']";
+            var attributeQuery = QueryFactory.BuildAttributeQuery(attributeName, attributeValue, ignoreCase);
 
-            return finder.Execute(query);
+            return finder.Execute(tagSelector + attributeQuery);
         }
 
         /// <summary>
@@ -168,6 +206,8 @@
         /// <exception cref="ArgumentException">
         /// The <paramref name="tagName"/> parameter is <c>null</c>, empty or only contains white-space.
         /// </exception>
+        [SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase",
+            Justification = "HTML references are lower-case by convention.")]
         public static IEnumerable<T> AllByTagName<T>(this IHtmlElementFinder<T> finder, string tagName)
             where T : AnyHtmlElement
         {
@@ -181,7 +221,8 @@
                 throw new ArgumentException(Resources.Guard_NoValueProvided, "tagName");
             }
 
-            return finder.Execute(".//" + tagName);
+            // Tag names are already folded to lower case when the HTML was read
+            return finder.Execute(".//" + tagName.ToLowerInvariant());
         }
 
         /// <summary>
@@ -226,12 +267,11 @@
         /// <returns>
         /// An <see cref="IEnumerable{T}"/> value.
         /// </returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// finder
-        /// </exception>
         /// <exception cref="ArgumentNullException">
         /// The <paramref name="finder"/> parameter is <c>null</c>.
         /// </exception>
+        [SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase",
+            Justification = "HTML references are lower-case by convention.")]
         public static IEnumerable<T> AllByText<T>(this IHtmlElementFinder<T> finder, string text, bool ignoreCase)
             where T : HtmlElement
         {
@@ -240,13 +280,19 @@
                 throw new ArgumentNullException("finder");
             }
 
+            if (text == null)
+            {
+                text = string.Empty;
+            }
+
             var tagSelector = finder.BuildElementQuery();
             string textFilter;
 
             if (ignoreCase)
             {
-                textFilter = "[translate(./text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = translate('" +
-                             text + "', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')]";
+                // The text value is a literal value in the query
+                // so it can be converted to lower case here rather than within the execution of the XPath query
+                textFilter = "[" + QueryFactory.CaseQuery("./text()", true) + " = '" + text.ToLowerInvariant() + "']";
             }
             else
             {
@@ -292,8 +338,8 @@
             var matches = finder.AllByAttribute("id", id);
 
             var failureMessage = string.Format(
-                CultureInfo.CurrentCulture,
-                Resources.HtmlElement_MultipleMatchesFoundForId,
+                CultureInfo.CurrentCulture, 
+                Resources.HtmlElement_MultipleMatchesFoundForId, 
                 id);
 
             return matches.EnsureSingle(failureMessage);
@@ -333,8 +379,8 @@
             var matches = finder.AllByAttribute("name", name);
 
             var failureMessage = string.Format(
-                CultureInfo.CurrentCulture,
-                Resources.HtmlElement_MultipleMatchesFoundForName,
+                CultureInfo.CurrentCulture, 
+                Resources.HtmlElement_MultipleMatchesFoundForName, 
                 name);
 
             return matches.EnsureSingle(failureMessage);
