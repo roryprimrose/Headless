@@ -26,7 +26,7 @@
                 var location = new Uri("https://google.com");
                 var request = new HttpRequestMessage(HttpMethod.Get, location);
 
-                Action action = () => browser.Execute<PageWrapper>(request, HttpStatusCode.OK, null);
+                Action action = () => browser.Execute<TextPageWrapper>(request, HttpStatusCode.OK, null);
 
                 action.ShouldThrow<ArgumentNullException>();
             }
@@ -58,7 +58,7 @@
             {
                 var pageFactory = Substitute.For<IPageFactory>();
 
-                Action action = () => browser.Execute<PageWrapper>(null, HttpStatusCode.OK, pageFactory);
+                Action action = () => browser.Execute<TextPageWrapper>(null, HttpStatusCode.OK, pageFactory);
 
                 action.ShouldThrow<ArgumentNullException>();
             }

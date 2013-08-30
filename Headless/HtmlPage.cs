@@ -39,7 +39,7 @@
         }
 
         /// <inheritdoc />
-        internal override void SetContent(HttpContent content)
+        protected internal override void SetContent(HttpContent content)
         {
             var result = content.ReadAsStreamAsync().Result;
 

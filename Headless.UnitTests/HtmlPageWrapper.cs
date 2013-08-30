@@ -1,12 +1,13 @@
 ﻿namespace Headless.UnitTests
 {
     using System;
+    using System.Net.Http;
 
     /// <summary>
-    ///     The <see cref="PageWrapper" />
+    ///     The <see cref="HtmlPageWrapper" />
     ///     class is used for internal testing.
     /// </summary>
-    internal class PageWrapper : TextPage
+    internal class HtmlPageWrapper : HtmlPage
     {
         /// <summary>
         ///     The location.
@@ -14,22 +15,22 @@
         private readonly Uri _location;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="PageWrapper" /> class.
+        ///     Initializes a new instance of the <see cref="HtmlPageWrapper" /> class.
         /// </summary>
-        public PageWrapper()
+        public HtmlPageWrapper()
         {
             _location = new Uri("https://google.com");
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PageWrapper"/> class.
+        /// Assigns the content.
         /// </summary>
-        /// <param name="location">
-        /// The location.
+        /// <param name="content">
+        /// The content.
         /// </param>
-        public PageWrapper(Uri location)
+        public void AssignContent(HttpContent content)
         {
-            _location = location;
+            SetContent(content);
         }
 
         /// <inheritdoc />

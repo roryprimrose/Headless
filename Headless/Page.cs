@@ -84,7 +84,7 @@
         /// <param name="content">
         /// The content.
         /// </param>
-        internal abstract void SetContent(HttpContent content);
+        protected internal abstract void SetContent(HttpContent content);
 
         /// <inheritdoc />
         public IBrowser Browser

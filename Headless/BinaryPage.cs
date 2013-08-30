@@ -23,7 +23,7 @@
         }
 
         /// <inheritdoc />
-        internal override void SetContent(HttpContent content)
+        protected internal override void SetContent(HttpContent content)
         {
             _content = content.ReadAsByteArrayAsync().Result;
         }

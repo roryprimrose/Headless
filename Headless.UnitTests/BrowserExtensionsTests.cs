@@ -24,16 +24,16 @@
         public void GoToStaticLocationNavigatesToSpecificLocationTest()
         {
             var location = new Uri("http://www.somwhere.com");
-            var expected = new PageWrapper();
+            var expected = new TextPageWrapper();
 
             var target = Substitute.For<IBrowser>();
 
-            target.Execute<PageWrapper>(
+            target.Execute<TextPageWrapper>(
                 Arg.Is<HttpRequestMessage>(x => x.RequestUri == location && x.Method == HttpMethod.Get), 
                 HttpStatusCode.OK, 
                 Arg.Any<IPageFactory>()).Returns(expected);
 
-            var actual = target.GoTo<PageWrapper>(location);
+            var actual = target.GoTo<TextPageWrapper>(location);
 
             actual.Should().BeSameAs(expected);
         }
@@ -44,16 +44,16 @@
         [TestMethod]
         public void GoToStaticNavigatesToPageLocationTest()
         {
-            var expected = new PageWrapper();
+            var expected = new TextPageWrapper();
 
             var target = Substitute.For<IBrowser>();
 
-            target.Execute<PageWrapper>(
+            target.Execute<TextPageWrapper>(
                 Arg.Is<HttpRequestMessage>(x => x.RequestUri == expected.Location && x.Method == HttpMethod.Get), 
                 HttpStatusCode.OK, 
                 Arg.Any<IPageFactory>()).Returns(expected);
 
-            var actual = target.GoTo<PageWrapper>();
+            var actual = target.GoTo<TextPageWrapper>();
 
             actual.Should().BeSameAs(expected);
         }
@@ -64,16 +64,16 @@
         [TestMethod]
         public void GoToStaticWithStatusNavigatesToPageLocationTest()
         {
-            var expected = new PageWrapper();
+            var expected = new TextPageWrapper();
 
             var target = Substitute.For<IBrowser>();
 
-            target.Execute<PageWrapper>(
+            target.Execute<TextPageWrapper>(
                 Arg.Is<HttpRequestMessage>(x => x.RequestUri == expected.Location && x.Method == HttpMethod.Get), 
                 HttpStatusCode.NotFound, 
                 Arg.Any<IPageFactory>()).Returns(expected);
 
-            var actual = target.GoTo<PageWrapper>(HttpStatusCode.NotFound);
+            var actual = target.GoTo<TextPageWrapper>(HttpStatusCode.NotFound);
 
             actual.Should().BeSameAs(expected);
         }
@@ -115,7 +115,7 @@
 
             var target = Substitute.For<IBrowser>();
 
-            Action action = () => target.GoTo<PageWrapper>(location, HttpStatusCode.OK, null);
+            Action action = () => target.GoTo<TextPageWrapper>(location, HttpStatusCode.OK, null);
 
             action.ShouldThrow<ArgumentNullException>();
         }
@@ -127,17 +127,17 @@
         public void PostToStaticLocationNavigatesToSpecificLocationTest()
         {
             var location = new Uri("http://www.somwhere.com");
-            var expected = new PageWrapper();
+            var expected = new TextPageWrapper();
             IList<PostEntry> parameters = new List<PostEntry>();
 
             var target = Substitute.For<IBrowser>();
 
-            target.Execute<PageWrapper>(
+            target.Execute<TextPageWrapper>(
                 Arg.Is<HttpRequestMessage>(x => x.RequestUri == location && x.Method == HttpMethod.Post), 
                 HttpStatusCode.OK, 
                 Arg.Any<IPageFactory>()).Returns(expected);
 
-            var actual = target.PostTo<PageWrapper>(parameters, location);
+            var actual = target.PostTo<TextPageWrapper>(parameters, location);
 
             actual.Should().BeSameAs(expected);
         }
@@ -152,16 +152,16 @@
             {
                 new PostEntry("test", "value")
             };
-            var expected = new PageWrapper();
+            var expected = new TextPageWrapper();
 
             var target = Substitute.For<IBrowser>();
 
-            target.Execute<PageWrapper>(
+            target.Execute<TextPageWrapper>(
                 Arg.Is<HttpRequestMessage>(x => x.RequestUri == expected.Location && x.Method == HttpMethod.Post), 
                 HttpStatusCode.OK, 
                 Arg.Any<IPageFactory>()).Returns(expected);
 
-            var actual = target.PostTo<PageWrapper>(parameters);
+            var actual = target.PostTo<TextPageWrapper>(parameters);
 
             actual.Should().BeSameAs(expected);
         }
@@ -185,16 +185,16 @@
                     new PostFileStreamEntry("files", "dynamicFile.txt", new MemoryStream()),
                     new PostFileEntry("files", null)
                 };
-                var expected = new PageWrapper();
+                var expected = new TextPageWrapper();
 
                 var target = Substitute.For<IBrowser>();
 
-                target.Execute<PageWrapper>(
+                target.Execute<TextPageWrapper>(
                     Arg.Is<HttpRequestMessage>(x => x.RequestUri == expected.Location && x.Method == HttpMethod.Post), 
                     HttpStatusCode.OK, 
                     Arg.Any<IPageFactory>()).Returns(expected);
 
-                var actual = target.PostTo<PageWrapper>(parameters);
+                var actual = target.PostTo<TextPageWrapper>(parameters);
 
                 actual.Should().BeSameAs(expected);
             }
@@ -211,16 +211,16 @@
         public void PostToStaticWithStatusNavigatesToPageLocationTest()
         {
             IList<PostEntry> parameters = new List<PostEntry>();
-            var expected = new PageWrapper();
+            var expected = new TextPageWrapper();
 
             var target = Substitute.For<IBrowser>();
 
-            target.Execute<PageWrapper>(
+            target.Execute<TextPageWrapper>(
                 Arg.Is<HttpRequestMessage>(x => x.RequestUri == expected.Location && x.Method == HttpMethod.Post), 
                 HttpStatusCode.NotFound, 
                 Arg.Any<IPageFactory>()).Returns(expected);
 
-            var actual = target.PostTo<PageWrapper>(parameters, HttpStatusCode.NotFound);
+            var actual = target.PostTo<TextPageWrapper>(parameters, HttpStatusCode.NotFound);
 
             actual.Should().BeSameAs(expected);
         }
@@ -267,7 +267,7 @@
 
             var target = Substitute.For<IBrowser>();
 
-            Action action = () => target.PostTo<PageWrapper>(parameters, location, HttpStatusCode.OK, null);
+            Action action = () => target.PostTo<TextPageWrapper>(parameters, location, HttpStatusCode.OK, null);
 
             action.ShouldThrow<ArgumentNullException>();
         }
@@ -283,7 +283,7 @@
             var pageFactory = Substitute.For<IPageFactory>();
             var target = Substitute.For<IBrowser>();
 
-            Action action = () => target.PostTo<PageWrapper>(null, location, HttpStatusCode.OK, pageFactory);
+            Action action = () => target.PostTo<TextPageWrapper>(null, location, HttpStatusCode.OK, pageFactory);
 
             action.ShouldThrow<ArgumentNullException>();
         }

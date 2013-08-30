@@ -33,7 +33,7 @@
 
             var target = new DefaultPageFactory();
 
-            var actual = target.Create<PageWrapper>(browser, response, result);
+            var actual = target.Create<TextPageWrapper>(browser, response, result);
 
             actual.Should().NotBeNull();
             actual.Browser.Should().Be(browser);

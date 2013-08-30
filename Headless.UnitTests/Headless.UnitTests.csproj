@@ -71,10 +71,13 @@
     <Compile Include="Activation\TypeExtensionsTests.cs" />
     <Compile Include="Activation\SupportedTagAttributeTests.cs" />
     <Compile Include="Activation\SupportedTagAttributeComparerTests.cs" />
+    <Compile Include="HtmlPageTests.cs" />
+    <Compile Include="HtmlPageWrapper.cs" />
     <Compile Include="PostFileStreamEntryTests.cs" />
     <Compile Include="PostFileEntryTests.cs" />
     <Compile Include="HtmlPageStub.cs" />
-    <Compile Include="PageWrapper.cs" />
+    <Compile Include="StreamContentFactory.cs" />
+    <Compile Include="TextPageWrapper.cs" />
     <Compile Include="InvalidHtmlElementMatchExceptionTests.cs" />
     <Compile Include="HtmlElementNotFoundExceptionTests.cs" />
     <Compile Include="HttpOutcomeExceptionTests.cs" />
