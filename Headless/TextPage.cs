@@ -1,5 +1,6 @@
 ﻿namespace Headless
 {
+    using System;
     using System.Net.Http;
 
     /// <summary>
@@ -16,6 +17,11 @@
         /// <inheritdoc />
         protected internal override void SetContent(HttpContent content)
         {
+            if (content == null)
+            {
+                throw new ArgumentNullException("content");
+            }
+
             var result = content.ReadAsStringAsync().Result;
 
             _content = result;

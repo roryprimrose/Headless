@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Xml.XPath;
     using Headless.Activation;
@@ -116,7 +117,8 @@
 
             var nodes = navigator.Select(query);
 
-            var htmlElements = (from IXPathNavigable node in nodes select _page.ElementFactory.Create<T>(_page, node)).ToList();
+            var htmlElements =
+                (from IXPathNavigable node in nodes select _page.ElementFactory.Create<T>(_page, node)).ToList();
 
             var radioButtonNames = new List<string>();
 
@@ -156,11 +158,17 @@
         {
             if (supportedTag.HasAttributeFilter)
             {
-                return supportedTag.TagName + "[@" + supportedTag.AttributeName + "='" + supportedTag.AttributeValue +
-                       "']";
+                const string AttributeFilterQuery = "*[local-name() = '{0}' and @{1}='{2}']";
+
+                return string.Format(
+                    CultureInfo.CurrentCulture, 
+                    AttributeFilterQuery, 
+                    supportedTag.TagName, 
+                    supportedTag.AttributeName, 
+                    supportedTag.AttributeValue);
             }
 
-            return supportedTag.TagName;
+            return "*[local-name() = '" + supportedTag.TagName + "']";
         }
     }
 }
