@@ -222,7 +222,7 @@
         /// <value>
         ///     The nodes.
         /// </value>
-        protected IReadOnlyCollection<IXPathNavigable> Nodes
+        protected ReadOnlyCollection<IXPathNavigable> Nodes
         {
             get
             {

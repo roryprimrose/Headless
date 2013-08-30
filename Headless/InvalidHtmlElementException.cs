@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Globalization;
     using System.Linq;
     using System.Runtime.Serialization;
@@ -43,7 +44,7 @@
         /// <param name="supportedTags">
         /// The supported tags.
         /// </param>
-        public InvalidHtmlElementException(IXPathNavigable node, IReadOnlyCollection<SupportedTagAttribute> supportedTags)
+        public InvalidHtmlElementException(IXPathNavigable node, ReadOnlyCollection<SupportedTagAttribute> supportedTags)
             : this(BuildSupportedTagsMessage(node, supportedTags))
         {
             _node = node;

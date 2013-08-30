@@ -17,7 +17,7 @@
         /// <summary>
         ///     The related nodes.
         /// </summary>
-        private readonly IReadOnlyCollection<IXPathNavigable> _relatedNodes;
+        private readonly ReadOnlyCollection<IXPathNavigable> _relatedNodes;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HtmlRadioButton"/> class.
@@ -65,7 +65,7 @@
         /// <returns>
         /// The <see cref="IList{T}"/>.
         /// </returns>
-        private IReadOnlyCollection<IXPathNavigable> FindRelatedNodes(IHtmlPage page, IXPathNavigable node)
+        private ReadOnlyCollection<IXPathNavigable> FindRelatedNodes(IHtmlPage page, IXPathNavigable node)
         {
             var form = node.GetHtmlForm(page);
 
@@ -149,7 +149,7 @@
         /// <value>
         ///     The nodes.
         /// </value>
-        protected IReadOnlyCollection<IXPathNavigable> Nodes
+        protected ReadOnlyCollection<IXPathNavigable> Nodes
         {
             get
             {

@@ -30,5 +30,17 @@
         /// </returns>
         T Execute<T>(HttpRequestMessage request, HttpStatusCode expectedStatusCode, IPageFactory pageFactory)
             where T : IPage, new();
+
+        /// <summary>
+        ///     Gets or sets the content type resolver.
+        /// </summary>
+        /// <value>
+        ///     The content type resolver.
+        /// </value>
+        IPageContentTypeResolver ContentTypeResolver
+        {
+            get;
+            set;
+        }
     }
 }

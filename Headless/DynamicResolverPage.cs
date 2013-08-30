@@ -40,13 +40,15 @@
             }
 
             // Look at the content type header to determine the correct type of page to return
-            var contentType = DetermineContentType(response);
+            var mediaType = response.Content.Headers.ContentType.MediaType;
 
-            if (contentType == ContentType.Html)
+            var contentType = browser.ContentTypeResolver.DeterminePageType(mediaType);
+
+            if (contentType == PageContentType.Html)
             {
                 _resolvedPage = new DynamicHtmlPage();
             }
-            else if (contentType == ContentType.Binary)
+            else if (contentType == PageContentType.Binary)
             {
                 _resolvedPage = new BinaryPageWrapper();
             }
@@ -63,38 +65,6 @@
         {
             // There is no verification of dynamic page locations because there is no model to define where the current location should be
             return true;
-        }
-
-        /// <summary>
-        /// Determines the type of the content.
-        /// </summary>
-        /// <param name="response">
-        /// The response.
-        /// </param>
-        /// <returns>
-        /// A <see cref="ContentType"/> value.
-        /// </returns>
-        private static ContentType DetermineContentType(HttpResponseMessage response)
-        {
-            var mediaType = response.Content.Headers.ContentType.MediaType;
-
-            if (mediaType.Equals("text/html", StringComparison.OrdinalIgnoreCase))
-            {
-                return ContentType.Html;
-            }
-
-            if (mediaType.Equals("text/xml", StringComparison.OrdinalIgnoreCase))
-            {
-                return ContentType.Html;
-            }
-
-            // TODO: Find out more binary content types here
-            if (mediaType.IndexOf("image", StringComparison.OrdinalIgnoreCase) > -1)
-            {
-                return ContentType.Binary;
-            }
-
-            return ContentType.Text;
         }
 
         /// <inheritdoc />
@@ -159,28 +129,6 @@
             {
                 return ResolvedPage.StatusDescription;
             }
-        }
-
-        /// <summary>
-        ///     The <see cref="ContentType" />
-        ///     enum identifies broad HTTP content types.
-        /// </summary>
-        private enum ContentType
-        {
-            /// <summary>
-            ///     The document contains HTML/XML formatted text.
-            /// </summary>
-            Html = 0, 
-
-            /// <summary>
-            ///     The document contains text.
-            /// </summary>
-            Text, 
-
-            /// <summary>
-            ///     The document contains binary data.
-            /// </summary>
-            Binary
         }
     }
 }

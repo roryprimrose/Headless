@@ -15,7 +15,7 @@
         /// <summary>
         ///     Stores the http request outcomes.
         /// </summary>
-        private readonly IReadOnlyCollection<HttpOutcome> _outcomes;
+        private readonly ReadOnlyCollection<HttpOutcome> _outcomes;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HttpResult"/> class.
@@ -39,7 +39,7 @@
         /// <value>
         ///     The outcomes.
         /// </value>
-        public IReadOnlyCollection<HttpOutcome> Outcomes
+        public ReadOnlyCollection<HttpOutcome> Outcomes
         {
             [DebuggerStepThrough]
             get

@@ -13,6 +13,8 @@
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,6 +37,7 @@
     <DocumentationFile>bin\Release\Headless.XML</DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>..\Solution Items\Application.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="SgmlReaderDll">
@@ -42,7 +46,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -75,6 +78,9 @@
     </Compile>
     <Compile Include="AnyHtmlElement.cs">
       <DependentUpon>IHtmlElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DefaultPageContentTypeResolver.cs">
+      <DependentUpon>IPageContentTypeResolver.cs</DependentUpon>
     </Compile>
     <Compile Include="DynamicHtmlPage.cs">
       <DependentUpon>IPage.cs</DependentUpon>
@@ -145,6 +151,8 @@
     <Compile Include="InvalidHtmlElementException.cs" />
     <Compile Include="InvalidHtmlElementMatchException.cs" />
     <Compile Include="IPage.cs" />
+    <Compile Include="IPageContentTypeResolver.cs" />
+    <Compile Include="PageContentType.cs" />
     <Compile Include="PostEntry.cs" />
     <Compile Include="PostFileEntry.cs">
       <DependentUpon>PostEntry.cs</DependentUpon>

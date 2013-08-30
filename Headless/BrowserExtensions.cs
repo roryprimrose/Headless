@@ -10,6 +10,7 @@
     using System.Net.Http.Headers;
     using System.Web;
     using Headless.Activation;
+    using Microsoft.Win32;
 
     /// <summary>
     ///     The <see cref="BrowserExtensions" />
@@ -534,7 +535,7 @@
         /// </returns>
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", 
             Justification = "All content types and streams are disposed when the HTTP Request is disposed.")]
-        private static MultipartFormDataContent BuildMultipartContent(IReadOnlyList<PostEntry> parameters)
+        private static MultipartFormDataContent BuildMultipartContent(List<PostEntry> parameters)
         {
             var multiPart = new MultipartFormDataContent();
 
@@ -572,7 +573,13 @@
                     var fileStream = fileEntry.ReadContent();
                     var fileContent = new StreamContent(fileStream);
                     var fileName = Path.GetFileName(fileEntry.Value);
-                    var contentType = MimeMapping.GetMimeMapping(fileEntry.Value);
+                    var fileExtension = Path.GetExtension(fileEntry.Value);
+                    var contentType = Registry.GetValue(@"HKEY_CLASSES_ROOT\" + fileExtension, "Content Type", null) as string;
+
+                    if (string.IsNullOrWhiteSpace(contentType))
+                    {
+                        contentType = "application/octet-stream";
+                    }
 
                     fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
                     {
@@ -597,7 +604,7 @@
         /// <returns>
         /// A <see cref="HttpContent"/> value.
         /// </returns>
-        private static HttpContent BuildPostContent(IReadOnlyList<PostEntry> parameters)
+        private static HttpContent BuildPostContent(List<PostEntry> parameters)
         {
             if (parameters.OfType<PostFileEntry>().Any())
             {

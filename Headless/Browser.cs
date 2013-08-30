@@ -27,6 +27,11 @@
         private readonly HttpClientHandler _handler;
 
         /// <summary>
+        ///     Stores the content type resolver.
+        /// </summary>
+        private IPageContentTypeResolver _contentTypeResolver;
+
+        /// <summary>
         ///     Stores whether this instance has been disposed.
         /// </summary>
         private bool _disposed;
@@ -43,6 +48,7 @@
                 AllowAutoRedirect = false
             };
             _client = new HttpClient(_handler);
+            _contentTypeResolver = new DefaultPageContentTypeResolver();
         }
 
         /// <summary>
@@ -63,7 +69,8 @@
         }
 
         /// <inheritdoc />
-        public T Execute<T>(HttpRequestMessage request, HttpStatusCode expectedStatusCode, IPageFactory pageFactory) where T : IPage, new()
+        public T Execute<T>(HttpRequestMessage request, HttpStatusCode expectedStatusCode, IPageFactory pageFactory)
+            where T : IPage, new()
         {
             var page = default(T);
 
@@ -284,6 +291,20 @@
             }
 
             return false;
+        }
+
+        /// <inheritdoc />
+        public virtual IPageContentTypeResolver ContentTypeResolver
+        {
+            get
+            {
+                return _contentTypeResolver;
+            }
+
+            set
+            {
+                _contentTypeResolver = value;
+            }
         }
 
         /// <summary>

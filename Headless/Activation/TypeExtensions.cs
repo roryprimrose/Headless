@@ -5,7 +5,6 @@
     using System.Collections.ObjectModel;
     using System.Globalization;
     using System.Linq;
-    using System.Reflection;
     using System.Xml.XPath;
     using Headless.Properties;
 
@@ -18,14 +17,14 @@
         /// <summary>
         ///     Stores the matching type cache.
         /// </summary>
-        private static readonly IDictionary<string, IReadOnlyCollection<Type>> _matchingTypesCache =
-            new Dictionary<string, IReadOnlyCollection<Type>>();
+        private static readonly IDictionary<string, ReadOnlyCollection<Type>> _matchingTypesCache =
+            new Dictionary<string, ReadOnlyCollection<Type>>();
 
         /// <summary>
         ///     Stores the supported tag name cache.
         /// </summary>
-        private static readonly IDictionary<string, IReadOnlyCollection<SupportedTagAttribute>> _supportedTagCache =
-            new Dictionary<string, IReadOnlyCollection<SupportedTagAttribute>>();
+        private static readonly IDictionary<string, ReadOnlyCollection<SupportedTagAttribute>> _supportedTagCache =
+            new Dictionary<string, ReadOnlyCollection<SupportedTagAttribute>>();
 
         /// <summary>
         ///     Stores the tag name cache sync lock.
@@ -71,7 +70,7 @@
 
             foreach (var possibleType in possibleTypes)
             {
-                var attributes = possibleType.GetCustomAttributes<SupportedTagAttribute>();
+                var attributes = possibleType.GetCustomAttributes(typeof(SupportedTagAttribute), true).OfType<SupportedTagAttribute>();
 
                 foreach (var attribute in attributes)
                 {
@@ -126,7 +125,7 @@
         /// <returns>
         /// An <see cref="IEnumerable{T}"/> value.
         /// </returns>
-        public static IReadOnlyCollection<Type> GetMatchingTypes(this Type elementType)
+        public static ReadOnlyCollection<Type> GetMatchingTypes(this Type elementType)
         {
             if (elementType == null)
             {
@@ -169,12 +168,12 @@
         /// Type of the element.
         /// </param>
         /// <returns>
-        /// An <see cref="IReadOnlyCollection{T}"/> value.
+        /// An <see cref="ReadOnlyCollection{T}"/> value.
         /// </returns>
         /// <exception cref="System.InvalidOperationException">
         /// The type does not indicate any supported tags.
         /// </exception>
-        public static IReadOnlyCollection<SupportedTagAttribute> GetSupportedTags(this Type elementType)
+        public static ReadOnlyCollection<SupportedTagAttribute> GetSupportedTags(this Type elementType)
         {
             if (elementType == null)
             {
@@ -228,7 +227,7 @@
 
             foreach (var type in types)
             {
-                var attributes = type.GetCustomAttributes<SupportedTagAttribute>();
+                var attributes = type.GetCustomAttributes(typeof(SupportedTagAttribute), true).OfType<SupportedTagAttribute>();
 
                 foreach (var attribute in attributes)
                 {
