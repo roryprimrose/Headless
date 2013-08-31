@@ -20,17 +20,11 @@
         [TestMethod]
         public void CreateReturnsBestMatchingTypeTest()
         {
-            var page = Substitute.For<IHtmlPage>();
-            var node = Substitute.For<IXPathNavigable>();
-            var navigator = Substitute.For<XPathNavigator>();
-
-            node.CreateNavigator().Returns(navigator);
-            navigator.Name.Returns("input");
-            navigator.GetAttribute("type", string.Empty).Returns("text");
+            var page = new HtmlPageStub("<input type='text' />");
 
             var target = new DefaultHtmlElementFactory();
 
-            var actual = target.Create<HtmlElement>(page, node);
+            var actual = target.Create<HtmlElement>(page, page.Node);
 
             actual.Should().NotBeNull();
             actual.Should().BeOfType<HtmlInput>();
@@ -42,17 +36,11 @@
         [TestMethod]
         public void CreateReturnsExactMatchingTypeTest()
         {
-            var page = Substitute.For<IHtmlPage>();
-            var node = Substitute.For<IXPathNavigable>();
-            var navigator = Substitute.For<XPathNavigator>();
-
-            node.CreateNavigator().Returns(navigator);
-            navigator.Name.Returns("input");
-            navigator.GetAttribute("type", string.Empty).Returns("text");
+            var page = new HtmlPageStub("<input type='text' />");
 
             var target = new DefaultHtmlElementFactory();
 
-            var actual = target.Create<HtmlInput>(page, node);
+            var actual = target.Create<HtmlInput>(page, page.Node);
 
             actual.Should().NotBeNull();
         }

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Xml;
     using System.Xml.XPath;
     using FluentAssertions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -21,12 +20,10 @@
         [TestMethod]
         public void EnsureSingleReturnsSingleInstanceInSetTest()
         {
-            var doc = new XmlDocument();
+            const string Html = "<form name='Test' />";
 
-            doc.LoadXml("<form name='Test' />");
-
-            var page = new HtmlPageStub(doc);
-            var element = new HtmlForm(page, doc.DocumentElement);
+            var page = new HtmlPageStub(Html);
+            var element = new HtmlForm(page, page.Node);
             var elements = new List<HtmlElement>
             {
                 element
@@ -43,12 +40,10 @@
         [TestMethod]
         public void EnsureSingleThrowsExceptionWhenMultipleElementsFoundTest()
         {
-            var doc = new XmlDocument();
+            const string Html = "<form name='Test' />";
 
-            doc.LoadXml("<form name='Test' />");
-
-            var page = new HtmlPageStub(doc);
-            var element = new HtmlForm(page, doc.DocumentElement);
+            var page = new HtmlPageStub(Html);
+            var element = new HtmlForm(page, page.Node);
             var elements = new List<HtmlElement>
             {
                 element, 
@@ -79,12 +74,21 @@
         [TestMethod]
         public void GetHtmlFormForElementReturnsParentFormTest()
         {
-            var doc = new XmlDocument();
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>
+";
 
-            doc.LoadXml(
-                "<html><head /><body><form name='Test'><input type='text' name='Data' /></form><form name='SecondTest'><input type='checkbox' name='IsSet' /></form></body></html>");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var input = page.Find<HtmlInput>().ByName("Data");
             var actual = input.GetHtmlForm();
@@ -99,12 +103,21 @@
         [TestMethod]
         public void GetHtmlFormForElementReturnsSourceElementWhenIsFormTest()
         {
-            var doc = new XmlDocument();
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>
+";
 
-            doc.LoadXml(
-                "<html><head /><body><form name='Test'><input type='text' name='Data' /></form><form name='SecondTest'><input type='checkbox' name='IsSet' /></form></body></html>");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var target = page.Find<HtmlForm>().ByName("Test");
 
@@ -119,12 +132,21 @@
         [TestMethod]
         public void GetHtmlFormForElementThrowsExceptionWhenFormNotFoundTest()
         {
-            var doc = new XmlDocument();
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>
+";
 
-            doc.LoadXml(
-                "<html><head /><body><form name='Test'><input type='text' name='Data' /></form><form name='SecondTest'><input type='checkbox' name='IsSet' /></form></body></html>");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var target = page.Find<AnyHtmlElement>().AllByTagName("body").EnsureSingle();
 
@@ -152,14 +174,23 @@
         [TestMethod]
         public void GetHtmlFormForNodeThrowsExceptionWhenNoFormFoundTest()
         {
-            var doc = new XmlDocument();
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>
+";
 
-            doc.LoadXml(
-                "<html><head /><body><form name='Test'><input type='text' name='Data' /></form><form name='SecondTest'><input type='checkbox' name='IsSet' /></form></body></html>");
+            var page = new HtmlPageStub(Html);
 
-            var page = new HtmlPageStub(doc);
-
-            Action action = () => doc.DocumentElement.GetHtmlForm(page);
+            Action action = () => page.Document.GetHtmlForm(page);
 
             action.ShouldThrow<HtmlElementNotFoundException>();
         }
@@ -200,11 +231,9 @@
         [TestMethod]
         public void HasClassReturnsFalseWhenElementLacksClassAttributeTest()
         {
-            var doc = new XmlDocument();
+            const string Html = "<html />";
 
-            doc.LoadXml("<html />");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var target = page.Find<AnyHtmlElement>().All().EnsureSingle();
 
@@ -217,11 +246,9 @@
         [TestMethod]
         public void HasClassReturnsFalseWhenElementLacksExactMatchOnClassTest()
         {
-            var doc = new XmlDocument();
+            const string Html = "<html class='test-stuff test_more tested' />";
 
-            doc.LoadXml("<html class='test-stuff test_more tested' />");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var target = page.Find<AnyHtmlElement>().All().EnsureSingle();
 
@@ -234,11 +261,9 @@
         [TestMethod]
         public void HasClassReturnsFalseWhenElementLacksSpecifiedClassTest()
         {
-            var doc = new XmlDocument();
+            const string Html = "<html class='haha' />";
 
-            doc.LoadXml("<html class='haha' />");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var target = page.Find<AnyHtmlElement>().All().EnsureSingle();
 
@@ -251,11 +276,9 @@
         [TestMethod]
         public void HasClassReturnsTrueWhenClassAttributeContainsSpecifiedClassTest()
         {
-            var doc = new XmlDocument();
+            const string Html = "<html class='stuff test works' />";
 
-            doc.LoadXml("<html class='stuff test works' />");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var target = page.Find<AnyHtmlElement>().All().EnsureSingle();
 
@@ -268,11 +291,9 @@
         [TestMethod]
         public void HasClassReturnsTrueWhenClassAttributeEndsWithSpecifiedClassTest()
         {
-            var doc = new XmlDocument();
+            const string Html = "<html class='stuff test' />";
 
-            doc.LoadXml("<html class='stuff test' />");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var target = page.Find<AnyHtmlElement>().All().EnsureSingle();
 
@@ -285,11 +306,9 @@
         [TestMethod]
         public void HasClassReturnsTrueWhenClassAttributeStartsWithSpecifiedClassTest()
         {
-            var doc = new XmlDocument();
+            const string Html = "<html class='test stuff' />";
 
-            doc.LoadXml("<html class='test stuff' />");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var target = page.Find<AnyHtmlElement>().All().EnsureSingle();
 
@@ -302,11 +321,9 @@
         [TestMethod]
         public void HasClassReturnsTrueWhenElementHasClassTest()
         {
-            var doc = new XmlDocument();
+            const string Html = "<html class='test' />";
 
-            doc.LoadXml("<html class='test' />");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var target = page.Find<AnyHtmlElement>().All().EnsureSingle();
 
@@ -319,11 +336,9 @@
         [TestMethod]
         public void HasClassThrowsExceptionWhenClassNameIsEmptyTest()
         {
-            var doc = new XmlDocument();
+            const string Html = "<html class='test stuff' />";
 
-            doc.LoadXml("<html class='test stuff' />");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var target = page.Find<AnyHtmlElement>().All().EnsureSingle();
 
@@ -338,11 +353,9 @@
         [TestMethod]
         public void HasClassThrowsExceptionWhenClassNameIsNullTest()
         {
-            var doc = new XmlDocument();
+            const string Html = "<html class='test stuff' />";
 
-            doc.LoadXml("<html class='test stuff' />");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var target = page.Find<AnyHtmlElement>().All().EnsureSingle();
 
@@ -357,11 +370,9 @@
         [TestMethod]
         public void HasClassThrowsExceptionWhenClassNameIsWhiteSpaceTest()
         {
-            var doc = new XmlDocument();
+            const string Html = "<html class='test stuff' />";
 
-            doc.LoadXml("<html class='test stuff' />");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var target = page.Find<AnyHtmlElement>().All().EnsureSingle();
 

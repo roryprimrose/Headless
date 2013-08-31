@@ -2,7 +2,6 @@
 {
     using System;
     using System.Linq;
-    using System.Xml;
     using FluentAssertions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using NSubstitute;
@@ -15,43 +14,61 @@
     public class HtmlElementFinderExtensionsTests
     {
         /// <summary>
-        ///     Runs a test for all by attribute executes query in node context.
+        ///     Runs a test for all by attribute executes case insensitive query in node context.
         /// </summary>
         [TestMethod]
-        public void AllByAttributeExecutesQueryInNodeContextTest()
+        public void AllByAttributeExecutesCaseInsensitiveQueryInNodeContextTest()
         {
-            var doc = new XmlDocument();
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>";
 
-            doc.LoadXml(
-                "<html><head /><body><form name='Test'><input type='text' name='Data' /></form><form name='SecondTest'><input type='checkbox' name='IsSet' /></form></body></html>");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var form = page.Find<HtmlForm>().ByName("Test");
 
-            var actual = form.Find<HtmlElement>().AllByAttribute("type", "text").ToList();
+            var actual = form.Find<HtmlFormElement>().AllByAttribute("name", "data").ToList();
 
             actual.Count.Should().Be(1);
             actual[0].Should().BeAssignableTo<HtmlInput>();
+            actual[0].Name.Should().Be("Data");
         }
 
         /// <summary>
-        ///     Runs a test for all by attribute executes query with attribute filter.
+        ///     Runs a test for all by attribute executes case insensitive query.
         /// </summary>
         [TestMethod]
-        public void AllByAttributeExecutesQueryWithAttributeFilterTest()
+        public void AllByAttributeExecutesCaseInsensitiveQueryTest()
         {
-            var doc = new XmlDocument();
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>";
 
-            doc.LoadXml(
-                "<html><head /><body><form name='Test'><input type='text' name='Data' /></form><form name='SecondTest'><input type='checkbox' name='IsSet' /></form></body></html>");
+            var page = new HtmlPageStub(Html);
 
-            var page = new HtmlPageStub(doc);
-
-            var actual = page.Find<HtmlElement>().AllByAttribute("name", "IsSet").ToList();
+            var actual = page.Find<HtmlFormElement>().AllByAttribute("name", "IsSET").ToList();
 
             actual.Count.Should().Be(1);
             actual[0].Should().BeAssignableTo<HtmlCheckBox>();
+            actual[0].Name.Should().Be("IsSet");
         }
 
         /// <summary>
@@ -107,24 +124,94 @@
         }
 
         /// <summary>
-        ///     Runs a test for all by name executes query with name filter.
+        ///     Runs a test for all by attribute with case insensitive flag executes case insensitive query.
         /// </summary>
         [TestMethod]
-        public void AllByNameExecutesQueryWithNameFilterTest()
+        public void AllByAttributeWithCaseInsensitiveFlagExecutesCaseInsensitiveQueryTest()
         {
-            var doc = new XmlDocument();
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>";
 
-            doc.LoadXml(
-                "<html><head /><body><form name='Test'><input type='text' name='Data' /></form><form name='SecondTest'><input type='checkbox' name='IsSet' /></form></body></html>");
+            var page = new HtmlPageStub(Html);
 
-            var page = new HtmlPageStub(doc);
+            var actual = page.Find<HtmlFormElement>().AllByAttribute("name", "IsSET", true).ToList();
+
+            actual.Count.Should().Be(1);
+            actual[0].Should().BeAssignableTo<HtmlCheckBox>();
+            actual[0].Name.Should().Be("IsSet");
+        }
+
+        /// <summary>
+        ///     Runs a test for all by attribute with case sensitive flag executes case sensitive query.
+        /// </summary>
+        [TestMethod]
+        public void AllByAttributeWithCaseSensitiveFlagExecutesCaseSensitiveQueryTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>";
+
+            var page = new HtmlPageStub(Html);
+
+            var actual = page.Find<HtmlFormElement>().AllByAttribute("name", "IsSet", false).ToList();
+
+            actual.Count.Should().Be(1);
+            actual[0].Should().BeAssignableTo<HtmlCheckBox>();
+            actual[0].Name.Should().Be("IsSet");
+
+            actual = page.Find<HtmlFormElement>().AllByAttribute("name", "IsSET", false).ToList();
+
+            actual.Count.Should().Be(0);
+        }
+
+        /// <summary>
+        ///     Runs a test for all by name executes case insensitive query with name filter.
+        /// </summary>
+        [TestMethod]
+        public void AllByNameExecutesCaseInsensitiveQueryWithNameFilterTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>
+";
+
+            var page = new HtmlPageStub(Html);
 
             var form = page.Find<HtmlForm>().ByName("Test");
 
-            var actual = form.Find<HtmlElement>().AllByName("Data").ToList();
+            var actual = form.Find<HtmlFormElement>().AllByName("DATA").ToList();
 
             actual.Count.Should().Be(1);
             actual[0].Should().BeAssignableTo<HtmlInput>();
+            actual[0].Name.Should().Be("Data");
         }
 
         /// <summary>
@@ -141,17 +228,92 @@
         }
 
         /// <summary>
+        ///     Runs a test for all by name with case insensitive flag executes case insensitive query with name filter.
+        /// </summary>
+        [TestMethod]
+        public void AllByNameWithCaseInsensitiveFlagExecutesCaseInsensitiveQueryWithNameFilterTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>
+";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByName("Test");
+
+            var actual = form.Find<HtmlFormElement>().AllByName("DATA", true).ToList();
+
+            actual.Count.Should().Be(1);
+            actual[0].Should().BeAssignableTo<HtmlInput>();
+            actual[0].Name.Should().Be("Data");
+        }
+
+        /// <summary>
+        ///     Runs a test for all by name with case sensitive flag executes case sensitive query with name filter.
+        /// </summary>
+        [TestMethod]
+        public void AllByNameWithCaseSensitiveFlagExecutesCaseSensitiveQueryWithNameFilterTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>
+";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByName("Test");
+
+            var actual = form.Find<HtmlFormElement>().AllByName("Data", false).ToList();
+
+            actual.Count.Should().Be(1);
+            actual[0].Should().BeAssignableTo<HtmlInput>();
+            actual[0].Name.Should().Be("Data");
+
+            actual = form.Find<HtmlFormElement>().AllByName("DATA", false).ToList();
+
+            actual.Count.Should().Be(0);
+        }
+
+        /// <summary>
         ///     Runs a test for all by predicate executes returns filtered results.
         /// </summary>
         [TestMethod]
         public void AllByPredicateExecutesReturnsFilteredResultsTest()
         {
-            var doc = new XmlDocument();
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>
+";
 
-            doc.LoadXml(
-                "<html><head /><body><form name='Test'><input type='text' name='Data' /></form><form name='SecondTest'><input type='checkbox' name='IsSet' /></form></body></html>");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var actual = page.Find<HtmlElement>().AllByPredicate(x => x is HtmlInput).ToList();
 
@@ -186,17 +348,25 @@
         }
 
         /// <summary>
-        ///     Runs a test for all by tag name executes query with tag filter.
+        ///     Runs a test for all by tag name executes case insensitive query with tag filter.
         /// </summary>
         [TestMethod]
-        public void AllByTagNameExecutesQueryWithTagFilterTest()
+        public void AllByTagNameExecutesCaseInsensitiveQueryWithTagFilterTest()
         {
-            var doc = new XmlDocument();
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <INPUT type='text' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>";
 
-            doc.LoadXml(
-                "<html><head /><body><form name='Test'><input type='text' name='Data' /></form><form name='SecondTest'><input type='checkbox' name='IsSet' /></form></body></html>");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var form = page.Find<HtmlForm>().ByName("Test");
 
@@ -265,7 +435,7 @@
         {
             var target = (IHtmlElementFinder<AnyHtmlElement>)null;
 
-            Action action = () => target.AllByText("Test");
+            Action action = () => target.AllByText("Test", false);
 
             action.ShouldThrow<ArgumentNullException>();
         }
@@ -276,11 +446,17 @@
         [TestMethod]
         public void AllByTextExecutesCaseInsensitiveSearchTest()
         {
-            var doc = new XmlDocument();
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <p id='pascal'>First</p>
+        <p id='lower'>first</p>
+    </body>
+</html>
+";
 
-            doc.LoadXml("<html><head /><body><p id='pascal'>First</p><p id='lower'>first</p></body></html>");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var actual = page.Find<HtmlElement>().AllByText("first").ToList();
 
@@ -293,11 +469,17 @@
         [TestMethod]
         public void AllByTextWithCaseInsensitiveFlagExecutesCaseInsensitiveSearchTest()
         {
-            var doc = new XmlDocument();
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <p id='pascal'>First</p>
+        <p id='lower'>first</p>
+    </body>
+</html>
+";
 
-            doc.LoadXml("<html><head /><body><p id='pascal'>First</p><p id='lower'>first</p></body></html>");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var actual = page.Find<HtmlElement>().AllByText("first", true).ToList();
 
@@ -310,11 +492,17 @@
         [TestMethod]
         public void AllByTextWithCaseSensitiveFlagExecutesCaseSensitiveSearchTest()
         {
-            var doc = new XmlDocument();
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <p id='pascal'>First</p>
+        <p id='lower'>first</p>
+    </body>
+</html>
+";
 
-            doc.LoadXml("<html><head /><body><p id='pascal'>First</p><p id='lower'>first</p></body></html>");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var actual = page.Find<HtmlElement>().AllByText("first", false).ToList();
 
@@ -323,17 +511,49 @@
         }
 
         /// <summary>
+        ///     Runs a test for all by text with null criteria matches empty HTML elements.
+        /// </summary>
+        [TestMethod]
+        public void AllByTextWithNullCriteriaMatchesEmptyHtmlElementsTest()
+        {
+            const string Html = @"
+<html>
+    <body>
+        <p id='pascal'></p>
+        <p id='lower'>first</p>
+    </body>
+</html>
+";
+
+            var page = new HtmlPageStub(Html);
+
+            var actual = page.Find<HtmlElement>().AllByText(null).ToList();
+
+            actual.Count.Should().Be(1);
+            actual[0].Id.Should().Be("pascal");
+        }
+
+        /// <summary>
         ///     Runs a test for all executes base query.
         /// </summary>
         [TestMethod]
         public void AllExecutesBaseQueryTest()
         {
-            var doc = new XmlDocument();
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>
+";
 
-            doc.LoadXml(
-                "<html><head /><body><form name='Test'><input type='text' name='Data' /></form><form name='SecondTest'><input type='checkbox' name='IsSet' /></form></body></html>");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var actual = page.Find<AnyHtmlElement>().All().ToList();
 
@@ -354,17 +574,26 @@
         }
 
         /// <summary>
-        ///     Runs a test for by id executes query in node context.
+        ///     Runs a test for by id executes case insensitive query in node context.
         /// </summary>
         [TestMethod]
-        public void ByIdExecutesQueryInNodeContextTest()
+        public void ByIdExecutesCaseInsensitiveQueryInNodeContextTest()
         {
-            var doc = new XmlDocument();
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' id='DATAId' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>
+";
 
-            doc.LoadXml(
-                "<html><head /><body><form name='Test'><input type='text' id='DataId' name='Data' /></form><form name='SecondTest'><input type='checkbox' name='IsSet' /></form></body></html>");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var form = page.Find<HtmlForm>().ByName("Test");
 
@@ -372,6 +601,7 @@
 
             actual.Should().NotBeNull();
             actual.Should().BeAssignableTo<HtmlInput>();
+            actual.Id.Should().Be("DATAId");
         }
 
         /// <summary>
@@ -388,24 +618,100 @@
         }
 
         /// <summary>
-        ///     Runs a test for by name executes query in node context.
+        ///     Runs a test for by id with case insensitive flag executes case insensitive query in node context.
         /// </summary>
         [TestMethod]
-        public void ByNameExecutesQueryInNodeContextTest()
+        public void ByIdWithCaseInsensitiveFlagExecutesCaseInsensitiveQueryInNodeContextTest()
         {
-            var doc = new XmlDocument();
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' id='DATAId' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>
+";
 
-            doc.LoadXml(
-                "<html><head /><body><form name='Test'><input type='text' id='DataId' name='Data' /></form><form name='SecondTest'><input type='checkbox' name='IsSet' /></form></body></html>");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var form = page.Find<HtmlForm>().ByName("Test");
 
-            var actual = form.Find<HtmlElement>().ByName("Data");
+            var actual = form.Find<HtmlElement>().ById("DataId", true);
 
             actual.Should().NotBeNull();
             actual.Should().BeAssignableTo<HtmlInput>();
+            actual.Id.Should().Be("DATAId");
+        }
+
+        /// <summary>
+        ///     Runs a test for by id with case sensitive flag executes case sensitive query in node context.
+        /// </summary>
+        [TestMethod]
+        public void ByIdWithCaseSensitiveFlagExecutesCaseSensitiveQueryInNodeContextTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' id='DATAId' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>
+";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByName("Test");
+
+            var actual = form.Find<HtmlElement>().ById("DATAId", false);
+
+            actual.Should().NotBeNull();
+            actual.Should().BeAssignableTo<HtmlInput>();
+            actual.Id.Should().Be("DATAId");
+
+            Action action = () => form.Find<HtmlElement>().ById("DataId", false);
+
+            action.ShouldThrow<InvalidHtmlElementMatchException>();
+        }
+
+        /// <summary>
+        ///     Runs a test for by name executes case insensitive query in node context.
+        /// </summary>
+        [TestMethod]
+        public void ByNameExecutesCaseInsensitiveQueryInNodeContextTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' id='DataId' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>
+";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByName("Test");
+
+            var actual = form.Find<HtmlFormElement>().ByName("DATA");
+
+            actual.Should().NotBeNull();
+            actual.Should().BeAssignableTo<HtmlInput>();
+            actual.Name.Should().Be("Data");
         }
 
         /// <summary>
@@ -422,17 +728,92 @@
         }
 
         /// <summary>
-        ///     Runs a test for by tag name executes query in node context.
+        ///     Runs a test for by name with case insensitive flag executes case insensitive query in node context.
         /// </summary>
         [TestMethod]
-        public void ByTagNameExecutesQueryInNodeContextTest()
+        public void ByNameWithCaseInsensitiveFlagExecutesCaseInsensitiveQueryInNodeContextTest()
         {
-            var doc = new XmlDocument();
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' id='DataId' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>
+";
 
-            doc.LoadXml(
-                "<html><head /><body><form name='Test'><input type='text' id='DataId' name='Data' /></form><form name='SecondTest'><input type='checkbox' name='IsSet' /></form></body></html>");
+            var page = new HtmlPageStub(Html);
 
-            var page = new HtmlPageStub(doc);
+            var form = page.Find<HtmlForm>().ByName("Test");
+
+            var actual = form.Find<HtmlFormElement>().ByName("DATA", true);
+
+            actual.Should().NotBeNull();
+            actual.Should().BeAssignableTo<HtmlInput>();
+            actual.Name.Should().Be("Data");
+        }
+
+        /// <summary>
+        ///     Runs a test for by name with case sensitive flag executes case sensitive query in node context.
+        /// </summary>
+        [TestMethod]
+        public void ByNameWithCaseSensitiveFlagExecutesCaseSensitiveQueryInNodeContextTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' id='DataId' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>
+";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByName("Test");
+
+            var actual = form.Find<HtmlFormElement>().ByName("Data", false);
+
+            actual.Should().NotBeNull();
+            actual.Should().BeAssignableTo<HtmlInput>();
+            actual.Name.Should().Be("Data");
+
+            Action action = () => form.Find<HtmlFormElement>().ByName("DATA", false);
+
+            action.ShouldThrow<InvalidHtmlElementMatchException>();
+        }
+
+        /// <summary>
+        ///     Runs a test for by tag name executes case insensitive query in node context.
+        /// </summary>
+        [TestMethod]
+        public void ByTagNameExecutesCaseInsensitiveQueryInNodeContextTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' id='DataId' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>
+";
+
+            var page = new HtmlPageStub(Html);
 
             var form = page.Find<HtmlForm>().ByName("Test");
 
@@ -452,6 +833,98 @@
             Action action = () => target.ByTagName("test");
 
             action.ShouldThrow<ArgumentNullException>();
+        }
+
+        /// <summary>
+        ///     Runs a test for by text executes case insensitive query in node context.
+        /// </summary>
+        [TestMethod]
+        public void ByTextExecutesCaseInsensitiveQueryInNodeContextTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <p id='target'>Stuff</p>
+        <p>More</p>
+    </body>
+</html>
+";
+
+            var page = new HtmlPageStub(Html);
+
+            var actual = page.Find<HtmlElement>().ByText("stuff");
+
+            actual.Should().NotBeNull();
+            actual.Should().BeAssignableTo<AnyHtmlElement>();
+            actual.Id.Should().Be("target");
+        }
+
+        /// <summary>
+        ///     Runs a test for by text throws exception with null finder.
+        /// </summary>
+        [TestMethod]
+        public void ByTextThrowsExceptionWithNullFinderTest()
+        {
+            var target = (IHtmlElementFinder<HtmlElement>)null;
+
+            Action action = () => target.ByText("test");
+
+            action.ShouldThrow<ArgumentNullException>();
+        }
+
+        /// <summary>
+        ///     Runs a test for by text with case insensitive flag executes case insensitive query in node context.
+        /// </summary>
+        [TestMethod]
+        public void ByTextWithCaseInsensitiveFlagExecutesCaseInsensitiveQueryInNodeContextTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <p id='target'>Stuff</p>
+        <p>More</p>
+    </body>
+</html>
+";
+
+            var page = new HtmlPageStub(Html);
+
+            var actual = page.Find<HtmlElement>().ByText("STUFF", true);
+
+            actual.Should().NotBeNull();
+            actual.Should().BeAssignableTo<AnyHtmlElement>();
+            actual.Id.Should().Be("target");
+        }
+
+        /// <summary>
+        ///     Runs a test for by text with case sensitive flag executes case sensitive query in node context.
+        /// </summary>
+        [TestMethod]
+        public void ByTextWithCaseSensitiveFlagExecutesCaseSensitiveQueryInNodeContextTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <p id='target'>Stuff</p>
+        <p>More</p>
+    </body>
+</html>
+";
+
+            var page = new HtmlPageStub(Html);
+
+            var actual = page.Find<AnyHtmlElement>().ByText("Stuff", false);
+
+            actual.Should().NotBeNull();
+            actual.Should().BeAssignableTo<AnyHtmlElement>();
+            actual.Id.Should().Be("target");
+
+            Action action = () => page.Find<AnyHtmlElement>().ByText("stuff", false);
+
+            action.ShouldThrow<InvalidHtmlElementMatchException>();
         }
     }
 }

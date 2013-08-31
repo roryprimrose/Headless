@@ -1,9 +1,11 @@
 ﻿namespace Headless
 {
     using System;
+    using System.ComponentModel.Design.Serialization;
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Threading;
     using System.Xml.XPath;
     using Headless.Activation;
     using Headless.Properties;
@@ -180,7 +182,7 @@
         /// <value>
         ///     The name of the tag.
         /// </value>
-        [SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase", 
+        [SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase",
             Justification = "HTML tag names are express in lowercase by convention.")]
         public string TagName
         {

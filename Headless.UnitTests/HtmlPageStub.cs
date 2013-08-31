@@ -1,8 +1,7 @@
 ﻿namespace Headless.UnitTests
 {
     using System;
-    using System.Xml;
-    using System.Xml.XPath;
+    using System.IO;
 
     /// <summary>
     ///     The <see cref="HtmlPageStub" />
@@ -11,27 +10,16 @@
     internal class HtmlPageStub : HtmlPage
     {
         /// <summary>
-        ///     The document.
-        /// </summary>
-        private readonly XmlDocument _document;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="HtmlPageStub"/> class.
         /// </summary>
-        /// <param name="document">
-        /// The document.
+        /// <param name="htmlContent">
+        /// Content of the HTML.
         /// </param>
-        public HtmlPageStub(XmlDocument document)
+        public HtmlPageStub(string htmlContent)
         {
-            _document = document;
-        }
-
-        /// <inheritdoc />
-        public override IXPathNavigable Document
-        {
-            get
+            using (var reader = new StringReader(htmlContent))
             {
-                return _document;
+                SetContent(reader);
             }
         }
 
@@ -41,15 +29,6 @@
             get
             {
                 return new Uri("http://somewhere.com");
-            }
-        }
-
-        /// <inheritdoc />
-        public override IXPathNavigable Node
-        {
-            get
-            {
-                return _document.DocumentElement;
             }
         }
     }

@@ -51,24 +51,43 @@
 
             using (TextReader reader = new StreamReader(result))
             {
-                // setup SgmlReader
-                using (var sgmlReader = new SgmlReader())
+                SetContent(reader);
+            }
+        }
+
+        /// <summary>
+        /// Sets the content of the page.
+        /// </summary>
+        /// <param name="reader">
+        /// The reader.
+        /// </param>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="reader"/> parameter is <c>null</c>.
+        /// </exception>
+        protected void SetContent(TextReader reader)
+        {
+            if (reader == null)
+            {
+                throw new ArgumentNullException("reader");
+            }
+
+            // setup SgmlReader
+            using (var sgmlReader = new SgmlReader())
+            {
+                sgmlReader.DocType = "HTML";
+                sgmlReader.IgnoreDtd = true;
+                sgmlReader.WhitespaceHandling = WhitespaceHandling.All;
+                sgmlReader.CaseFolding = CaseFolding.ToLower;
+                sgmlReader.InputStream = reader;
+
+                // create document
+                _content = new XmlDocument
                 {
-                    sgmlReader.DocType = "HTML";
-                    sgmlReader.IgnoreDtd = true;
-                    sgmlReader.WhitespaceHandling = WhitespaceHandling.All;
-                    sgmlReader.CaseFolding = CaseFolding.ToLower;
-                    sgmlReader.InputStream = reader;
+                    PreserveWhitespace = true, 
+                    XmlResolver = null
+                };
 
-                    // create document
-                    _content = new XmlDocument
-                    {
-                        PreserveWhitespace = true, 
-                        XmlResolver = null
-                    };
-
-                    _content.Load(sgmlReader);
-                }
+                _content.Load(sgmlReader);
             }
         }
 

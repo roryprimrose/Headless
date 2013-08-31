@@ -2,7 +2,6 @@
 {
     using System;
     using System.Linq;
-    using System.Xml;
     using FluentAssertions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -19,13 +18,11 @@
         [TestMethod]
         public void CanCreateFromHtmlElementTest()
         {
-            var doc = new XmlDocument();
+            const string Html = "<form name='Test'></form>";
 
-            doc.LoadXml("<form name='Test' />");
+            var page = new HtmlPageStub(Html);
 
-            var page = new HtmlPageStub(doc);
-
-            var element = new HtmlForm(page, doc.DocumentElement);
+            var element = new HtmlForm(page, page.Node);
 
             Action action = () => new DefaultHtmlElementFinder<HtmlForm>(element);
 
@@ -38,11 +35,9 @@
         [TestMethod]
         public void CanCreateFromPageTest()
         {
-            var doc = new XmlDocument();
+            const string Html = "<html><head /><body><form name='Test' /></body></html>";
 
-            doc.LoadXml("<html><head /><body><form name='Test' /></body></html>");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             Action action = () => new DefaultHtmlElementFinder<HtmlForm>(page);
 
@@ -55,12 +50,10 @@
         [TestMethod]
         public void ExecuteReturnsAnyElementsFromTypeHierarchyFromRootTest()
         {
-            var doc = new XmlDocument();
+            const string Html =
+                "<html><head /><body><form name='Test'><input type='text' name='Data' /><input type='checkbox' name='IsSet' /></form></body></html>";
 
-            doc.LoadXml(
-                "<html><head /><body><form name='Test'><input type='text' name='Data' /><input type='checkbox' name='IsSet' /></form></body></html>");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var target = new DefaultHtmlElementFinder<HtmlElement>(page);
 
@@ -82,12 +75,10 @@
         [TestMethod]
         public void ExecuteReturnsAnyElementsFromTypeHierarchyFromSpecificNodeTest()
         {
-            var doc = new XmlDocument();
+            const string Html =
+                "<html><head /><body><form name='Test'><input type='text' name='Data' /><input type='checkbox' name='IsSet' /></form></body></html>";
 
-            doc.LoadXml(
-                "<html><head /><body><form name='Test'><input type='text' name='Data' /><input type='checkbox' name='IsSet' /></form></body></html>");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var form = page.Find<HtmlForm>().ByName("Test");
 
@@ -109,12 +100,21 @@
         [TestMethod]
         public void ExecuteReturnsElementsFromTypeHierarchyFromRootTest()
         {
-            var doc = new XmlDocument();
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' name='Data' /><input type='checkbox' name='IsSet' />
+        </form>
+        <form name='Second'>
+            <input type='text' name='Data2' /><input type='checkbox' name='IsSet3' />
+        </form>
+    </body>
+</html>
+";
 
-            doc.LoadXml(
-                "<html><head /><body><form name='Test'><input type='text' name='Data' /><input type='checkbox' name='IsSet' /></form><form name='Second'><input type='text' name='Data2' /><input type='checkbox' name='IsSet3' /></form></body></html>");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var target = new DefaultHtmlElementFinder<HtmlInput>(page);
 
@@ -131,12 +131,10 @@
         [TestMethod]
         public void ExecuteReturnsElementsFromTypeHierarchyFromSpecificNodeTest()
         {
-            var doc = new XmlDocument();
+            const string Html =
+                "<html><head /><body><form name='Test'><input type='text' name='Data' /><input type='checkbox' name='IsSet' /></form></body></html>";
 
-            doc.LoadXml(
-                "<html><head /><body><form name='Test'><input type='text' name='Data' /><input type='checkbox' name='IsSet' /></form></body></html>");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var form = page.Find<HtmlForm>().ByName("Test");
 
@@ -155,12 +153,10 @@
         [TestMethod]
         public void ExecuteReturnsFilteredRadioButtonsTest()
         {
-            var doc = new XmlDocument();
+            const string Html =
+                "<html><head /><body><form name='Test'><input type='radio' name='Data' /><input type='radio' name='Data' /></form></body></html>";
 
-            doc.LoadXml(
-                "<html><head /><body><form name='Test'><input type='radio' name='Data' /><input type='radio' name='Data' /></form></body></html>");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var target = new DefaultHtmlElementFinder<HtmlRadioButton>(page);
 
@@ -180,11 +176,9 @@
         [TestMethod]
         public void ExecuteReturnsSpecificElementTypeTest()
         {
-            var doc = new XmlDocument();
+            const string Html = "<html><head /><body><form name='Test' /></body></html>";
 
-            doc.LoadXml("<html><head /><body><form name='Test' /></body></html>");
-
-            var page = new HtmlPageStub(doc);
+            var page = new HtmlPageStub(Html);
 
             var target = new DefaultHtmlElementFinder<HtmlForm>(page);
 
