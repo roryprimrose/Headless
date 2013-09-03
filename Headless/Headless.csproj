@@ -202,6 +202,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Release (
+    del /F /Q "$(TargetDir)*.nupkg"
     "$(SolutionDir)References\BuildTaskExecutor\BuildTaskExecutor.exe" snv /pattern:"$(ProjectDir)Headless.nuspec" /source:"$(TargetPath)"
     "$(SolutionDir).nuget\nuget.exe" pack "$(ProjectDir)Headless.nuspec"
 )</PostBuildEvent>
