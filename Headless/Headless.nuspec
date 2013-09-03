@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/roryprimrose/Headless</projectUrl>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <tags>headless browser test automation http web integrationtesting unittesting cookies dotnet</tags>
-    <releaseNotes>See important release notes at: https://github.com/roryprimrose/Headless/wiki/Change-Log</releaseNotes>
+    <releaseNotes>See important release information at: https://github.com/roryprimrose/Headless/releases </releaseNotes>
     <dependencies>
       <dependency id="SgmlReader" />
     </dependencies>
