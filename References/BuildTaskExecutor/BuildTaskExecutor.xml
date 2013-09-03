@@ -1,0 +1,2191 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BuildTaskExecutor</name>
+    </assembly>
+    <members>
+        <member name="T:Neovolve.BuildTaskExecutor.Services.WixVersionManager">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.Services.WixVersionManager"/>
+              class is used to provide parsing operations for Wix projects.
+            </summary>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Extensibility.IVersionManager">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.Extensibility.IVersionManager"/>
+              interface defines the operations for reading and writing file version information.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Extensibility.IVersionManager.ReadVersion(System.String)">
+            <summary>
+            Reads the version from the specified file path.
+            </summary>
+            <param name="filePath">
+            The file path.
+            </param>
+            <returns>
+            A <see cref="T:System.Version"/> instance, or <c>null</c> if no version information could be determined.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Extensibility.IVersionManager.WriteVersion(System.String,System.Version)">
+            <summary>
+            Writes the version to the specified file path.
+            </summary>
+            <param name="filePath">
+            The file path.
+            </param>
+            <param name="newVersion">
+            The new version.
+            </param>
+        </member>
+        <member name="F:Neovolve.BuildTaskExecutor.Services.WixVersionManager._projectVariableExpression">
+            <summary>
+            Stores the expression used to check for project variable names.
+            </summary>
+        </member>
+        <member name="F:Neovolve.BuildTaskExecutor.Services.WixVersionManager._versionExpression">
+            <summary>
+            Stores the expression for parsing out version numbers.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.WixVersionManager.#ctor(Neovolve.BuildTaskExecutor.Services.EventWriter)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Neovolve.BuildTaskExecutor.Services.WixVersionManager"/> class.
+            </summary>
+            <param name="eventWriter">
+            The event writers.
+            </param>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.WixVersionManager.ReadVersion(System.String)">
+            <summary>
+            Reads the version for the specified path.
+            </summary>
+            <param name="filePath">
+            The file path.
+            </param>
+            <returns>
+            A <see cref="T:System.Version"/> instance.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.WixVersionManager.WriteVersion(System.String,System.Version)">
+            <summary>
+            Writes the version to the specified file.
+            </summary>
+            <param name="filePath">
+            The file path.
+            </param>
+            <param name="newVersion">
+            The new version.
+            </param>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.WixVersionManager.SearchDocument(System.String,System.String)">
+            <summary>
+            Searches the document.
+            </summary>
+            <param name="absoluteIncludePath">
+            The absolute include path.
+            </param>
+            <param name="xpath">
+            The xpath query.
+            </param>
+            <returns>
+            A <see cref="T:System.Xml.XmlNode"/> instance.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.WixVersionManager.UpdateProductVersion(System.Xml.XmlNode,System.Version)">
+            <summary>
+            Updates the product version.
+            </summary>
+            <param name="versionNode">
+            The version node.
+            </param>
+            <param name="newVersion">
+            The new version.
+            </param>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.WixVersionManager.SearchProject(System.String,System.Action{System.Xml.XmlNode})">
+            <summary>
+            Searches the project.
+            </summary>
+            <param name="projectPath">
+            The project path.
+            </param>
+            <param name="modifyVersion">
+            The modify version.
+            </param>
+            <returns>
+            A <see cref="T:System.Xml.XmlNode"/> instance.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.WixVersionManager.SearchProject(System.String,System.Xml.XmlDocument,System.Xml.XmlNamespaceManager,System.Action{System.Xml.XmlNode},System.String)">
+            <summary>
+            Searches the project.
+            </summary>
+            <param name="projectPath">
+            The project path.
+            </param>
+            <param name="doc">
+            The project document.
+            </param>
+            <param name="manager">
+            The manager.
+            </param>
+            <param name="modifyVersion">
+            The modify version.
+            </param>
+            <param name="xpath">
+            The xpath query.
+            </param>
+            <returns>
+            A <see cref="T:System.Xml.XmlNode"/> instance.
+            </returns>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Services.WixVersionManager.Writer">
+            <summary>
+            Gets or sets the writer.
+            </summary>
+            <value>
+            The writer.
+            </value>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.BinaryOutputVersionTask_InvalidOutputTypeValue">
+            <summary>
+              Looks up a localized string similar to The OutputType node does not contain a value of WinExe, Exe or Library..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.BinaryOutputVersionTask_NoAssemblyNameNode">
+            <summary>
+              Looks up a localized string similar to Project does not contain the AssemblyName node..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.BinaryOutputVersionTask_NoAssemblyNameValue">
+            <summary>
+              Looks up a localized string similar to Project does not contain an AssemblyName value..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.BinaryOutputVersionTask_NoOutputTypeNode">
+            <summary>
+              Looks up a localized string similar to Project does not contain the OutputType node..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.Executor_ApplicationInformation">
+            <summary>
+              Looks up a localized string similar to BuildTaskExecutor - Neovolve Build Task Executor {0}.
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.Executor_ExecutingTask">
+            <summary>
+              Looks up a localized string similar to Executing task &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.Executor_InvalidTaskArguments">
+            <summary>
+              Looks up a localized string similar to The arguments passed to the task &apos;{0}&apos; were invalid..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.Executor_NoArgumentsProvided">
+            <summary>
+              Looks up a localized string similar to No task execution arguments provided..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.HelpTask_EventLevelHelp">
+            <summary>
+              Looks up a localized string similar to /el:	Event writing level - critical|error|warning|information|verbose.
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.HelpTask_GenericHelpCommandLine">
+            <summary>
+              Looks up a localized string similar to Type BuildTaskExecutor help for command line description.
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.HelpTask_TaskCommandLineHelp">
+            <summary>
+              Looks up a localized string similar to BuildTaskExecutor {0} {1}.
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.HelpTask_TaskExecuteCommandLine">
+            <summary>
+              Looks up a localized string similar to Type BuildTaskExecutor [/el:&lt;event level&gt;] &lt;task name&gt; [arg0 arg1 ... argn].
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.HelpTask_TaskHelpCommandLine">
+            <summary>
+              Looks up a localized string similar to Type BuildTaskExecutor help &lt;task name&gt; for task description.
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.HelpTask_TaskHelpDescription">
+             <summary>
+               Looks up a localized string similar to BuildTaskExecutor {0}
+            {1}
+            .
+             </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.HelpTask_TaskListHeader">
+            <summary>
+              Looks up a localized string similar to Tasks:.
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.IncrementAssemblyVersionTask_FileUpdateNotification">
+            <summary>
+              Looks up a localized string similar to Updating file &apos;{0}&apos; from version &apos;{1}&apos; to &apos;{2}&apos;..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.ProjectOutputVersionTask_FileCopyNotification">
+            <summary>
+              Looks up a localized string similar to Copying &apos;{0}&apos; to &apos;{1}&apos;..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.ProjectOutputVersionTask_FileMoveNotification">
+            <summary>
+              Looks up a localized string similar to Moving &apos;{0}&apos; to &apos;{1}&apos;..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.ProjectOutputVersionTask_NoBuildConfigurationsFound">
+            <summary>
+              Looks up a localized string similar to The project file does not contain any build configurations..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.ProjectOutputVersionTask_NoOutputFound">
+            <summary>
+              Looks up a localized string similar to No project output files were found.
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.ProjectOutputVersionTask_OutputNameNotFound">
+            <summary>
+              Looks up a localized string similar to Unable to identify project output name property..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.ProjectOutputVersionTask_ProjectLoadNotification">
+            <summary>
+              Looks up a localized string similar to Loading project file &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.ProjectOutputVersionTask_SkippingDirectoryNotification">
+            <summary>
+              Looks up a localized string similar to Skipping missing directory &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.ProjectOutputVersionTask_SkippingFileNotification">
+            <summary>
+              Looks up a localized string similar to File not found. Skipping file &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.SyncWixVersionTask_FileUpdateNotification">
+            <summary>
+              Looks up a localized string similar to Updating wix project &apos;{0}&apos; from version &apos;{1}&apos; to &apos;{2}&apos;..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.TaskResolver_MatchingTasksHeader">
+            <summary>
+              Looks up a localized string similar to The &apos;{0}&apos; matches the following tasks:.
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.TaskResolver_MultipleTasksFound">
+            <summary>
+              Looks up a localized string similar to Multiple tasks found for the name &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.TaskResolver_TaskFound">
+            <summary>
+              Looks up a localized string similar to Found task &apos;{0}&apos; as {1}.
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.TaskResolver_TaskNotFound">
+            <summary>
+              Looks up a localized string similar to The task &apos;{0}&apos; was not found..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.TaskResolver_TaskResolutionAttempt">
+            <summary>
+              Looks up a localized string similar to Attempting to resolve task &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.TfsCheckoutTask_CheckingOutFile">
+            <summary>
+              Looks up a localized string similar to Checking out file &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.TfsCheckoutTask_CheckOutNotification">
+            <summary>
+              Looks up a localized string similar to Using &apos;{0}&apos; to check out files..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.TfsCheckoutTask_FileCheckOutFailed">
+            <summary>
+              Looks up a localized string similar to Failed to check out file &apos;{0}&apos; from TFS..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.VersionAction_VersionNotFound">
+            <summary>
+              Looks up a localized string similar to Failed to identify version information in project &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.WildcardFileSearchTask_DirectoryNotFound">
+            <summary>
+              Looks up a localized string similar to The directory &apos;{0}&apos; does not exist..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.WildcardFileSearchTask_SearchingDirectory">
+            <summary>
+              Looks up a localized string similar to Searching for matching files under &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.WixOutputVersionTask_NoOutputName">
+            <summary>
+              Looks up a localized string similar to The OutputName node does not contain a value..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.WixOutputVersionTask_NoOutputNameNode">
+            <summary>
+              Looks up a localized string similar to The project does not contain an OutputName node..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.WixVersionManager_InvalidIncludeFile">
+            <summary>
+              Looks up a localized string similar to Failed to resolve Wix project include file &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.WixVersionManager_InvalidVersionValue">
+            <summary>
+              Looks up a localized string similar to The wix product variable &apos;{0}&apos; does not contain a version number..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.WixVersionManager_NoIncludeFilesFound">
+            <summary>
+              Looks up a localized string similar to Wix project does not contain any compilation files..
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Properties.Resources.WixVersionManager_ProductVersionNotFound">
+            <summary>
+              Looks up a localized string similar to Failed to identify Wix product version.
+            </summary>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Extensibility.NamespaceDoc">
+            <summary>
+            The Neovolve.BuildTaskExecutor.Extensibility namespace contains classes that provide 
+              the MEF extensibility points for the application.
+            </summary>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Extensibility.IDataManager">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.Extensibility.IDataManager"/>
+              interface is used to define the methods available for reading and writing information from and to paths.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Extensibility.IDataManager.ReadText(System.String)">
+            <summary>
+            Reads the text from the specified path.
+            </summary>
+            <param name="path">
+            The path to read from.
+            </param>
+            <returns>
+            A <see cref="T:System.String"/> instance.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Extensibility.IDataManager.WriteText(System.String,System.String)">
+            <summary>
+            Writes the text to the specified path.
+            </summary>
+            <param name="path">
+            The path to write to.
+            </param>
+            <param name="contents">
+            The contents.
+            </param>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.VersionExtensions">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.VersionExtensions"/>
+              class is used to provide extension methods for version management.
+            </summary>
+        </member>
+        <member name="F:Neovolve.BuildTaskExecutor.VersionExtensions._versionExpression">
+            <summary>
+            The expression for parsing out the version parts.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.VersionExtensions.Create(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Creates the version using the specified parts.
+            </summary>
+            <param name="major">
+            The major.
+            </param>
+            <param name="minor">
+            The minor.
+            </param>
+            <param name="build">
+            The build.
+            </param>
+            <param name="revision">
+            The revision.
+            </param>
+            <returns>
+            A <see cref="T:System.Version"/> instance.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.VersionExtensions.GenerateVersionString(System.Version)">
+            <summary>
+            Generates the version string using the specified version information.
+            </summary>
+            <param name="version">
+            The version.
+            </param>
+            <remarks>
+            Parts in the version that have a value less than zero will not be added to the result.
+            </remarks>
+            <returns>
+            A <see cref="T:System.String"/> instance.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.VersionExtensions.GenerateVersionString(System.Version,System.Boolean)">
+            <summary>
+            Generates the version string using the specified version information.
+            </summary>
+            <param name="version">
+            The version.
+            </param>
+            <param name="includeWildcards">
+            If set to <c>true</c>, the first negative version part will be rendered with an asterix (*) wildcard character.
+            </param>
+            <returns>
+            A <see cref="T:System.String"/> instance.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.VersionExtensions.ToVersion(System.String)">
+            <summary>
+            Converts the specified value to a <see cref="T:System.Version"/> instance.
+            </summary>
+            <param name="versionText">
+            The text containing a version value (in the format \d.\d[.\d.\d]).
+            </param>
+            <returns>
+            A <see cref="T:System.Version"/> instance if the string contains a version value; otherwise, <c>null</c>.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.VersionExtensions.IncrementVersionNumber(System.Version,Neovolve.BuildTaskExecutor.VersionApplySettings)">
+            <summary>
+            Increments the version number.
+            </summary>
+            <param name="versionNumber">
+            The version number.
+            </param>
+            <param name="settings">
+            The settings.
+            </param>
+            <returns>
+            A <see cref="T:System.String"/> instance.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.VersionExtensions.ParseVersionPart(System.String)">
+            <summary>
+            Parses the version part.
+            </summary>
+            <param name="part">
+            The version part.
+            </param>
+            <returns>
+            A <see cref="T:System.Int32"/> instance.
+            </returns>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Tasks.WildcardFileSearchTask">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.Tasks.WildcardFileSearchTask"/>
+              class is provides the common implementation for searching for files
+              using a wildcard search pattern.
+            </summary>
+            <remarks>
+            <para>
+            The only wildcard character supported is the asterix (*) character.
+                The task will identify the base search directory as the last absolute directory in the search path that does not have
+                a wildcard character. All file paths after this point are evaluated against a regular expression built against the wildcard path value.
+              </para>
+            <note>
+            <b>The regular expression will match wildcard patterns across multiple directories.</b>
+                <para>
+            The pattern C:\Temp\Some*\Path\output.txt will match all the following paths:
+                  <list type="bullet">
+            <item>
+            C:\Temp\Some\Path\output.txt
+                    </item>
+            <item>
+            C:\Temp\SomeCustom\Path\output.txt
+                    </item>
+            <item>
+            C:\Temp\Some\NestedDirectory\Path\output.txt.
+                    </item>
+            </list>
+            </para>
+            <para>
+            The wildcard character also matches zero characters as indicated in the above example.
+                </para>
+            </note>
+            </remarks>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Extensibility.ITask">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.Extensibility.ITask"/>
+              interface defines the methods for evaluating and executing a task.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Extensibility.ITask.Execute(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Executes the task using the specified arguments.
+            </summary>
+            <param name="arguments">
+            The arguments for the task.
+            </param>
+            <returns>
+            <c>true</c> if the task executed successfully; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Extensibility.ITask.IsValidArgumentSet(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Determines whether the specified arguments are valid.
+            </summary>
+            <param name="arguments">
+            The arguments for the task.
+            </param>
+            <returns>
+            <c>true</c> if the specified arguments are valid; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Extensibility.ITask.CommandLineArgumentHelp">
+            <summary>
+            Gets the command line argument help.
+            </summary>
+            <value>
+            The command line argument help.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Extensibility.ITask.Description">
+            <summary>
+            Gets the description of the task.
+            </summary>
+            <value>
+            The task description.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Extensibility.ITask.Names">
+            <summary>
+            Gets the command line names for the task.
+            </summary>
+            <value>
+            The command line names for the task.
+            </value>
+            <remarks>
+            <note>
+            The first name in the list is the name used when rendering generic task help information.
+              </note>
+            </remarks>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.WildcardFileSearchTask.#ctor(Neovolve.BuildTaskExecutor.Services.EventWriter)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Neovolve.BuildTaskExecutor.Tasks.WildcardFileSearchTask"/> class.
+            </summary>
+            <param name="writer">
+            The writer.
+            </param>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.WildcardFileSearchTask.Execute(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Executes the task using the specified arguments.
+            </summary>
+            <param name="arguments">
+            The arguments for the task.
+            </param>
+            <returns>
+            <c>true</c> if the task executed successfully; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.WildcardFileSearchTask.IsValidArgumentSet(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Determines whether the specified arguments are valid.
+            </summary>
+            <param name="arguments">
+            The arguments for the task.
+            </param>
+            <returns>
+            <c>true</c> if the specified arguments are valid; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.WildcardFileSearchTask.BuildSearchExpression(System.String)">
+            <summary>
+            Builds the search expression.
+            </summary>
+            <param name="searchPattern">
+            The search pattern.
+            </param>
+            <returns>
+            A <see cref="T:System.Text.RegularExpressions.Regex"/> instance.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.WildcardFileSearchTask.ExecuteSearch(System.String)">
+            <summary>
+            Executes the search using the provided search pattern.
+            </summary>
+            <param name="searchPattern">
+            The search pattern.
+            </param>
+            <returns>
+            <c>true</c> if the search was successful; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.WildcardFileSearchTask.FileMatchFound(System.String)">
+            <summary>
+            Called when a file has been found that matches the search pattern.
+            </summary>
+            <param name="filePath">
+            The file path.
+            </param>
+            <returns>
+            A <see cref="T:Neovolve.BuildTaskExecutor.Tasks.FileMatchResult"/> value.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.WildcardFileSearchTask.OnAfterSearch(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Called after the search is completed.
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.WildcardFileSearchTask.OnBeforeSearch(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Called before the wildcard search is executed.
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.WildcardFileSearchTask.ParseBaseAbsolutePath(System.String)">
+            <summary>
+            Parses the base absolute path.
+            </summary>
+            <param name="searchPattern">
+            The search pattern.
+            </param>
+            <returns>
+            A <see cref="T:System.String"/> instance.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.WildcardFileSearchTask.SearchDirectory(System.String,System.Text.RegularExpressions.Regex)">
+            <summary>
+            Searches the directory.
+            </summary>
+            <param name="directoryPath">
+            The directory path.
+            </param>
+            <param name="expression">
+            The expression.
+            </param>
+            <returns>
+            <c>true</c> if the search was successful; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.WildcardFileSearchTask.CommandLineArgumentHelp">
+            <summary>
+            Gets the command line argument help.
+            </summary>
+            <value>
+            The command line argument help.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.WildcardFileSearchTask.Description">
+            <summary>
+            Gets the description of the task.
+            </summary>
+            <value>
+            The task description.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.WildcardFileSearchTask.Names">
+            <summary>
+            Gets the command line names for the task.
+            </summary>
+            <value>
+            The command line names for the task.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.WildcardFileSearchTask.PatternArgument">
+            <summary>
+            Gets the pattern argument.
+            </summary>
+            <value>
+            The search pattern argument name.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.WildcardFileSearchTask.Writer">
+            <summary>
+            Gets the event writer.
+            </summary>
+            <value>
+            The event write.
+            </value>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Services.ServiceManager">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.Services.ServiceManager"/>
+              class is used to resolve services for the application.
+            </summary>
+        </member>
+        <member name="F:Neovolve.BuildTaskExecutor.Services.ServiceManager._aggregateCatalog">
+            <summary>
+            Stores the aggregate catalog.
+            </summary>
+        </member>
+        <member name="F:Neovolve.BuildTaskExecutor.Services.ServiceManager._assemblyCatalog">
+            <summary>
+            Stores the assembly catalog.
+            </summary>
+        </member>
+        <member name="F:Neovolve.BuildTaskExecutor.Services.ServiceManager._container">
+            <summary>
+            Stores the composition container.
+            </summary>
+        </member>
+        <member name="F:Neovolve.BuildTaskExecutor.Services.ServiceManager._directoryCatalog">
+            <summary>
+            Stores the directory catalog.
+            </summary>
+        </member>
+        <member name="F:Neovolve.BuildTaskExecutor.Services.ServiceManager._disposed">
+            <summary>
+            Tracks whether Dispose has been called.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.ServiceManager.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Neovolve.BuildTaskExecutor.Services.ServiceManager"/> class.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.ServiceManager.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.ServiceManager.GetService``1">
+            <summary>
+            Gets the service.
+            </summary>
+            <typeparam name="T">
+            The type of service to obtain.
+            </typeparam>
+            <returns>
+            A <typeparamref name="T"/> instance.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.ServiceManager.ReleaseService``1(System.Lazy{``0})">
+            <summary>
+            Releases the service.
+            </summary>
+            <typeparam name="T">
+            The type of service.
+            </typeparam>
+            <param name="service">
+            The service instance.
+            </param>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.ServiceManager.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged and - optionally - managed resources.
+            </summary>
+            <param name="disposing">
+            <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.
+            </param>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Services.CommandLineParser">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.Services.CommandLineParser"/>
+              class is used to parse command line arguments for the application and extract task execution arguments.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.CommandLineParser.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Neovolve.BuildTaskExecutor.Services.CommandLineParser"/> class.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.CommandLineParser.GetArguments(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets the arguments.
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerable`1"/> instance.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.CommandLineParser.ParseArguments(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Parses the arguments.
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Services.CommandLineParser.EventLevel">
+            <summary>
+            Gets the event level.
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Services.CommandLineParser.TaskArguments">
+            <summary>
+            Gets the task arguments.
+            </summary>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Services.BinaryVersionManager">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.Services.BinaryVersionManager"/>
+              class is used to read version information from a binary file.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.BinaryVersionManager.ReadVersion(System.String)">
+            <summary>
+            Reads the version for the specified path.
+            </summary>
+            <param name="filePath">
+            The file path.
+            </param>
+            <returns>
+            A <see cref="T:System.Version"/> instance.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.BinaryVersionManager.WriteVersion(System.String,System.Version)">
+            <summary>
+            Writes the version to the specified file.
+            </summary>
+            <param name="filePath">
+            The file path.
+            </param>
+            <param name="newVersion">
+            The new version.
+            </param>
+            <exception cref="T:System.NotSupportedException">
+            Writing version information to a binary file is not supported.
+            </exception>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Tasks.WixOutputVersionTask">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.Tasks.WixOutputVersionTask"/>
+              class is used to rename the output of a wix project using a version number.
+            </summary>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Tasks.ProjectOutputVersionTask">
+            <summary>
+            The project output version task.
+            </summary>
+        </member>
+        <member name="F:Neovolve.BuildTaskExecutor.Tasks.ProjectOutputVersionTask.DefaultnameFormat">
+            <summary>
+            Defines the default format as '{ExistingFileName} {CurrentVersion}'.
+            </summary>
+        </member>
+        <member name="F:Neovolve.BuildTaskExecutor.Tasks.ProjectOutputVersionTask._configurationExpression">
+            <summary>
+            Stores the expression used to extract a configuration name.
+            </summary>
+        </member>
+        <member name="F:Neovolve.BuildTaskExecutor.Tasks.ProjectOutputVersionTask._copyItems">
+            <summary>
+            Stores whether the operation is for a copy or a move.
+            </summary>
+        </member>
+        <member name="F:Neovolve.BuildTaskExecutor.Tasks.ProjectOutputVersionTask._nameFormat">
+            <summary>
+            Stores the rename format for the task.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.ProjectOutputVersionTask.#ctor(Neovolve.BuildTaskExecutor.Services.EventWriter)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Neovolve.BuildTaskExecutor.Tasks.ProjectOutputVersionTask"/> class.
+            </summary>
+            <param name="writer">
+            The writer.
+            </param>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.ProjectOutputVersionTask.FileMatchFound(System.String)">
+            <summary>
+            Called when a file has been found that matches the search pattern.
+            </summary>
+            <param name="filePath">
+            The file path.
+            </param>
+            <returns>
+            A <see cref="T:Neovolve.BuildTaskExecutor.Tasks.FileMatchResult"/> value.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.ProjectOutputVersionTask.OnBeforeSearch(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Called before the wildcard search is executed.
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.ProjectOutputVersionTask.ParseOutputName(System.Xml.XmlDocument,System.Xml.XmlNamespaceManager)">
+            <summary>
+            Parses the output name of the project.
+            </summary>
+            <param name="projectXml">
+            The project XML.
+            </param>
+            <param name="manager">
+            The manager.
+            </param>
+            <returns>
+            A <see cref="T:System.String"/> value.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.ProjectOutputVersionTask.ParseVersion(System.String,System.String)">
+            <summary>
+            Parses the version.
+            </summary>
+            <param name="matchingFilePath">
+            The matching file path.
+            </param>
+            <param name="outputFilePath">
+            The output file path.
+            </param>
+            <returns>
+            A <see cref="T:System.Version"/> instance.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.ProjectOutputVersionTask.GetNameFormat(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets the name format.
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+            <returns>
+            A <see cref="T:System.String"/> instance.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.ProjectOutputVersionTask.ParseTargetDirectories(System.Xml.XmlDocument,System.Xml.XmlNamespaceManager)">
+            <summary>
+            Parses the target directories.
+            </summary>
+            <param name="doc">
+            The project document.
+            </param>
+            <param name="manager">
+            The manager.
+            </param>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerable`1"/> instance.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.ProjectOutputVersionTask.ParseTargetDirectory(System.Xml.XmlNode,System.Xml.XmlNamespaceManager)">
+            <summary>
+            Parses the target directory.
+            </summary>
+            <param name="configuration">
+            The configuration.
+            </param>
+            <param name="manager">
+            The manager.
+            </param>
+            <returns>
+            A <see cref="T:System.String"/> instance.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.ProjectOutputVersionTask.ProcessOutputDirectory(System.String,System.String)">
+            <summary>
+            Processes the output directory.
+            </summary>
+            <param name="matchingFilePath">
+            The matching file path.
+            </param>
+            <param name="outputFilePath">
+            The output file path.
+            </param>
+            <returns>
+            A <see cref="T:System.Boolean"/> instance.
+            </returns>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.ProjectOutputVersionTask.PatternArgument">
+            <summary>
+            Gets the pattern argument.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.WixOutputVersionTask.#ctor(Neovolve.BuildTaskExecutor.Services.EventWriter,Neovolve.BuildTaskExecutor.Extensibility.IVersionManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Neovolve.BuildTaskExecutor.Tasks.WixOutputVersionTask"/> class.
+            </summary>
+            <param name="writer">
+            The writer.
+            </param>
+            <param name="versionAction">
+            The version action.
+            </param>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.WixOutputVersionTask.ParseOutputName(System.Xml.XmlDocument,System.Xml.XmlNamespaceManager)">
+            <summary>
+            Parses the output name of the project.
+            </summary>
+            <param name="projectXml">
+            The project XML.
+            </param>
+            <param name="manager">
+            The manager.
+            </param>
+            <returns>
+            A <see cref="T:System.String"/> value.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.WixOutputVersionTask.ParseVersion(System.String,System.String)">
+            <summary>
+            Parses the version.
+            </summary>
+            <param name="matchingFilePath">
+            The matching file path.
+            </param>
+            <param name="outputFilePath">
+            The output file path.
+            </param>
+            <returns>
+            A <see cref="T:System.Version"/> instance.
+            </returns>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.WixOutputVersionTask.CommandLineArgumentHelp">
+            <summary>
+            Gets the command line argument help.
+            </summary>
+            <value>
+            The command line argument help.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.WixOutputVersionTask.Description">
+            <summary>
+            Gets the description of the task.
+            </summary>
+            <value>
+            The task description.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.WixOutputVersionTask.Names">
+            <summary>
+            Gets the command line names for the task.
+            </summary>
+            <value>
+            The command line names for the task.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.WixOutputVersionTask.VersionAction">
+            <summary>
+            Gets or sets the version action.
+            </summary>
+            <value>
+            The version action.
+            </value>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Extensibility.IEventWriter">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.Extensibility.IEventWriter"/>
+              interface defines the methods for writing event messages.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Extensibility.IEventWriter.WriteMessage(System.Diagnostics.TraceEventType,System.String,System.Object[])">
+            <summary>
+            Writes the specified message.
+            </summary>
+            <param name="eventType">
+            Type of the event.
+            </param>
+            <param name="message">
+            The event message.
+            </param>
+            <param name="arguments">
+            The optional event arguments.
+            </param>
+            <remarks>
+            The processing of the <paramref name="arguments"/> parameter is up to the implementation of the <see cref="T:Neovolve.BuildTaskExecutor.Extensibility.IEventWriter"/>.
+              Typically this would involve an invocation of <see cref="M:System.String.Format(System.IFormatProvider,System.String,System.Object[])"/>.
+            </remarks>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.VersionApplySettings">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.VersionApplySettings"/>
+              class is used to describe the settings for applying version numbers.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.VersionApplySettings.#ctor(System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Neovolve.BuildTaskExecutor.VersionApplySettings"/> class.
+            </summary>
+            <param name="applyMajor">
+            If set to <c>true</c> [apply major].
+            </param>
+            <param name="applyMinor">
+            If set to <c>true</c> [apply minor].
+            </param>
+            <param name="applyBuild">
+            If set to <c>true</c> [apply build].
+            </param>
+            <param name="applyRevision">
+            If set to <c>true</c> [apply revision].
+            </param>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.VersionApplySettings.ApplyBuild">
+            <summary>
+            Gets a value indicating whether [apply build].
+            </summary>
+            <value>
+            <c>true</c> if [apply build]; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.VersionApplySettings.ApplyMajor">
+            <summary>
+            Gets a value indicating whether [apply major].
+            </summary>
+            <value>
+            <c>true</c> if [apply major]; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.VersionApplySettings.ApplyMinor">
+            <summary>
+            Gets a value indicating whether [apply minor].
+            </summary>
+            <value>
+            <c>true</c> if [apply minor]; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.VersionApplySettings.ApplyRevision">
+            <summary>
+            Gets a value indicating whether [apply revision].
+            </summary>
+            <value>
+            <c>true</c> if [apply revision]; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Services.NamespaceDoc">
+            <summary>
+            The Neovolve.BuildTaskExecutor.Services namespace contains classes that provide 
+              common services for executing tasks.
+            </summary>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Services.TaskResolver">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.Services.TaskResolver"/>
+              class provides the ability to resolve a task from a task name.
+            </summary>
+            <remarks>
+            <note>
+            <para>
+            <b>Do not import this type into an <see cref="T:Neovolve.BuildTaskExecutor.Extensibility.ITask"/> constructor decorated with the <see cref="T:System.ComponentModel.Composition.ImportingConstructorAttribute"/>.</b>
+                </para>
+            <para>
+            This action will cause a circular reference between the <see cref="T:Neovolve.BuildTaskExecutor.Services.TaskResolver"/> and the <see cref="T:Neovolve.BuildTaskExecutor.Extensibility.ITask"/> instance trying to import it.
+                  MEF will throw a composition error in this scenario. The way to achieve this result is to import the <see cref="T:Neovolve.BuildTaskExecutor.Services.TaskResolver"/>
+                  as a property on the <see cref="T:Neovolve.BuildTaskExecutor.Extensibility.ITask"/> class.
+                </para>
+            </note>
+            </remarks>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.TaskResolver.#ctor(Neovolve.BuildTaskExecutor.Services.EventWriter)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Neovolve.BuildTaskExecutor.Services.TaskResolver"/> class.
+            </summary>
+            <param name="writer">
+            The writer.
+            </param>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.TaskResolver.ResolveTask(System.String)">
+            <summary>
+            The resolve task.
+            </summary>
+            <param name="taskName">
+            The task name.
+            </param>
+            <returns>
+            A <see cref="T:Neovolve.BuildTaskExecutor.Extensibility.ITask"/> instance if a task can be resolved by name; otherwise, <c>null</c>.
+            </returns>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Services.TaskResolver.Tasks">
+            <summary>
+            Gets the tasks.
+            </summary>
+            <value>
+            The available tasks.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Services.TaskResolver.Writer">
+            <summary>
+            Gets or sets the writer.
+            </summary>
+            <value>
+            The writer.
+            </value>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Services.EventWriter">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.Services.EventWriter"/>
+              class writes event information to the provided <see cref="T:Neovolve.BuildTaskExecutor.Extensibility.IEventWriter"/>
+              instances.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.EventWriter.#ctor(Neovolve.BuildTaskExecutor.Extensibility.IEventWriter[],System.Diagnostics.TraceEventType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Neovolve.BuildTaskExecutor.Services.EventWriter"/> class.
+            </summary>
+            <param name="eventWriters">
+            The event writers.
+            </param>
+            <param name="eventLevel">
+            The event level.
+            </param>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.EventWriter.WriteMessage(System.Diagnostics.TraceEventType,System.String,System.Object[])">
+            <summary>
+            Writes the message to the configured <see cref="T:Neovolve.BuildTaskExecutor.Extensibility.IEventWriter"/> instances.
+            </summary>
+            <param name="eventType">
+            Type of the event.
+            </param>
+            <param name="message">
+            The message.
+            </param>
+            <param name="arguments">
+            The arguments.
+            </param>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Services.EventWriter.EventLevel">
+            <summary>
+            Gets the event level.
+            </summary>
+            <value>
+            The event level.
+            </value>
+            <remarks>
+            Any trace event provided to the <see cref="M:Neovolve.BuildTaskExecutor.Services.EventWriter.WriteMessage(System.Diagnostics.TraceEventType,System.String,System.Object[])"/> method that has a level higher than this value
+              is be ignored.
+            </remarks>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Services.EventWriter.EventWriters">
+            <summary>
+            Gets or sets the event writers.
+            </summary>
+            <value>
+            The event writers.
+            </value>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Services.FileDataManager">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.Services.FileDataManager"/>
+              class is used to read data from a file.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.FileDataManager.ReadText(System.String)">
+            <summary>
+            Reads the text from the specified path.
+            </summary>
+            <param name="path">
+            The path to read.
+            </param>
+            <returns>
+            A <see cref="T:System.String"/> instance.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.FileDataManager.WriteText(System.String,System.String)">
+            <summary>
+            Writes the text to the specified path.
+            </summary>
+            <param name="path">
+            The path to write to.
+            </param>
+            <param name="contents">
+            The contents.
+            </param>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Tasks.TfsCheckoutTask">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.Tasks.TfsCheckoutTask"/>
+              class is a task that searches for files to checkout from TFS.
+            </summary>
+        </member>
+        <member name="F:Neovolve.BuildTaskExecutor.Tasks.TfsCheckoutTask._ignoreFailures">
+            <summary>
+            Stores whether failures are ignored.
+            </summary>
+        </member>
+        <member name="F:Neovolve.BuildTaskExecutor.Tasks.TfsCheckoutTask._tfPath">
+            <summary>
+            Stores the path to the TF.exe.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.TfsCheckoutTask.#ctor(Neovolve.BuildTaskExecutor.Services.EventWriter)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Neovolve.BuildTaskExecutor.Tasks.TfsCheckoutTask"/> class.
+            </summary>
+            <param name="eventWriter">
+            The event writers.
+            </param>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.TfsCheckoutTask.FileMatchFound(System.String)">
+            <summary>
+            Called when a file has been found that matches the search pattern.
+            </summary>
+            <param name="filePath">
+            The file path.
+            </param>
+            <returns>
+            A <see cref="T:Neovolve.BuildTaskExecutor.Tasks.FileMatchResult"/> value.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.TfsCheckoutTask.OnBeforeSearch(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Called before the wildcard search is executed.
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.TfsCheckoutTask.IsIgnoreFailures(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Determines whether [is ignore failures] [the specified arguments].
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+            <returns>
+            <c>true</c> if [is ignore failures] [the specified arguments]; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.TfsCheckoutTask.ResolveTfPath">
+            <summary>
+            Resolves the tf path.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> instance.
+            </returns>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.TfsCheckoutTask.CommandLineArgumentHelp">
+            <summary>
+            Gets the command line argument help.
+            </summary>
+            <value>
+            The command line argument help.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.TfsCheckoutTask.Description">
+            <summary>
+            Gets the description of the task.
+            </summary>
+            <value>
+            The task description.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.TfsCheckoutTask.Names">
+            <summary>
+            Gets the command line names for the task.
+            </summary>
+            <value>
+            The command line names for the task.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.TfsCheckoutTask.PatternArgument">
+            <summary>
+            Gets the pattern argument.
+            </summary>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Tasks.IncrementAssemblyVersionTask">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.Tasks.IncrementAssemblyVersionTask"/>
+              class is used to increment the assembly version in a source file.
+            </summary>
+        </member>
+        <member name="F:Neovolve.BuildTaskExecutor.Tasks.IncrementAssemblyVersionTask._settings">
+            <summary>
+            The settings as defined by the execution arguments.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.IncrementAssemblyVersionTask.#ctor(Neovolve.BuildTaskExecutor.Services.EventWriter,Neovolve.BuildTaskExecutor.Extensibility.IVersionManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Neovolve.BuildTaskExecutor.Tasks.IncrementAssemblyVersionTask"/> class.
+            </summary>
+            <param name="eventWriter">
+            The event writer.
+            </param>
+            <param name="versionManager">
+            The version manager.
+            </param>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.IncrementAssemblyVersionTask.IsValidArgumentSet(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Determines whether the specified argument set is valid.
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+            <returns>
+            <c>true</c> if the specified argument set is valid; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.IncrementAssemblyVersionTask.FileMatchFound(System.String)">
+            <summary>
+            Called when a file has been found that matches the search pattern.
+            </summary>
+            <param name="filePath">
+            The file path.
+            </param>
+            <returns>
+            A <see cref="T:Neovolve.BuildTaskExecutor.Tasks.FileMatchResult"/> value.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.IncrementAssemblyVersionTask.OnBeforeSearch(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Called before the wildcard search is executed.
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.IncrementAssemblyVersionTask.IsIncrementBuild(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Determines whether [is increment build] [the specified arguments].
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+            <returns>
+            <c>true</c> if [is increment build] [the specified arguments]; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.IncrementAssemblyVersionTask.IsIncrementMajor(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Determines whether [is increment major] [the specified arguments].
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+            <returns>
+            <c>true</c> if [is increment major] [the specified arguments]; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.IncrementAssemblyVersionTask.IsIncrementMinor(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Determines whether [is increment minor] [the specified arguments].
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+            <returns>
+            <c>true</c> if [is increment minor] [the specified arguments]; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.IncrementAssemblyVersionTask.IsIncrementRevision(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Determines whether [is increment revision] [the specified arguments].
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+            <returns>
+            <c>true</c> if [is increment revision] [the specified arguments]; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.IncrementAssemblyVersionTask.CommandLineArgumentHelp">
+            <summary>
+            Gets the command line argument help.
+            </summary>
+            <value>
+            The command line argument help.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.IncrementAssemblyVersionTask.Description">
+            <summary>
+            Gets the description of the task.
+            </summary>
+            <value>
+            The task description.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.IncrementAssemblyVersionTask.Names">
+            <summary>
+            Gets the command line names for the task.
+            </summary>
+            <value>
+            The command line names for the task.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.IncrementAssemblyVersionTask.PatternArgument">
+            <summary>
+            Gets the pattern argument.
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.IncrementAssemblyVersionTask.VersionAction">
+            <summary>
+            Gets or sets the version action.
+            </summary>
+            <value>
+            The version action.
+            </value>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Tasks.FileMatchResult">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.Tasks.FileMatchResult"/>
+              enum defines the result of a file match.
+            </summary>
+            <remarks>
+            The <see cref="T:Neovolve.BuildTaskExecutor.Tasks.WildcardFileSearchTask"/> class uses the
+              <see cref="T:Neovolve.BuildTaskExecutor.Tasks.FileMatchResult"/> value to determine whether to continue with file searching.
+            </remarks>
+        </member>
+        <member name="F:Neovolve.BuildTaskExecutor.Tasks.FileMatchResult.Continue">
+            <summary>
+            Indicates that the file search should continue.
+            </summary>
+        </member>
+        <member name="F:Neovolve.BuildTaskExecutor.Tasks.FileMatchResult.Cancel">
+            <summary>
+            Cancel the file search and mark the task as successful.
+            </summary>
+        </member>
+        <member name="F:Neovolve.BuildTaskExecutor.Tasks.FileMatchResult.FailTask">
+            <summary>
+            Cancel the file search and mark the task as failed.
+            </summary>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Tasks.BinaryOutputVersionTask">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.Tasks.BinaryOutputVersionTask"/>
+              class is used to rename the output of a project using a version number of the binary output.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.BinaryOutputVersionTask.#ctor(Neovolve.BuildTaskExecutor.Services.EventWriter,Neovolve.BuildTaskExecutor.Extensibility.IVersionManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Neovolve.BuildTaskExecutor.Tasks.BinaryOutputVersionTask"/> class.
+            </summary>
+            <param name="writer">
+            The writer.
+            </param>
+            <param name="versionAction">
+            The version action.
+            </param>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.BinaryOutputVersionTask.ParseOutputName(System.Xml.XmlDocument,System.Xml.XmlNamespaceManager)">
+            <summary>
+            Parses the output name of the project.
+            </summary>
+            <param name="projectXml">
+            The project XML.
+            </param>
+            <param name="manager">
+            The manager.
+            </param>
+            <returns>
+            A <see cref="T:System.String"/> value.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.BinaryOutputVersionTask.ParseVersion(System.String,System.String)">
+            <summary>
+            Parses the version.
+            </summary>
+            <param name="matchingFilePath">
+            The matching file path.
+            </param>
+            <param name="outputFilePath">
+            The output file path.
+            </param>
+            <returns>
+            A <see cref="T:System.Version"/> instance.
+            </returns>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.BinaryOutputVersionTask.CommandLineArgumentHelp">
+            <summary>
+            Gets the command line argument help.
+            </summary>
+            <value>
+            The command line argument help.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.BinaryOutputVersionTask.Description">
+            <summary>
+            Gets the description of the task.
+            </summary>
+            <value>
+            The task description.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.BinaryOutputVersionTask.Names">
+            <summary>
+            Gets the command line names for the task.
+            </summary>
+            <value>
+            The command line names for the task.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.BinaryOutputVersionTask.VersionAction">
+            <summary>
+            Gets or sets the version action.
+            </summary>
+            <value>
+            The version action.
+            </value>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Services.VersionManagerExport">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.Services.VersionManagerExport"/>
+              class is defines the inbuilt MEF export names for the <see cref="T:Neovolve.BuildTaskExecutor.Extensibility.IVersionManager"/> interface.
+            </summary>
+        </member>
+        <member name="F:Neovolve.BuildTaskExecutor.Services.VersionManagerExport.Binary">
+            <summary>
+            Defines the export name for the binary file version manager.
+            </summary>
+        </member>
+        <member name="F:Neovolve.BuildTaskExecutor.Services.VersionManagerExport.CSharp">
+            <summary>
+            Defines the export name for the C# version manager.
+            </summary>
+        </member>
+        <member name="F:Neovolve.BuildTaskExecutor.Services.VersionManagerExport.Wix">
+            <summary>
+            Defines the export name for the Wix version manager.
+            </summary>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.NamespaceDoc">
+            <summary>
+            The Neovolve.BuildTaskExecutor namespace contains classes that provide the application implementation for executing tasks via the command line.
+            </summary>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Services.CSharpVersionManager">
+            <summary>
+            The version manager.
+            </summary>
+        </member>
+        <member name="F:Neovolve.BuildTaskExecutor.Services.CSharpVersionManager._assemblyVersionExpression">
+            <summary>
+            The expression for parsing out the assembly version.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.CSharpVersionManager.#ctor(Neovolve.BuildTaskExecutor.Extensibility.IDataManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Neovolve.BuildTaskExecutor.Services.CSharpVersionManager"/> class.
+            </summary>
+            <param name="dataManager">
+            The data manager.
+            </param>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.CSharpVersionManager.ReadVersion(System.String)">
+            <summary>
+            Reads the version for the specified path.
+            </summary>
+            <param name="filePath">
+            The file path.
+            </param>
+            <returns>
+            A <see cref="T:System.Version"/> instance.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.CSharpVersionManager.WriteVersion(System.String,System.Version)">
+            <summary>
+            Writes the version to the specified file.
+            </summary>
+            <param name="filePath">
+            The file path.
+            </param>
+            <param name="newVersion">
+            The new version.
+            </param>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Services.CSharpVersionManager.DataManager">
+            <summary>
+            Gets or sets the data manager.
+            </summary>
+            <value>
+            The data manager.
+            </value>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Program">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.Program"/>
+              class is used to provide the entry point of the program.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Program.Main">
+            <summary>
+            The Main method is the entry point into the application.
+            </summary>
+            <returns>
+            A <see cref="T:System.Int32"/> value that indicates success or failure.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Program.WriteApplicationInfo(Neovolve.BuildTaskExecutor.Services.EventWriter)">
+            <summary>
+            Writes the application info.
+            </summary>
+            <param name="writer">
+            The writer.
+            </param>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Tasks.SyncWixVersionTask">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.Tasks.SyncWixVersionTask"/>
+              class is used to sync a Wix project product version against the assembly version of a binary.
+            </summary>
+        </member>
+        <member name="F:Neovolve.BuildTaskExecutor.Tasks.SyncWixVersionTask._settings">
+            <summary>
+            The settings as defined by the execution arguments.
+            </summary>
+        </member>
+        <member name="F:Neovolve.BuildTaskExecutor.Tasks.SyncWixVersionTask._sourceBinaryPath">
+            <summary>
+            Stores the source binary path that is used to obtain the assembly version.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.SyncWixVersionTask.#ctor(Neovolve.BuildTaskExecutor.Services.EventWriter,Neovolve.BuildTaskExecutor.Extensibility.IVersionManager,Neovolve.BuildTaskExecutor.Extensibility.IVersionManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Neovolve.BuildTaskExecutor.Tasks.SyncWixVersionTask"/> class.
+            </summary>
+            <param name="eventWriter">
+            The event writer.
+            </param>
+            <param name="binaryVersionReader">
+            The binary version reader.
+            </param>
+            <param name="wixVersionAction">
+            The wix version action.
+            </param>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.SyncWixVersionTask.IsValidArgumentSet(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Determines whether the specified argument set is valid.
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+            <returns>
+            <c>true</c> if the specified argument set is valid; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.SyncWixVersionTask.FileMatchFound(System.String)">
+            <summary>
+            Called when a file has been found that matches the search pattern.
+            </summary>
+            <param name="filePath">
+            The file path.
+            </param>
+            <returns>
+            A <see cref="T:Neovolve.BuildTaskExecutor.Tasks.FileMatchResult"/> value.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.SyncWixVersionTask.OnBeforeSearch(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Called before the wildcard search is executed.
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.SyncWixVersionTask.AppendVersion(System.String,System.Int32)">
+            <summary>
+            Appends the version.
+            </summary>
+            <param name="newVersion">
+            The new version.
+            </param>
+            <param name="versionPart">
+            The version part.
+            </param>
+            <returns>
+            A <see cref="T:System.String"/> instance.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.SyncWixVersionTask.GetSourceBinaryPath(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Gets the source binary path.
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+            <returns>
+            A <see cref="T:System.String"/> instance.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.SyncWixVersionTask.IsApplyBuild(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Determines whether [is apply build] [the specified arguments].
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+            <returns>
+            <c>true</c> if [is apply build] [the specified arguments]; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.SyncWixVersionTask.IsApplyMajor(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Determines whether [is apply major] [the specified arguments].
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+            <returns>
+            <c>true</c> if [is apply major] [the specified arguments]; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.SyncWixVersionTask.IsApplyMinor(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Determines whether [is apply minor] [the specified arguments].
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+            <returns>
+            <c>true</c> if [is apply minor] [the specified arguments]; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.SyncWixVersionTask.IsApplyRevision(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Determines whether [is apply revision] [the specified arguments].
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+            <returns>
+            <c>true</c> if [is apply revision] [the specified arguments]; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.SyncWixVersionTask.CommandLineArgumentHelp">
+            <summary>
+            Gets the command line argument help.
+            </summary>
+            <value>
+            The command line argument help.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.SyncWixVersionTask.Description">
+            <summary>
+            Gets the description of the task.
+            </summary>
+            <value>
+            The task description.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.SyncWixVersionTask.Names">
+            <summary>
+            Gets the command line names for the task.
+            </summary>
+            <value>
+            The command line names for the task.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.SyncWixVersionTask.PatternArgument">
+            <summary>
+            Gets the pattern argument.
+            </summary>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.SyncWixVersionTask.BinaryVersionReader">
+            <summary>
+            Gets or sets the binary version reader.
+            </summary>
+            <value>
+            The binary version reader.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.SyncWixVersionTask.WixVersionAction">
+            <summary>
+            Gets or sets the wix version action.
+            </summary>
+            <value>
+            The wix version action.
+            </value>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Services.ConsoleEventWriter">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.Services.ConsoleEventWriter"/>
+              class is used to write event information to the console.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.ConsoleEventWriter.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.ConsoleEventWriter.WriteMessage(System.Diagnostics.TraceEventType,System.String,System.Object[])">
+            <summary>
+            Writes the message.
+            </summary>
+            <param name="eventType">
+            Type of the event.
+            </param>
+            <param name="message">
+            The message.
+            </param>
+            <param name="arguments">
+            The arguments.
+            </param>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.ConsoleEventWriter.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged and - optionally - managed resources.
+            </summary>
+            <param name="disposing">
+            <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.
+            </param>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Services.ConsoleEventWriter.Disposed">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:Neovolve.BuildTaskExecutor.Services.ConsoleEventWriter"/> is disposed.
+            </summary>
+            <value>
+            <c>true</c> if disposed; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.ArgumentExtensions">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.ArgumentExtensions"/>
+              class is used to provide extension methods for dealing with command line arguments.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.ArgumentExtensions.ArgumentExists(System.Collections.Generic.IEnumerable{System.String},System.String[])">
+            <summary>
+            Determines whether an argument exists that matches one of the specified values.
+            </summary>
+            <param name="arguments">
+            The arguments to search.
+            </param>
+            <param name="matchValues">
+            The set of values to match.
+            </param>
+            <returns>
+            <c>true</c> if there is an argument that matches one of the specified values; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.ArgumentExtensions.ArgumentExists(System.Collections.Generic.IEnumerable{System.String},System.StringComparison,System.String[])">
+            <summary>
+            Determines whether an argument exists that matches one of the specified values.
+            </summary>
+            <param name="arguments">
+            The arguments to search.
+            </param>
+            <param name="stringComparison">
+            The string comparison to apply to the value match.
+            </param>
+            <param name="matchValues">
+            The set of values to match.
+            </param>
+            <returns>
+            <c>true</c> if there is an argument that matches one of the specified values; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.ArgumentExtensions.ParseArgument(System.Collections.Generic.IEnumerable{System.String},System.String[])">
+            <summary>
+            Parses the argument from the set where there is a match on a prefix value.
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+            <param name="prefixes">
+            The prefix values.
+            </param>
+            <returns>
+            The argument value without the matching prefix, otherwise <c>null</c> if no match is found.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.ArgumentExtensions.ParseArgument(System.Collections.Generic.IEnumerable{System.String},System.StringComparison,System.String[])">
+            <summary>
+            Parses the argument from the set where there is a match on a prefix value.
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+            <param name="stringComparison">
+            The string comparison to apply to the value match.
+            </param>
+            <param name="prefixes">
+            The prefix values.
+            </param>
+            <returns>
+            The argument value without the matching prefix, otherwise <c>null</c> if no match is found.
+            </returns>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Tasks.HelpTask">
+            <summary>
+            The help task.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.HelpTask.#ctor(Neovolve.BuildTaskExecutor.Services.EventWriter)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Neovolve.BuildTaskExecutor.Tasks.HelpTask"/> class.
+            </summary>
+            <param name="writer">
+            The writer.
+            </param>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.HelpTask.Execute(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Executes the specified arguments.
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+            <returns>
+            A <see cref="T:System.Boolean"/> instance that indicates whether the task executed successfully.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.HelpTask.IsValidArgumentSet(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Determines whether the specified argument set is valid.
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+            <returns>
+            <c>true</c> if the specified argument set is valid; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.HelpTask.WriteAvailableTaskHelp">
+            <summary>
+            Writes the available task help.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Tasks.HelpTask.WriteTaskHelp(System.String)">
+            <summary>
+            Writes the task help.
+            </summary>
+            <param name="taskName">
+            Name of the task.
+            </param>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.HelpTask.CommandLineArgumentHelp">
+            <summary>
+            Gets the command line argument help.
+            </summary>
+            <value>
+            The command line argument help.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.HelpTask.Description">
+            <summary>
+            Gets the description of the task.
+            </summary>
+            <value>
+            The task description.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.HelpTask.Names">
+            <summary>
+            Gets the command line names for the task.
+            </summary>
+            <value>
+            The command line names for the task.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.HelpTask.Resolver">
+            <summary>
+            Gets or sets the resolver.
+            </summary>
+            <value>
+            The resolver.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Tasks.HelpTask.Writer">
+            <summary>
+            Gets or sets the writer.
+            </summary>
+            <value>
+            The writer.
+            </value>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Tasks.NamespaceDoc">
+            <summary>
+            The Neovolve.BuildTaskExecutor.Tasks namespace contains classes that provide 
+              tasks implementations.
+            </summary>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.TaskExtensions">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.TaskExtensions"/>
+              class is used to provide extension methods for the <see cref="T:Neovolve.BuildTaskExecutor.Extensibility.ITask"/> interface.
+            </summary>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.TaskExtensions.GetTaskDisplayNames(Neovolve.BuildTaskExecutor.Extensibility.ITask)">
+            <summary>
+            Gets the task display names.
+            </summary>
+            <param name="task">
+            The task to get the names of.
+            </param>
+            <returns>
+            A <see cref="T:System.String"/> instance.
+            </returns>
+        </member>
+        <member name="T:Neovolve.BuildTaskExecutor.Services.TaskExecutor">
+            <summary>
+            The <see cref="T:Neovolve.BuildTaskExecutor.Services.TaskExecutor"/>
+              class is used to execute the required task based on a set of arguments.
+            </summary>
+            <remarks>
+            <para>
+            The first argument needs to match a name for an available task.
+              </para>
+            <note>
+            <para>
+            <b>Do not import this type into an <see cref="T:Neovolve.BuildTaskExecutor.Extensibility.ITask"/> constructor decorated with the <see cref="T:System.ComponentModel.Composition.ImportingConstructorAttribute"/>.</b>
+                </para>
+            <para>
+            This action will cause a circular reference between the <see cref="T:Neovolve.BuildTaskExecutor.Services.TaskExecutor"/> and the <see cref="T:Neovolve.BuildTaskExecutor.Extensibility.ITask"/> instance trying to import it.
+                  MEF will throw a composition error in this scenario. The way to achieve this result is to import the <see cref="T:Neovolve.BuildTaskExecutor.Services.TaskExecutor"/>
+                  as a property on the <see cref="T:Neovolve.BuildTaskExecutor.Extensibility.ITask"/> class.
+                </para>
+            </note>
+            </remarks>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.TaskExecutor.#ctor(Neovolve.BuildTaskExecutor.Services.EventWriter)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Neovolve.BuildTaskExecutor.Services.TaskExecutor"/> class.
+            </summary>
+            <param name="writer">
+            The writer.
+            </param>
+        </member>
+        <member name="M:Neovolve.BuildTaskExecutor.Services.TaskExecutor.Execute(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Executes the specified arguments.
+            </summary>
+            <param name="arguments">
+            The arguments.
+            </param>
+            <returns>
+            A <see cref="T:System.Boolean"/> instance that indicates whether a task could be executed successfully.
+            </returns>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Services.TaskExecutor.Resolver">
+            <summary>
+            Gets or sets the resolver.
+            </summary>
+            <value>
+            The resolver.
+            </value>
+        </member>
+        <member name="P:Neovolve.BuildTaskExecutor.Services.TaskExecutor.Writer">
+            <summary>
+            Gets or sets the writer.
+            </summary>
+            <value>
+            The writer.
+            </value>
+        </member>
+    </members>
+</doc>
