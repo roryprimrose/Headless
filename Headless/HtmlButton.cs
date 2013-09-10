@@ -35,7 +35,7 @@
         /// <returns>
         ///     A <see cref="IPage" /> value.
         /// </returns>
-        public IPage Click()
+        public dynamic Click()
         {
             var form = this.GetHtmlForm();
 
