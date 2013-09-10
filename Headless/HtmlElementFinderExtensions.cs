@@ -332,6 +332,62 @@
         }
 
         /// <summary>
+        /// Finds the elements by value anywhere under this node.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of <see cref="HtmlElement"/> to return.
+        /// </typeparam>
+        /// <param name="finder">
+        /// The finder.
+        /// </param>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// An <see cref="IEnumerable{T}"/> value.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// The <paramref name="finder"/> parameter is <c>null</c>.
+        /// </exception>
+        public static IEnumerable<T> AllByValue<T>(this IHtmlElementFinder<T> finder, string value)
+            where T : HtmlElement
+        {
+            return finder.AllByValue(value, true);
+        }
+
+        /// <summary>
+        /// Finds the elements by value anywhere under this node.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of <see cref="HtmlElement"/> to return.
+        /// </typeparam>
+        /// <param name="finder">
+        /// The finder.
+        /// </param>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <param name="ignoreCase">
+        /// if set to <c>true</c> matching the value value will be case insensitive.
+        /// </param>
+        /// <returns>
+        /// An <see cref="IEnumerable{T}"/> value.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// The <paramref name="finder"/> parameter is <c>null</c>.
+        /// </exception>
+        public static IEnumerable<T> AllByValue<T>(this IHtmlElementFinder<T> finder, string value, bool ignoreCase)
+            where T : HtmlElement
+        {
+            if (finder == null)
+            {
+                throw new ArgumentNullException("finder");
+            }
+
+            return finder.AllByAttribute("value", value, ignoreCase);
+        }
+
+        /// <summary>
         /// Finds the element by id anywhere under this node.
         /// </summary>
         /// <typeparam name="T">
@@ -585,6 +641,80 @@
                 CultureInfo.CurrentCulture, 
                 Resources.HtmlElement_MultipleMatchesFoundForText, 
                 text);
+
+            return matches.EnsureSingle(failureMessage);
+        }
+
+        /// <summary>
+        /// Finds the element by value anywhere under this node.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of <see cref="HtmlElement"/> to return.
+        /// </typeparam>
+        /// <param name="finder">
+        /// The finder.
+        /// </param>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// A <typeparamref name="T"/> value.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// The <paramref name="finder"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="InvalidHtmlElementMatchException">
+        /// No elements were found.
+        /// </exception>
+        /// <exception cref="InvalidHtmlElementMatchException">
+        /// More than one element was found.
+        /// </exception>
+        public static T ByValue<T>(this IHtmlElementFinder<T> finder, string value) where T : HtmlElement
+        {
+            return finder.ByValue(value, true);
+        }
+
+        /// <summary>
+        /// Finds the element by value anywhere under this node.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of <see cref="HtmlElement"/> to return.
+        /// </typeparam>
+        /// <param name="finder">
+        /// The finder.
+        /// </param>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <param name="ignoreCase">
+        /// if set to <c>true</c> the match on value will be case insensitive.
+        /// </param>
+        /// <returns>
+        /// A <typeparamref name="T"/> value.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// The <paramref name="finder"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="InvalidHtmlElementMatchException">
+        /// No elements were found.
+        /// </exception>
+        /// <exception cref="InvalidHtmlElementMatchException">
+        /// No elements were found.
+        /// </exception>
+        public static T ByValue<T>(this IHtmlElementFinder<T> finder, string value, bool ignoreCase)
+            where T : HtmlElement
+        {
+            if (finder == null)
+            {
+                throw new ArgumentNullException("finder");
+            }
+
+            var matches = finder.AllByAttribute("value", value, ignoreCase);
+
+            var failureMessage = string.Format(
+                CultureInfo.CurrentCulture, 
+                Resources.HtmlElement_MultipleMatchesFoundForValue, 
+                value);
 
             return matches.EnsureSingle(failureMessage);
         }

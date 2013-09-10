@@ -20,8 +20,7 @@
         /// <param name="node">
         /// The node.
         /// </param>
-        public HtmlLink(IHtmlPage page, IXPathNavigable node)
-            : base(page, node)
+        public HtmlLink(IHtmlPage page, IXPathNavigable node) : base(page, node)
         {
         }
 
@@ -33,7 +32,9 @@
         /// </returns>
         public dynamic Click()
         {
-            return Click<DynamicHtmlPage>();
+            var location = HrefLocation;
+
+            return Page.Browser.GoTo(location);
         }
 
         /// <summary>
@@ -46,23 +47,53 @@
         /// <exception cref="System.InvalidOperationException">The link does not have an href attribute.</exception>
         public T Click<T>() where T : IPage, new()
         {
-            var navigator = Node.GetNavigator();
-
-            var href = navigator.GetAttribute("href", string.Empty);
-
-            if (string.IsNullOrWhiteSpace(href))
-            {
-                throw new InvalidOperationException("The link does not have an href attribute.");
-            }
-
-            var location = new Uri(href, UriKind.RelativeOrAbsolute);
-
-            if (location.IsAbsoluteUri == false)
-            {
-                location = new Uri(Page.Location, location);
-            }
+            var location = HrefLocation;
 
             return Page.Browser.GoTo<T>(location);
+        }
+
+        /// <summary>
+        ///     Gets the href attribute value.
+        /// </summary>
+        /// <value>
+        ///     The href attribute value.
+        /// </value>
+        /// <exception cref="System.InvalidOperationException">The link does not have an href attribute.</exception>
+        public string Href
+        {
+            get
+            {
+                var href = GetAttributeValue("href");
+
+                if (string.IsNullOrWhiteSpace(href))
+                {
+                    throw new InvalidOperationException("The link does not have an href attribute.");
+                }
+
+                return href;
+            }
+        }
+
+        /// <summary>
+        ///     Gets the href value.
+        /// </summary>
+        /// <value>
+        ///     The href value.
+        /// </value>
+        /// <exception cref="System.InvalidOperationException">The link does not have an href attribute.</exception>
+        public Uri HrefLocation
+        {
+            get
+            {
+                var location = new Uri(Href, UriKind.RelativeOrAbsolute);
+
+                if (location.IsAbsoluteUri == false)
+                {
+                    location = new Uri(Page.Location, location);
+                }
+
+                return location;
+            }
         }
 
         /// <summary>

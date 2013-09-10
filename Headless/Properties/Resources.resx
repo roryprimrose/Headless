@@ -157,4 +157,7 @@
   <data name="DynamicHtmlPage_DynamicElementNotFound" xml:space="preserve">
     <value>No HTML element was found with a matching id, name or text of '{0}'.</value>
   </data>
+  <data name="HtmlElement_MultipleMatchesFoundForValue" xml:space="preserve">
+    <value>Multiple elements were found for the value '{0}'.</value>
+  </data>
 </root>

@@ -31,7 +31,7 @@
         /// <returns>
         ///     A <see cref="IPage" /> value.
         /// </returns>
-        public IPage Submit()
+        public dynamic Submit()
         {
             return Submit(null);
         }
@@ -45,11 +45,38 @@
         /// <returns>
         /// A <see cref="IPage"/> value.
         /// </returns>
-        public IPage Submit(HtmlButton sourceButton)
+        public dynamic Submit(HtmlButton sourceButton)
         {
             var parameters = this.BuildPostParameters(sourceButton);
 
             return Page.Browser.PostTo(parameters, PostLocation, HttpStatusCode.OK);
+        }
+
+        /// <summary>
+        /// Submits the specified form.
+        /// </summary>
+        /// <typeparam name="T">The type of page returned.</typeparam>
+        /// <returns>
+        /// A <typeparamref name="T"/> value.
+        /// </returns>
+        public T Submit<T>() where T : IPage, new()
+        {
+            return Submit<T>(null);
+        }
+
+        /// <summary>
+        /// Submits the specified form.
+        /// </summary>
+        /// <typeparam name="T">The type of page returned.</typeparam>
+        /// <param name="sourceButton">The source button.</param>
+        /// <returns>
+        /// A <typeparamref name="T"/> value.
+        /// </returns>
+        public T Submit<T>(HtmlButton sourceButton) where T : IPage, new()
+        {
+            var parameters = this.BuildPostParameters(sourceButton);
+
+            return Page.Browser.PostTo<T>(parameters, PostLocation, HttpStatusCode.OK);
         }
 
         /// <summary>
