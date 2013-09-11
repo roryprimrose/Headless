@@ -49,10 +49,7 @@
                 throw new ArgumentNullException("result");
             }
 
-            _browser = browser;
-            _statusCode = response.StatusCode;
-            _statusDescription = response.ReasonPhrase;
-            _result = result;
+            Initialize(browser, response.StatusCode, response.ReasonPhrase, result);
 
             SetContent(response.Content);
         }
@@ -85,6 +82,33 @@
         /// The content.
         /// </param>
         protected internal abstract void SetContent(HttpContent content);
+
+        /// <summary>
+        /// Initializes the page with the specified values.
+        /// </summary>
+        /// <param name="browser">
+        /// The browser.
+        /// </param>
+        /// <param name="statusCode">
+        /// The status code.
+        /// </param>
+        /// <param name="statusDescription">
+        /// The status description.
+        /// </param>
+        /// <param name="result">
+        /// The result.
+        /// </param>
+        protected virtual void Initialize(
+            IBrowser browser, 
+            HttpStatusCode statusCode, 
+            string statusDescription, 
+            HttpResult result)
+        {
+            _browser = browser;
+            _statusCode = statusCode;
+            _statusDescription = statusDescription;
+            _result = result;
+        }
 
         /// <inheritdoc />
         public IBrowser Browser

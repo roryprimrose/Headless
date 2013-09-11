@@ -3,6 +3,7 @@
     using System;
     using System.Diagnostics;
     using System.IO;
+    using System.Net;
     using System.Net.Http;
     using System.Xml;
     using System.Xml.XPath;
@@ -34,9 +35,32 @@
         }
 
         /// <inheritdoc />
+        public T CloneAs<T>() where T : IHtmlPage, new()
+        {
+            var page = new T();
+
+            page.Initialize(Browser, StatusCode, StatusDescription, Result, _content);
+
+            return page;
+        }
+
+        /// <inheritdoc />
         public virtual IHtmlElementFinder<T> Find<T>() where T : HtmlElement
         {
             return new DefaultHtmlElementFinder<T>(this);
+        }
+
+        /// <inheritdoc />
+        public void Initialize(
+            IBrowser browser, 
+            HttpStatusCode statusCode, 
+            string statusDescription, 
+            HttpResult result, 
+            XmlDocument document)
+        {
+            Initialize(browser, statusCode, statusDescription, result);
+
+            _content = document;
         }
 
         /// <inheritdoc />

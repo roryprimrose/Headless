@@ -1,7 +1,5 @@
 ﻿namespace Headless.IntegrationTests
 {
-    using System;
-    using System.Diagnostics;
     using System.Net;
     using FluentAssertions;
     using Headless.IntegrationTests.Pages;

@@ -13,6 +13,7 @@
     ///     browsers will.
     /// </remarks>
     [SupportedTag("input", "type", "submit")]
+    [SupportedTag("button", "type", "submit")]
     [SupportedTag("input", "type", "image")]
     public class HtmlButton : HtmlFormElement
     {

@@ -7,6 +7,7 @@
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Xml;
     using System.Xml.XPath;
     using Headless.Activation;
     using Headless.Properties;
@@ -23,9 +24,39 @@
         private HtmlPageWrapper _wrapperPage;
 
         /// <inheritdoc />
+        public T CloneAs<T>() where T : IHtmlPage, new()
+        {
+            var page = new T();
+
+            page.Initialize(
+                _wrapperPage.Browser, 
+                _wrapperPage.StatusCode, 
+                _wrapperPage.StatusDescription, 
+                _wrapperPage.Result, 
+                _wrapperPage.Document as XmlDocument);
+
+            return page;
+        }
+
+        /// <inheritdoc />
         public IHtmlElementFinder<T> Find<T>() where T : HtmlElement
         {
             return new DefaultHtmlElementFinder<T>(this);
+        }
+
+        /// <inheritdoc />
+        public void Initialize(
+            IBrowser browser, 
+            HttpStatusCode statusCode, 
+            string statusDescription, 
+            HttpResult result, 
+            XmlDocument document)
+        {
+            var location = result.Outcomes.Last().Location;
+
+            _wrapperPage = new HtmlPageWrapper(location);
+
+            _wrapperPage.Initialize(browser, statusCode, statusDescription, result, document);
         }
 
         /// <inheritdoc />
