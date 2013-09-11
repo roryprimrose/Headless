@@ -86,7 +86,7 @@
         /// <exception cref="System.ArgumentNullException">
         /// The <paramref name="browser"/> parameter is <c>null</c>.
         /// </exception>
-        public static T GoTo<T>(this IBrowser browser) where T : Page, new()
+        public static T GoTo<T>(this IBrowser browser) where T : IPage, new()
         {
             var page = new T();
 
