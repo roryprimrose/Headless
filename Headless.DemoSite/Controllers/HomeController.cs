@@ -28,5 +28,11 @@ namespace Headless.DemoSite.Controllers
 
             return View();
         }
+
+        [HttpPost]
+        public ActionResult Echo()
+        {
+            return View();
+        }
     }
 }

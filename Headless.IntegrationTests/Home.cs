@@ -23,6 +23,20 @@
         }
 
         /// <summary>
+        ///     Gets the echo.
+        /// </summary>
+        /// <value>
+        ///     The echo.
+        /// </value>
+        public static Uri Echo
+        {
+            get
+            {
+                return new Uri(Config.BaseWebAddress, "home/echo");
+            }
+        }
+
+        /// <summary>
         ///     Gets the index address.
         /// </summary>
         /// <value>

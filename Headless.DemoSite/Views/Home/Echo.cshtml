@@ -1,0 +1,14 @@
+﻿
+@using (Html.BeginForm(null, null, null, FormMethod.Post, new
+{
+    name = "EchoForm"
+}))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    foreach (var key in Request.Form.AllKeys)
+    {
+    @Html.TextBox(key, Request.Form[key]);
+    }
+}

@@ -68,8 +68,8 @@
             }
 
             // Make the addresses lower-case because Uri.IsBaseOf is case sensitive
-            var pageLocation = new Uri(Location.ToString().ToLowerInvariant());
-            var testLocation = new Uri(location.ToString().ToLowerInvariant());
+            var pageLocation = new Uri(Location.ToString().ToUpperInvariant());
+            var testLocation = new Uri(location.ToString().ToUpperInvariant());
 
             if (pageLocation.IsBaseOf(testLocation))
             {

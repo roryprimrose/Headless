@@ -27,10 +27,20 @@
         /// <inheritdoc />
         protected internal override IEnumerable<PostEntry> BuildPostData()
         {
-            if (Checked)
+            if (Checked == false)
             {
-                yield return new PostEntry(Name, Value);
+                yield break;
             }
+
+            var value = Value;
+
+            if (string.IsNullOrEmpty(value))
+            {
+                // The value of "on" is the default by convention.
+                value = "on";
+            }
+
+            yield return new PostEntry(Name, value);
         }
 
         /// <summary>

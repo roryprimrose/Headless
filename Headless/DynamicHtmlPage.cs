@@ -52,6 +52,11 @@
             HttpResult result, 
             XmlDocument document)
         {
+            if (result == null)
+            {
+                throw new ArgumentNullException("result");
+            }
+
             var location = result.Outcomes.Last().Location;
 
             _wrapperPage = new HtmlPageWrapper(location);

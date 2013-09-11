@@ -17,6 +17,33 @@
     public class FormTests
     {
         /// <summary>
+        ///     Runs a test for check box with no value submits default convention.
+        /// </summary>
+        /// <remarks>The convention is that checkboxes will submit the value "on" when no value is defined.</remarks>
+        [TestMethod]
+        public void CheckBoxWithNoValueSubmitsDefaultConventionTest()
+        {
+            const string Html = @"
+<html><head /><body>
+<form action='Home/Echo' method='post'>
+<input type='checkbox' name='IsSet' checked='checked' />
+<input type='submit' name='Submit' />
+</form></body></html>
+";
+
+            using (var browser = new Browser())
+            {
+                dynamic page = new MemoryHtmlPage(browser, Html);
+
+                var echo = page.Submit.Click();
+
+                string value = echo.IsSet.Value;
+
+                value.Should().Be("on");
+            }
+        }
+
+        /// <summary>
         ///     Runs a test for drop down on dynamic page.
         /// </summary>
         [TestMethod]
