@@ -50,7 +50,7 @@
         /// <returns>
         ///     A <typeparamref name="T" /> value.
         /// </returns>
-        public T Click<T>() where T : Page, new()
+        public T Click<T>() where T : IPage, new()
         {
             var form = this.GetHtmlForm();
 
