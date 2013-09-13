@@ -1,4 +1,4 @@
-﻿namespace Headless
+﻿ namespace Headless
 {
     using System;
     using System.Collections.Generic;
@@ -49,6 +49,7 @@
             };
             _client = new HttpClient(_handler);
             _contentTypeResolver = new DefaultPageContentTypeResolver();
+            VerificationParts = UriComponents.SchemeAndServer | UriComponents.Path;
         }
 
         /// <summary>
@@ -184,7 +185,7 @@
             }
 
             // Validate that the final address matches the page
-            if (page.IsOn(currentResourceLocation) == false)
+            if (page.IsOn(currentResourceLocation, VerificationParts) == false)
             {
                 // We have been requested to go to a location that doesn't match the requested page
                 var message = string.Format(
@@ -198,6 +199,13 @@
             }
 
             return page;
+        }
+
+        /// <inheritdoc />
+        public UriComponents VerificationParts
+        {
+            get;
+            set;
         }
 
         /// <summary>

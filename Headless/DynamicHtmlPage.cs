@@ -89,10 +89,30 @@
             _wrapperPage.Initialize(browser, response, result);
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Determines whether the the page is on the specified location.
+        /// </summary>
+        /// <param name="location">
+        /// The current location.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified location is valid for the page; otherwise, <c>false</c>.
+        /// </returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="location"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="System.ArgumentException">
+        /// The <paramref name="location"/> parameter is a relative location.
+        /// </exception>
         public bool IsOn(Uri location)
         {
-            return _wrapperPage.IsOn(location);
+            return IsOn(location, _wrapperPage.Browser.VerificationParts);
+        }
+
+        /// <inheritdoc />
+        public bool IsOn(Uri location, UriComponents compareWith)
+        {
+            return _wrapperPage.IsOn(location, compareWith);
         }
 
         /// <inheritdoc />

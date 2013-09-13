@@ -144,7 +144,7 @@
 
                 page.Result.TraceResults();
 
-                page.IsOn(Home.About).Should().BeTrue();
+                page.IsOn(Home.About, browser.VerificationParts).Should().BeTrue();
                 page.StatusCode.Should().Be(HttpStatusCode.OK);
             }
         }

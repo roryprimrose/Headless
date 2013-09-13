@@ -1,5 +1,6 @@
 ﻿namespace Headless
 {
+    using System;
     using System.Net;
     using System.Net.Http;
     using Headless.Activation;
@@ -38,6 +39,18 @@
         ///     The content type resolver.
         /// </value>
         IPageContentTypeResolver ContentTypeResolver
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        ///     Gets or sets the verification parts used to validate page locations.
+        /// </summary>
+        /// <value>
+        ///     The verification parts used to validate page locations.
+        /// </value>
+        UriComponents VerificationParts
         {
             get;
             set;

@@ -55,6 +55,26 @@
             SetContent(response.Content);
         }
 
+        /// <summary>
+        /// Determines whether the the page is on the specified location.
+        /// </summary>
+        /// <param name="location">
+        /// The current location.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified location is valid for the page; otherwise, <c>false</c>.
+        /// </returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="location"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="System.ArgumentException">
+        /// The <paramref name="location"/> parameter is a relative location.
+        /// </exception>
+        public bool IsOn(Uri location)
+        {
+            return IsOn(location, _browser.VerificationParts);
+        }
+
         /// <inheritdoc />
         /// <exception cref="System.ArgumentNullException">
         ///     The <paramref name="location" /> parameter is <c>null</c>.
@@ -62,7 +82,7 @@
         /// <exception cref="System.ArgumentException">
         ///     The <paramref name="location" /> parameter is a relative location.
         /// </exception>
-        public virtual bool IsOn(Uri location)
+        public virtual bool IsOn(Uri location, UriComponents compareWith)
         {
             if (location == null)
             {
@@ -74,12 +94,11 @@
                 throw new ArgumentException(Resources.Uri_LocationMustBeAbsolute, "location");
             }
 
-            const UriComponents PartsToCompare = UriComponents.HttpRequestUrl;
             const UriFormat CompareFormat = UriFormat.SafeUnescaped;
 
             var compareValue = string.Compare(
-                Location.GetComponents(PartsToCompare, CompareFormat), 
-                location.GetComponents(PartsToCompare, CompareFormat), 
+                Location.GetComponents(compareWith, CompareFormat), 
+                location.GetComponents(compareWith, CompareFormat), 
                 StringComparison.OrdinalIgnoreCase);
 
             if (compareValue == 0)

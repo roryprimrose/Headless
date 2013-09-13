@@ -10,9 +10,9 @@
     public class FormIndexPage : HtmlPage
     {
         /// <inheritdoc />
-        public override bool IsOn(Uri location)
+        public override bool IsOn(Uri location, UriComponents compareWith)
         {
-            var value = base.IsOn(location);
+            var value = base.IsOn(location, compareWith);
 
             if (value)
             {

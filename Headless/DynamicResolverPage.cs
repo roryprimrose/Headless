@@ -62,9 +62,9 @@
         }
 
         /// <inheritdoc />
-        public bool IsOn(Uri location)
+        public bool IsOn(Uri location, UriComponents compareWith)
         {
-            return ResolvedPage.IsOn(location);
+            return ResolvedPage.IsOn(location, compareWith);
         }
 
         /// <inheritdoc />
