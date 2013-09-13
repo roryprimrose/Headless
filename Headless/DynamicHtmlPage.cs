@@ -92,8 +92,7 @@
         /// <inheritdoc />
         public bool IsOn(Uri location)
         {
-            // There is no verification of dynamic page locations because there is no model to define where the current location should be
-            return true;
+            return _wrapperPage.IsOn(location);
         }
 
         /// <inheritdoc />

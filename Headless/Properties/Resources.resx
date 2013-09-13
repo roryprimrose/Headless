@@ -163,4 +163,7 @@
   <data name="HttpResult_NoHttpOutcomeProvided" xml:space="preserve">
     <value>No HttpOutcome have been provided.</value>
   </data>
+  <data name="Uri_LocationMustBeAbsolute" xml:space="preserve">
+    <value>The location is absolute where an absolute address is required.</value>
+  </data>
 </root>

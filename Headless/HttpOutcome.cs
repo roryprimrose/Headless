@@ -4,6 +4,7 @@
     using System.Globalization;
     using System.Net;
     using System.Net.Http;
+    using Headless.Properties;
 
     /// <summary>
     ///     The <see cref="HttpOutcome" />
@@ -55,7 +56,10 @@
         /// The response time.
         /// </param>
         /// <exception cref="System.ArgumentNullException">
-        /// location
+        /// The <paramref name="location"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="System.ArgumentException">
+        /// The <paramref name="location"/> parameter is a relative location.
         /// </exception>
         public HttpOutcome(
             Uri location, 
@@ -67,6 +71,11 @@
             if (location == null)
             {
                 throw new ArgumentNullException("location");
+            }
+            
+            if (location.IsAbsoluteUri == false)
+            {
+                throw new ArgumentException(Resources.Uri_LocationMustBeAbsolute, "location");
             }
 
             _location = location;

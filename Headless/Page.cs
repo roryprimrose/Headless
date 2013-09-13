@@ -4,6 +4,7 @@
     using System.Diagnostics;
     using System.Net;
     using System.Net.Http;
+    using Headless.Properties;
 
     /// <summary>
     ///     The <see cref="Page" />
@@ -55,23 +56,33 @@
         }
 
         /// <inheritdoc />
+        /// <exception cref="System.ArgumentNullException">
+        ///     The <paramref name="location" /> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="System.ArgumentException">
+        ///     The <paramref name="location" /> parameter is a relative location.
+        /// </exception>
         public virtual bool IsOn(Uri location)
         {
             if (location == null)
             {
-                return false;
+                throw new ArgumentNullException("location");
             }
 
-            if (string.Equals(location.ToString(), TargetLocation.ToString(), StringComparison.OrdinalIgnoreCase))
+            if (location.IsAbsoluteUri == false)
             {
-                return true;
+                throw new ArgumentException(Resources.Uri_LocationMustBeAbsolute, "location");
             }
 
-            // Make the addresses lower-case because Uri.IsBaseOf is case sensitive
-            var pageLocation = new Uri(TargetLocation.ToString().ToUpperInvariant());
-            var testLocation = new Uri(location.ToString().ToUpperInvariant());
+            const UriComponents PartsToCompare = UriComponents.HttpRequestUrl;
+            const UriFormat CompareFormat = UriFormat.SafeUnescaped;
 
-            if (pageLocation.IsBaseOf(testLocation))
+            var compareValue = string.Compare(
+                Location.GetComponents(PartsToCompare, CompareFormat), 
+                location.GetComponents(PartsToCompare, CompareFormat), 
+                StringComparison.OrdinalIgnoreCase);
+
+            if (compareValue == 0)
             {
                 return true;
             }

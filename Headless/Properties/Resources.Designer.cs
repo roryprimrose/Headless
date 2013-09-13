@@ -179,6 +179,15 @@ namespace Headless.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The location is absolute where an absolute address is required..
+        /// </summary>
+        internal static string Uri_LocationMustBeAbsolute {
+            get {
+                return ResourceManager.GetString("Uri_LocationMustBeAbsolute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to edit XML document..
         /// </summary>
         internal static string XPathNavigator_EditNotAllowed {

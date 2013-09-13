@@ -13,6 +13,32 @@
     public class DynamicPageTests
     {
         /// <summary>
+        ///     Runs a test for dynamic page correctly validates location.
+        /// </summary>
+        [TestMethod]
+        public void DynamicPageCorrectlyValidatesLocationTest()
+        {
+            using (var browser = new Browser())
+            {
+                var redirectPage = browser.GoTo(Redirect.Index);
+
+                var page = redirectPage.Temporary.Click();
+
+                bool actual = page.IsOn(Home.About);
+
+                actual.Should().BeTrue();
+
+                actual = page.IsOn(Home.Echo);
+
+                actual.Should().BeFalse();
+
+                actual = page.IsOn(Redirect.Index);
+
+                actual.Should().BeFalse();
+            }
+        }
+
+        /// <summary>
         ///     Runs a test for go to location returns page.
         /// </summary>
         [TestMethod]
@@ -48,7 +74,7 @@
                 outcomes.Should().Contain(x => x.StatusCode == HttpStatusCode.Found);
 
                 // One of the requests should have hit the original location defined by the page
-                outcomes.Should().ContainSingle(x => x.Location == page.Location);
+                outcomes.Should().ContainSingle(x => x.Location == page.TargetLocation);
 
                 page.StatusCode.Should().Be(HttpStatusCode.OK);
             }

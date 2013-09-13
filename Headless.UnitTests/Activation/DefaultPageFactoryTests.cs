@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Net;
     using System.Net.Http;
     using FluentAssertions;
     using Headless.Activation;
@@ -27,7 +28,16 @@
             {
                 Content = new StringContent(data)
             };
-            var result = new HttpResult(new ReadOnlyCollection<HttpOutcome>(new List<HttpOutcome>()));
+            var outcomes = new List<HttpOutcome>
+            {
+                new HttpOutcome(
+                    new Uri("http://www.google.com"), 
+                    HttpMethod.Get, 
+                    HttpStatusCode.OK, 
+                    Guid.NewGuid().ToString(), 
+                    TimeSpan.FromMilliseconds(2))
+            };
+            var result = new HttpResult(new ReadOnlyCollection<HttpOutcome>(outcomes));
 
             var browser = Substitute.For<IBrowser>();
 
