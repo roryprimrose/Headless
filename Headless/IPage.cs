@@ -47,10 +47,10 @@
         }
 
         /// <summary>
-        ///     Gets the location of the page.
+        ///     Gets the current location of the page.
         /// </summary>
         /// <value>
-        ///     The location of the page.
+        ///     The current location of the page.
         /// </value>
         Uri Location
         {
@@ -86,6 +86,17 @@
         ///     The status description.
         /// </value>
         string StatusDescription
+        {
+            get;
+        }
+
+        /// <summary>
+        ///     Gets the location the browser should navigate to in order to load this page.
+        /// </summary>
+        /// <value>
+        ///     The location the browser should navigate to in order to load this page.
+        /// </value>
+        Uri TargetLocation
         {
             get;
         }

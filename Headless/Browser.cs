@@ -191,7 +191,7 @@
                     CultureInfo.CurrentCulture, 
                     "The url requested is {0} which does not match the location of {1} defined by page {2}.", 
                     currentResourceLocation, 
-                    page.Location, 
+                    page.TargetLocation, 
                     page.GetType().FullName);
 
                 throw new InvalidOperationException(message);

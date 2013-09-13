@@ -13,7 +13,8 @@
     ///     to create a page for dynamic requests where the actual type of page is determined by the response rather than
     ///     initial request.
     /// </summary>
-    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "This type is created dynamically.")]
+    [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", 
+        Justification = "This type is created dynamically.")]
     internal class DynamicResolverPage : IPage
     {
         /// <summary>
@@ -80,7 +81,6 @@
         /// <inheritdoc />
         public Uri Location
         {
-            [DebuggerStepThrough]
             get
             {
                 return ResolvedPage.Location;
@@ -128,6 +128,16 @@
             get
             {
                 return ResolvedPage.StatusDescription;
+            }
+        }
+
+        /// <inheritdoc />
+        public Uri TargetLocation
+        {
+            [DebuggerStepThrough]
+            get
+            {
+                return ResolvedPage.TargetLocation;
             }
         }
     }

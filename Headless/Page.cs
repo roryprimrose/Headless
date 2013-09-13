@@ -62,13 +62,13 @@
                 return false;
             }
 
-            if (string.Equals(location.ToString(), Location.ToString(), StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(location.ToString(), TargetLocation.ToString(), StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }
 
             // Make the addresses lower-case because Uri.IsBaseOf is case sensitive
-            var pageLocation = new Uri(Location.ToString().ToUpperInvariant());
+            var pageLocation = new Uri(TargetLocation.ToString().ToUpperInvariant());
             var testLocation = new Uri(location.ToString().ToUpperInvariant());
 
             if (pageLocation.IsBaseOf(testLocation))
@@ -125,9 +125,12 @@
         }
 
         /// <inheritdoc />
-        public abstract Uri Location
+        public Uri Location
         {
-            get;
+            get
+            {
+                return _result.Outcomes[_result.Outcomes.Count - 1].Location;
+            }
         }
 
         /// <inheritdoc />
@@ -158,6 +161,12 @@
             {
                 return _statusDescription;
             }
+        }
+
+        /// <inheritdoc />
+        public abstract Uri TargetLocation
+        {
+            get;
         }
     }
 }

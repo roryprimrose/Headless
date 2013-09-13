@@ -137,7 +137,7 @@
                 if (string.IsNullOrWhiteSpace(action))
                 {
                     // There is no action so we are posting to the current location
-                    location = Page.Location;
+                    location = Page.TargetLocation;
                 }
                 else
                 {
@@ -145,7 +145,7 @@
 
                     if (location.IsAbsoluteUri == false)
                     {
-                        location = new Uri(Page.Location, location);
+                        location = new Uri(Page.TargetLocation, location);
                     }
                 }
 

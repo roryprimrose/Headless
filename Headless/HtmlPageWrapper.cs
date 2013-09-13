@@ -10,27 +10,27 @@
     internal class HtmlPageWrapper : HtmlPage
     {
         /// <summary>
-        ///     The location.
+        ///     The TargetLocation.
         /// </summary>
-        private readonly Uri _location;
+        private readonly Uri _targetLocation;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HtmlPageWrapper"/> class.
         /// </summary>
-        /// <param name="location">
-        /// The location.
+        /// <param name="targetLocation">
+        /// The target location.
         /// </param>
         /// <exception cref="ArgumentNullException">
-        /// The <paramref name="location"/> parameter is <c>null</c>.
+        /// The <paramref name="targetLocation"/> parameter is <c>null</c>.
         /// </exception>
-        public HtmlPageWrapper(Uri location)
+        public HtmlPageWrapper(Uri targetLocation)
         {
-            if (location == null)
+            if (targetLocation == null)
             {
-                throw new ArgumentNullException("location");
+                throw new ArgumentNullException("targetLocation");
             }
 
-            _location = location;
+            _targetLocation = targetLocation;
         }
 
         /// <inheritdoc />
@@ -41,11 +41,11 @@
         }
 
         /// <inheritdoc />
-        public override Uri Location
+        public override Uri TargetLocation
         {
             get
             {
-                return _location;
+                return _targetLocation;
             }
         }
     }

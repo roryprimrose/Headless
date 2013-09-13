@@ -160,6 +160,15 @@ namespace Headless.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No HttpOutcome have been provided..
+        /// </summary>
+        internal static string HttpResult_NoHttpOutcomeProvided {
+            get {
+                return ResourceManager.GetString("HttpResult_NoHttpOutcomeProvided", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Multiple types were found matching {0} that supports the HTML {1}. The following types were matching types:
         ///{2}.
         /// </summary>

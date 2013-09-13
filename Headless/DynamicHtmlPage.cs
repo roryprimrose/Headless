@@ -251,7 +251,6 @@
         /// <inheritdoc />
         public Uri Location
         {
-            [DebuggerStepThrough]
             get
             {
                 return _wrapperPage.Location;
@@ -295,6 +294,16 @@
             get
             {
                 return _wrapperPage.StatusDescription;
+            }
+        }
+
+        /// <inheritdoc />
+        public Uri TargetLocation
+        {
+            [DebuggerStepThrough]
+            get
+            {
+                return _wrapperPage.TargetLocation;
             }
         }
     }

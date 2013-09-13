@@ -12,14 +12,14 @@
         /// <summary>
         ///     The location.
         /// </summary>
-        private readonly Uri _location;
+        private readonly Uri _targetLocation;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="HtmlPageWrapper" /> class.
         /// </summary>
         public HtmlPageWrapper()
         {
-            _location = new Uri("https://google.com");
+            _targetLocation = new Uri("https://google.com");
         }
 
         /// <summary>
@@ -34,11 +34,11 @@
         }
 
         /// <inheritdoc />
-        public override Uri Location
+        public override Uri TargetLocation
         {
             get
             {
-                return _location;
+                return _targetLocation;
             }
         }
     }

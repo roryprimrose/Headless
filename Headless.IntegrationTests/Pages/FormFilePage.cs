@@ -68,7 +68,7 @@
         /// <summary>
         ///     Gets the location.
         /// </summary>
-        public override Uri Location
+        public override Uri TargetLocation
         {
             get
             {

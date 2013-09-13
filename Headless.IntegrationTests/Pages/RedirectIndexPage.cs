@@ -23,7 +23,7 @@
         }
 
         /// <inheritdoc />
-        public override Uri Location
+        public override Uri TargetLocation
         {
             get
             {

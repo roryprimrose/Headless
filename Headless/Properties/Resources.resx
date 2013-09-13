@@ -160,4 +160,7 @@
   <data name="HtmlElement_MultipleMatchesFoundForValue" xml:space="preserve">
     <value>Multiple elements were found for the value '{0}'.</value>
   </data>
+  <data name="HttpResult_NoHttpOutcomeProvided" xml:space="preserve">
+    <value>No HttpOutcome have been provided.</value>
+  </data>
 </root>

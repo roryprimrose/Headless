@@ -9,35 +9,35 @@
     internal class TextPageWrapper : TextPage
     {
         /// <summary>
-        ///     The location.
+        ///     The TargetLocation.
         /// </summary>
-        private readonly Uri _location;
+        private readonly Uri _targetLocation;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="TextPageWrapper" /> class.
         /// </summary>
         public TextPageWrapper()
         {
-            _location = new Uri("https://google.com");
+            _targetLocation = new Uri("https://google.com");
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TextPageWrapper"/> class.
         /// </summary>
-        /// <param name="location">
-        /// The location.
+        /// <param name="targetLocation">
+        /// The target location.
         /// </param>
-        public TextPageWrapper(Uri location)
+        public TextPageWrapper(Uri targetLocation)
         {
-            _location = location;
+            _targetLocation = targetLocation;
         }
 
         /// <inheritdoc />
-        public override Uri Location
+        public override Uri TargetLocation
         {
             get
             {
-                return _location;
+                return _targetLocation;
             }
         }
     }

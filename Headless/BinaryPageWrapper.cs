@@ -13,14 +13,14 @@
         /// <summary>
         ///     The location.
         /// </summary>
-        private Uri _location;
+        private Uri _targetLocation;
 
         /// <inheritdoc />
         public override void Initialize(IBrowser browser, HttpResponseMessage response, HttpResult result)
         {
             base.Initialize(browser, response, result);
 
-            _location = result.Outcomes.Last().Location;
+            _targetLocation = result.Outcomes.Last().Location;
         }
 
         /// <inheritdoc />
@@ -31,11 +31,11 @@
         }
 
         /// <inheritdoc />
-        public override Uri Location
+        public override Uri TargetLocation
         {
             get
             {
-                return _location;
+                return _targetLocation;
             }
         }
     }

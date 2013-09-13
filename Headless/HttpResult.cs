@@ -5,6 +5,7 @@
     using System.Collections.ObjectModel;
     using System.Diagnostics;
     using System.Linq;
+    using Headless.Properties;
 
     /// <summary>
     /// The <see cref="HttpResult"/>
@@ -30,7 +31,14 @@
                 throw new ArgumentNullException("outcomes");
             }
 
-            _outcomes = new ReadOnlyCollection<HttpOutcome>(outcomes.ToList());
+            var httpOutcomes = outcomes.ToList();
+
+            if (httpOutcomes.Count == 0)
+            {
+                throw new ArgumentException(Resources.HttpResult_NoHttpOutcomeProvided);
+            }
+
+            _outcomes = new ReadOnlyCollection<HttpOutcome>(httpOutcomes);
         }
 
         /// <summary>

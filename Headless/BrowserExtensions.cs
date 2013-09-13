@@ -8,7 +8,6 @@
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
-    using System.Web;
     using Headless.Activation;
     using Microsoft.Win32;
 
@@ -90,7 +89,7 @@
         {
             var page = new T();
 
-            return browser.GoTo<T>(page.Location, HttpStatusCode.OK);
+            return browser.GoTo<T>(page.TargetLocation, HttpStatusCode.OK);
         }
 
         /// <summary>
@@ -115,7 +114,7 @@
         {
             var page = new T();
 
-            return browser.GoTo<T>(page.Location, expectedStatusCode);
+            return browser.GoTo<T>(page.TargetLocation, expectedStatusCode);
         }
 
         /// <summary>
@@ -327,7 +326,7 @@
         {
             var page = new T();
 
-            return browser.PostTo<T>(parameters, page.Location, HttpStatusCode.OK);
+            return browser.PostTo<T>(parameters, page.TargetLocation, HttpStatusCode.OK);
         }
 
         /// <summary>
@@ -394,7 +393,7 @@
         {
             var page = new T();
 
-            return browser.PostTo<T>(parameters, page.Location, expectedStatusCode);
+            return browser.PostTo<T>(parameters, page.TargetLocation, expectedStatusCode);
         }
 
         /// <summary>

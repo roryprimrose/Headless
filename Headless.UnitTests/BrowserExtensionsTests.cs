@@ -49,7 +49,7 @@
             var target = Substitute.For<IBrowser>();
 
             target.Execute<TextPageWrapper>(
-                Arg.Is<HttpRequestMessage>(x => x.RequestUri == expected.Location && x.Method == HttpMethod.Get), 
+                Arg.Is<HttpRequestMessage>(x => x.RequestUri == expected.TargetLocation && x.Method == HttpMethod.Get), 
                 HttpStatusCode.OK, 
                 Arg.Any<IPageFactory>()).Returns(expected);
 
@@ -69,7 +69,7 @@
             var target = Substitute.For<IBrowser>();
 
             target.Execute<TextPageWrapper>(
-                Arg.Is<HttpRequestMessage>(x => x.RequestUri == expected.Location && x.Method == HttpMethod.Get), 
+                Arg.Is<HttpRequestMessage>(x => x.RequestUri == expected.TargetLocation && x.Method == HttpMethod.Get), 
                 HttpStatusCode.NotFound, 
                 Arg.Any<IPageFactory>()).Returns(expected);
 
@@ -157,7 +157,7 @@
             var target = Substitute.For<IBrowser>();
 
             target.Execute<TextPageWrapper>(
-                Arg.Is<HttpRequestMessage>(x => x.RequestUri == expected.Location && x.Method == HttpMethod.Post), 
+                Arg.Is<HttpRequestMessage>(x => x.RequestUri == expected.TargetLocation && x.Method == HttpMethod.Post), 
                 HttpStatusCode.OK, 
                 Arg.Any<IPageFactory>()).Returns(expected);
 
@@ -190,7 +190,7 @@
                 var target = Substitute.For<IBrowser>();
 
                 target.Execute<TextPageWrapper>(
-                    Arg.Is<HttpRequestMessage>(x => x.RequestUri == expected.Location && x.Method == HttpMethod.Post), 
+                    Arg.Is<HttpRequestMessage>(x => x.RequestUri == expected.TargetLocation && x.Method == HttpMethod.Post), 
                     HttpStatusCode.OK, 
                     Arg.Any<IPageFactory>()).Returns(expected);
 
@@ -216,7 +216,7 @@
             var target = Substitute.For<IBrowser>();
 
             target.Execute<TextPageWrapper>(
-                Arg.Is<HttpRequestMessage>(x => x.RequestUri == expected.Location && x.Method == HttpMethod.Post), 
+                Arg.Is<HttpRequestMessage>(x => x.RequestUri == expected.TargetLocation && x.Method == HttpMethod.Post), 
                 HttpStatusCode.NotFound, 
                 Arg.Any<IPageFactory>()).Returns(expected);
 

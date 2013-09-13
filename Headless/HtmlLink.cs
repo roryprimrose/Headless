@@ -89,7 +89,7 @@
 
                 if (location.IsAbsoluteUri == false)
                 {
-                    location = new Uri(Page.Location, location);
+                    location = new Uri(Page.TargetLocation, location);
                 }
 
                 return location;

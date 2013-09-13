@@ -34,7 +34,7 @@
                 outcomes.Should().Contain(x => x.StatusCode == HttpStatusCode.Found);
 
                 // One of the requests should have hit the original location defined by the page
-                outcomes.Should().ContainSingle(x => x.Location == page.Location);
+                outcomes.Should().ContainSingle(x => x.Location == page.TargetLocation);
 
                 page.StatusCode.Should().Be(HttpStatusCode.OK);
             }
