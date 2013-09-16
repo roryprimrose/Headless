@@ -3,7 +3,6 @@
     using System;
     using System.Diagnostics;
     using System.IO;
-    using System.Net;
     using System.Net.Http;
     using System.Xml;
     using System.Xml.XPath;
@@ -19,7 +18,7 @@
         /// <summary>
         ///     Stores the content.
         /// </summary>
-        private XmlDocument _content;
+        private IXPathNavigable _content;
 
         /// <summary>
         ///     The element factory.
@@ -39,7 +38,7 @@
         {
             var page = new T();
 
-            page.Initialize(Browser, StatusCode, StatusDescription, Result, _content);
+            page.Initialize(this);
 
             return page;
         }
@@ -51,16 +50,19 @@
         }
 
         /// <inheritdoc />
-        public void Initialize(
-            IBrowser browser, 
-            HttpStatusCode statusCode, 
-            string statusDescription, 
-            HttpResult result, 
-            XmlDocument document)
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="page"/> parameter is <c>null</c>.
+        /// </exception>
+        public void Initialize(IHtmlPage page)
         {
-            Initialize(browser, statusCode, statusDescription, result);
+            if (page == null)
+            {
+                throw new ArgumentNullException("page");
+            }
 
-            _content = document;
+            Initialize(page.Browser, page.StatusCode, page.StatusDescription, page.Result);
+
+            _content = page.Document;
         }
 
         /// <inheritdoc />
@@ -105,13 +107,15 @@
                 sgmlReader.InputStream = reader;
 
                 // create document
-                _content = new XmlDocument
+                var document = new XmlDocument
                 {
                     PreserveWhitespace = true, 
                     XmlResolver = null
                 };
 
-                _content.Load(sgmlReader);
+                document.Load(sgmlReader);
+
+                _content = document;
             }
         }
 
@@ -145,7 +149,12 @@
             [DebuggerStepThrough]
             get
             {
-                return _content.DocumentElement;
+                var navigator = _content.GetNavigator();
+
+                navigator.MoveToRoot();
+                navigator.MoveToFirstChild();
+
+                return navigator;
             }
         }
     }

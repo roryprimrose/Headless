@@ -134,6 +134,15 @@
     <Compile Include="HtmlRadioButton.cs">
       <DependentUpon>IHtmlElement.cs</DependentUpon>
     </Compile>
+    <Compile Include="HtmlTable.cs">
+      <DependentUpon>IHtmlElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HtmlTableCell.cs">
+      <DependentUpon>IHtmlElement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HtmlTableRow.cs">
+      <DependentUpon>IHtmlElement.cs</DependentUpon>
+    </Compile>
     <Compile Include="HttpOutcome.cs" />
     <Compile Include="HttpResult.cs" />
     <Compile Include="HtmlButton.cs">
