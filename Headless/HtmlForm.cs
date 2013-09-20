@@ -89,7 +89,7 @@
         {
             get
             {
-                return GetAttributeValue("action");
+                return GetAttribute("action");
             }
         }
 
@@ -103,7 +103,7 @@
         {
             get
             {
-                return GetAttributeValue("method");
+                return GetAttribute("method");
             }
         }
 
@@ -117,7 +117,7 @@
         {
             get
             {
-                return GetAttributeValue("name");
+                return GetAttribute("name");
             }
         }
 
@@ -163,7 +163,7 @@
         {
             get
             {
-                return GetAttributeValue("target");
+                return GetAttribute("target");
             }
         }
     }

@@ -6,7 +6,6 @@
     using System.Linq;
     using System.Xml.XPath;
     using Headless.Activation;
-    using Headless.Properties;
 
     /// <summary>
     ///     The <see cref="HtmlElement" />
@@ -42,6 +41,29 @@
         }
 
         /// <summary>
+        /// Determines whether the specified attribute exists.
+        /// </summary>
+        /// <param name="attributeName">
+        /// Name of the attribute.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the attribute exists; otherwise <c>false</c>.
+        /// </returns>
+        public bool AttributeExists(string attributeName)
+        {
+            var navigator = Node.GetNavigator();
+
+            var exists = navigator.MoveToAttribute(attributeName, string.Empty);
+
+            if (exists)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         ///     Provides a finding implementation for searching for child <see cref="HtmlElement" /> values.
         /// </summary>
         /// <typeparam name="T">The type of <see cref="HtmlElement" /> to find.</typeparam>
@@ -59,18 +81,20 @@
         /// Name of the attribute.
         /// </param>
         /// <returns>
-        /// A <see cref="string"/> value.
+        /// A <see cref="string"/> value or <c>null</c> if the attribute does not exist.
         /// </returns>
-        protected string GetAttributeValue(string attributeName)
+        public string GetAttribute(string attributeName)
         {
             var navigator = Node.GetNavigator();
 
-            if (navigator == null)
+            var exists = navigator.MoveToAttribute(attributeName, string.Empty);
+
+            if (exists == false)
             {
-                throw new InvalidOperationException(Resources.XPathNavigator_NavigatorNotCreated);
+                return null;
             }
 
-            return navigator.GetAttribute(attributeName, string.Empty);
+            return navigator.Value;
         }
 
         /// <summary>
@@ -82,7 +106,7 @@
         /// <param name="attributeValue">
         /// The attribute value.
         /// </param>
-        protected void SetAttributeValue(string attributeName, string attributeValue)
+        public void SetAttribute(string attributeName, string attributeValue)
         {
             Node.SetAttribute(string.Empty, attributeName, string.Empty, attributeValue);
         }
@@ -110,7 +134,7 @@
                 attributedSupportingTags.Any(
                     x =>
                         x.TagName.Equals(TagName, StringComparison.OrdinalIgnoreCase) &&
-                        x.AttributeValue.Equals(GetAttributeValue(x.AttributeName), StringComparison.OrdinalIgnoreCase)))
+                        x.AttributeValue.Equals(GetAttribute(x.AttributeName), StringComparison.OrdinalIgnoreCase)))
             {
                 // We have a match between this element type and the HTML content of the node
                 return;
@@ -138,7 +162,7 @@
             [DebuggerStepThrough]
             get
             {
-                return GetAttributeValue("class");
+                return GetAttribute("class");
             }
         }
 
@@ -170,7 +194,7 @@
             [DebuggerStepThrough]
             get
             {
-                return GetAttributeValue("id");
+                return GetAttribute("id");
             }
         }
 

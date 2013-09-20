@@ -5,7 +5,7 @@
 
     /// <summary>
     ///     The <see cref="HtmlTableCell" />
-    ///     class is used to represent a HTML table cell.
+    ///     class is used to represent a HTML table cell element.
     /// </summary>
     [SupportedTag("td")]
     [SupportedTag("th")]

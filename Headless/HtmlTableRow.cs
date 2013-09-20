@@ -7,7 +7,7 @@
 
     /// <summary>
     ///     The <see cref="HtmlTableRow" />
-    ///     class is used to represent a HTML table row.
+    ///     class is used to represent a HTML table row element.
     /// </summary>
     [SupportedTag("tr")]
     public class HtmlTableRow : HtmlElement
@@ -26,12 +26,13 @@
         }
 
         /// <summary>
-        ///     Gets the cells in this row.
+        ///     Gets the cells in the table row.
         /// </summary>
         /// <returns>An <see cref="IEnumerable{T}" /> value.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate",
-            Justification = "A method is appropriate here because the value returned is calculated on each invocation.")
-        ]
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", 
+            Justification =
+                "The method calculates a result on each invocation " +
+                "making a property misleading about the state of the instance.")]
         public IEnumerable<HtmlTableCell> GetCells()
         {
             return Find<HtmlTableCell>().All();

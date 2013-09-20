@@ -88,6 +88,7 @@
     <Compile Include="HtmlElementExtensionsTests.cs" />
     <Compile Include="HtmlElementFinderExtensionsTests.cs" />
     <Compile Include="PostEntryTests.cs" />
+    <Compile Include="HtmlListTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Headless\Headless.csproj">

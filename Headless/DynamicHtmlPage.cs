@@ -7,7 +7,6 @@
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Xml;
     using System.Xml.XPath;
     using Headless.Activation;
     using Headless.Properties;
@@ -28,12 +27,7 @@
         {
             var page = new T();
 
-            page.Initialize(
-                _wrapperPage.Browser, 
-                _wrapperPage.StatusCode, 
-                _wrapperPage.StatusDescription, 
-                _wrapperPage.Result, 
-                _wrapperPage.Document as XmlDocument);
+            page.Initialize(_wrapperPage);
 
             return page;
         }
@@ -45,23 +39,18 @@
         }
 
         /// <inheritdoc />
-        public void Initialize(
-            IBrowser browser, 
-            HttpStatusCode statusCode, 
-            string statusDescription, 
-            HttpResult result, 
-            XmlDocument document)
+        public void Initialize(IHtmlPage page)
         {
-            if (result == null)
+            if (page == null)
             {
-                throw new ArgumentNullException("result");
+                throw new ArgumentNullException("page");
             }
 
-            var location = result.Outcomes.Last().Location;
+            var location = page.Result.Outcomes.Last().Location;
 
             _wrapperPage = new HtmlPageWrapper(location);
 
-            _wrapperPage.Initialize(browser, statusCode, statusDescription, result, document);
+            _wrapperPage.Initialize(page);
         }
 
         /// <inheritdoc />

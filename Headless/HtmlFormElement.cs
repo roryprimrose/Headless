@@ -41,7 +41,7 @@
         {
             get
             {
-                return GetAttributeValue("name");
+                return GetAttribute("name");
             }
         }
 
@@ -55,12 +55,12 @@
         {
             get
             {
-                return GetAttributeValue("value");
+                return GetAttribute("value");
             }
 
             set
             {
-                SetAttributeValue("value", value);
+                SetAttribute("value", value);
             }
         }
     }

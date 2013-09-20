@@ -7,7 +7,7 @@
 
     /// <summary>
     ///     The <see cref="HtmlTable" />
-    ///     class is used to represent a HTML table.
+    ///     class is used to represent a HTML table element.
     /// </summary>
     [SupportedTag("table")]
     public class HtmlTable : HtmlElement
@@ -30,8 +30,9 @@
         /// </summary>
         /// <returns>An <see cref="IEnumerable{T}" /> value.</returns>
         [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", 
-            Justification = "A method is appropriate here because the value returned is calculated on each invocation.")
-        ]
+            Justification =
+                "The method calculates a result on each invocation " +
+                "making a property misleading about the state of the instance.")]
         public IEnumerable<HtmlTableRow> GetRows()
         {
             return Find<HtmlTableRow>().All();

@@ -77,7 +77,7 @@
                     continue;
                 }
 
-                var value = optionNavigator.GetAttribute("value", string.Empty);
+                var value = GetOptionValue(optionNavigator);
 
                 var entry = new PostEntry(Name, value);
 
@@ -103,6 +103,29 @@
         }
 
         /// <summary>
+        /// Gets the option value.
+        /// </summary>
+        /// <param name="navigator">
+        /// The navigator.
+        /// </param>
+        /// <returns>
+        /// A <see cref="string"/> value.
+        /// </returns>
+        private static string GetOptionValue(XPathNavigator navigator)
+        {
+            var nodeValue = navigator.GetAttribute("value", string.Empty);
+
+            if (string.IsNullOrEmpty(nodeValue))
+            {
+                // The value attribute does not exist
+                // There might be a match on the text of the option element
+                nodeValue = navigator.Value;
+            }
+
+            return nodeValue;
+        }
+
+        /// <summary>
         ///     Gets a value indicating whether this instance is a drop down list.
         /// </summary>
         /// <value>
@@ -122,6 +145,30 @@
                 }
 
                 return true;
+            }
+        }
+
+        /// <summary>
+        ///     Gets the selected values.
+        /// </summary>
+        /// <value>
+        ///     The selected values.
+        /// </value>
+        public IEnumerable<string> SelectedValues
+        {
+            get
+            {
+                foreach (var node in Nodes)
+                {
+                    var navigator = node.GetNavigator();
+
+                    if (navigator.IsSelected())
+                    {
+                        var value = navigator.GetAttribute("value", string.Empty);
+
+                        yield return value;
+                    }
+                }
             }
         }
 
@@ -160,7 +207,7 @@
                         continue;
                     }
 
-                    var nodeValue = navigator.GetAttribute("value", string.Empty);
+                    var nodeValue = GetOptionValue(navigator);
 
                     if (values.Contains(nodeValue, StringComparer.Ordinal))
                     {
@@ -173,31 +220,6 @@
                 }
             }
         }
-
-        /// <summary>
-        /// Gets the selected values.
-        /// </summary>
-        /// <value>
-        /// The selected values.
-        /// </value>
-        public IEnumerable<string> SelectedValues
-        {
-            get
-            {
-                foreach (var node in Nodes)
-                {
-                    var navigator = node.GetNavigator();
-
-                    if (navigator.IsSelected())
-                    {
-                        var value = navigator.GetAttribute("value", string.Empty);
-
-                        yield return value;
-                    }
-                }
-            }
-        }
-
 
         /// <summary>
         ///     Gets the values available by the radio button set.

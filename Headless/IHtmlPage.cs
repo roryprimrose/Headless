@@ -1,7 +1,5 @@
 ﻿namespace Headless
 {
-    using System.Net;
-    using System.Xml;
     using System.Xml.XPath;
     using Headless.Activation;
 
@@ -26,29 +24,15 @@
         IHtmlElementFinder<T> Find<T>() where T : HtmlElement;
 
         /// <summary>
-        /// Initializes the page using the specified values.
+        /// Initializes the page using the details of another page.
         /// </summary>
-        /// <param name="browser">
-        /// The browser.
+        /// <param name="page">
+        /// The page.
         /// </param>
-        /// <param name="statusCode">
-        /// The status code.
-        /// </param>
-        /// <param name="statusDescription">
-        /// The status description.
-        /// </param>
-        /// <param name="result">
-        /// The result.
-        /// </param>
-        /// <param name="document">
-        /// The document.
-        /// </param>
-        void Initialize(
-            IBrowser browser, 
-            HttpStatusCode statusCode, 
-            string statusDescription, 
-            HttpResult result, 
-            XmlDocument document);
+        /// <remarks>
+        /// This is used internally as part of the <see cref="CloneAs{T}"/> method.
+        /// </remarks>
+        void Initialize(IHtmlPage page);
 
         /// <summary>
         ///     Gets the HTML document of the page.
