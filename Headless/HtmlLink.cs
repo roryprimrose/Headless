@@ -63,7 +63,7 @@
         {
             get
             {
-                var href = GetAttributeValue("href");
+                var href = GetAttribute("href");
 
                 if (string.IsNullOrWhiteSpace(href))
                 {
@@ -106,7 +106,7 @@
         {
             get
             {
-                return GetAttributeValue("target");
+                return GetAttribute("target");
             }
         }
     }

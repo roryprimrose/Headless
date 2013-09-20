@@ -1,4 +1,4 @@
-﻿ namespace Headless
+﻿namespace Headless
 {
     using System;
     using System.Collections.Generic;
@@ -7,6 +7,8 @@
     using System.Globalization;
     using System.Net;
     using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Reflection;
     using Headless.Activation;
     using Headless.Properties;
 
@@ -35,6 +37,11 @@
         ///     Stores whether this instance has been disposed.
         /// </summary>
         private bool _disposed;
+
+        /// <summary>
+        ///     The user agent.
+        /// </summary>
+        private string _userAgent = BuildDefaultUserAgent();
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Browser" /> class.
@@ -84,6 +91,8 @@
             {
                 throw new ArgumentNullException("pageFactory");
             }
+
+            request.Headers.Add("user-agent", UserAgent);
 
             var currentResourceLocation = request.RequestUri;
 
@@ -201,13 +210,6 @@
             return page;
         }
 
-        /// <inheritdoc />
-        public UriComponents VerificationParts
-        {
-            get;
-            set;
-        }
-
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
@@ -230,6 +232,28 @@
             }
 
             _disposed = true;
+        }
+
+        /// <summary>
+        ///     Builds the default user agent.
+        /// </summary>
+        /// <returns>
+        ///     A <see cref="string" /> value.
+        /// </returns>
+        private static string BuildDefaultUserAgent()
+        {
+            var assemblyPath = Assembly.GetExecutingAssembly().Location;
+
+            var info = FileVersionInfo.GetVersionInfo(assemblyPath);
+
+            const string UserAgentFormat = "Headless ({0}.{1}.{2})";
+
+            return string.Format(
+                CultureInfo.CurrentCulture, 
+                UserAgentFormat, 
+                info.ProductMajorPart, 
+                info.ProductMinorPart, 
+                info.ProductBuildPart);
         }
 
         /// <summary>
@@ -349,6 +373,32 @@
             {
                 _handler.UseCookies = value;
             }
+        }
+
+        /// <summary>
+        ///     Gets or sets the user agent.
+        /// </summary>
+        /// <value>
+        ///     The user agent.
+        /// </value>
+        public string UserAgent
+        {
+            get
+            {
+                return _userAgent;
+            }
+
+            set
+            {
+                _userAgent = value;
+            }
+        }
+
+        /// <inheritdoc />
+        public UriComponents VerificationParts
+        {
+            get;
+            set;
         }
     }
 }
