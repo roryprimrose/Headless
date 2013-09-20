@@ -12,7 +12,7 @@ Benefits
 - HTML element resolution
 - Forms support
 - Hyperlink support
-- Page and Dynamic models
+- Manual, page or dynamic programming models
 - Location and status code validation
 - Extensible
 
@@ -28,8 +28,8 @@ WatiN vs Headless
 -
 Ideally a good acceptance test suite would leverage both WatiN and Headless. So when should you use WatiN or Headless? Use Headless if you have a test that can be executed with just HTML support (a browser with JavaScript disabled for example). Use WatiN if your test requires JavaScript, CSS or other resources to be processed by an actual browser.
 
-Headless is not fully featured like WatiN because it does not use a browser. It simply simulates browser interactions with HTML in terms of links and forms. This however makes Headless faster than WatiN because it:
+Headless is not fully featured like WatiN because it does not use a browser. It simply simulates browser interactions with HTML in terms of links and forms. This however makes Headless faster than WatiN because it doesn't:
 
-- doesn't need to create a browser for each test
-- doesn't need to wait for page resources to be downloaded
-- doesn't wait for scripts to be executed
+- create a browser for each test
+- wait for page resources to be downloaded
+- wait for scripts to be executed
