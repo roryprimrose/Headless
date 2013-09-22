@@ -684,6 +684,103 @@
         }
 
         /// <summary>
+        ///     Runs a test for by attribute executes case insensitive query in node context.
+        /// </summary>
+        [TestMethod]
+        public void ByAttributeExecutesCaseInsensitiveQueryInNodeContextTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test' id='FirstForm'>
+            <input type='text' id='DataId' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>
+";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByAttribute("Name", "test");
+
+            form.Id.Should().Be("FirstForm");
+            form.Name.Should().Be("Test");
+        }
+
+        /// <summary>
+        ///     Runs a test for by name throws exception with null finder.
+        /// </summary>
+        [TestMethod]
+        public void ByAttributeThrowsExceptionWithNullFinderTest()
+        {
+            var target = (IHtmlElementFinder<HtmlElement>)null;
+
+            Action action = () => target.ByAttribute("name", "test");
+
+            action.ShouldThrow<ArgumentNullException>();
+        }
+
+        /// <summary>
+        ///     Runs a test for by name with case insensitive flag executes case insensitive query in node context.
+        /// </summary>
+        [TestMethod]
+        public void ByAttributeWithCaseInsensitiveFlagExecutesCaseInsensitiveQueryInNodeContextTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test' id='FirstForm'>
+            <input type='text' id='DataId' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>
+";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByAttribute("Name", "test", true);
+
+            form.Id.Should().Be("FirstForm");
+            form.Name.Should().Be("Test");
+        }
+
+        /// <summary>
+        ///     Runs a test for by name with case sensitive flag executes case sensitive query in node context.
+        /// </summary>
+        [TestMethod]
+        public void ByAttributeWithCaseSensitiveFlagExecutesCaseSensitiveQueryInNodeContextTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test' id='FirstForm'>
+            <input type='text' id='DataId' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>
+";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByAttribute("name", "Test", false);
+
+            form.Id.Should().Be("FirstForm");
+            form.Name.Should().Be("Test");
+        }
+
+        /// <summary>
         ///     Runs a test for by id executes case insensitive query in node context.
         /// </summary>
         [TestMethod]

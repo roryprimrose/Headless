@@ -115,6 +115,15 @@ namespace Headless.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Multiple elements were found for the attribute &apos;{0}&apos;..
+        /// </summary>
+        internal static string HtmlElement_MultipleMatchesFoundForAttribute {
+            get {
+                return ResourceManager.GetString("HtmlElement_MultipleMatchesFoundForAttribute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Multiple elements were found for the id &apos;{0}&apos;..
         /// </summary>
         internal static string HtmlElement_MultipleMatchesFoundForId {

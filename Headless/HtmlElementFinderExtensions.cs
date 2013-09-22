@@ -388,6 +388,90 @@
         }
 
         /// <summary>
+        /// Finds the element by attribute anywhere under this node.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of <see cref="HtmlElement"/> to return.
+        /// </typeparam>
+        /// <param name="finder">
+        /// The finder.
+        /// </param>
+        /// <param name="attributeName">
+        /// The attribute name.
+        /// </param>
+        /// <param name="attributeValue">
+        /// The attribute value.
+        /// </param>
+        /// <returns>
+        /// A <typeparamref name="T"/> value.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// The <paramref name="finder"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="InvalidHtmlElementMatchException">
+        /// No elements were found.
+        /// </exception>
+        /// <exception cref="InvalidHtmlElementMatchException">
+        /// More than one element was found.
+        /// </exception>
+        public static T ByAttribute<T>(this IHtmlElementFinder<T> finder, string attributeName, string attributeValue)
+            where T : HtmlElement
+        {
+            return finder.ByAttribute(attributeName, attributeValue, true);
+        }
+
+        /// <summary>
+        /// Finds the element by attribute anywhere under this node.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of <see cref="HtmlElement"/> to return.
+        /// </typeparam>
+        /// <param name="finder">
+        /// The finder.
+        /// </param>
+        /// <param name="attributeName">
+        /// The attribute name.
+        /// </param>
+        /// <param name="attributeValue">
+        /// The attribute value.
+        /// </param>
+        /// <param name="ignoreCase">
+        /// if set to <c>true</c> matching the name value will be case insensitive.
+        /// </param>
+        /// <returns>
+        /// A <typeparamref name="T"/> value.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// The <paramref name="finder"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="InvalidHtmlElementMatchException">
+        /// No elements were found.
+        /// </exception>
+        /// <exception cref="InvalidHtmlElementMatchException">
+        /// More than one element was found.
+        /// </exception>
+        public static T ByAttribute<T>(
+            this IHtmlElementFinder<T> finder, 
+            string attributeName, 
+            string attributeValue, 
+            bool ignoreCase) where T : HtmlElement
+        {
+            if (finder == null)
+            {
+                throw new ArgumentNullException("finder");
+            }
+
+            var matches = finder.AllByAttribute(attributeName, attributeValue, ignoreCase);
+
+            var failureMessage = string.Format(
+                CultureInfo.CurrentCulture, 
+                Resources.HtmlElement_MultipleMatchesFoundForAttribute, 
+                attributeName);
+
+            return matches.EnsureSingle(failureMessage);
+        }
+
+        /// <summary>
         /// Finds the element by id anywhere under this node.
         /// </summary>
         /// <typeparam name="T">
@@ -565,8 +649,7 @@
         /// <exception cref="InvalidHtmlElementMatchException">
         /// More than one element was found.
         /// </exception>
-        public static T ByPredicate<T>(this IHtmlElementFinder<T> finder, Func<T, bool> predicate)
-            where T : HtmlElement
+        public static T ByPredicate<T>(this IHtmlElementFinder<T> finder, Func<T, bool> predicate) where T : HtmlElement
         {
             if (finder == null)
             {

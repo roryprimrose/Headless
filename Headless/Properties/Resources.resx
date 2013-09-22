@@ -166,4 +166,7 @@
   <data name="Uri_LocationMustBeAbsolute" xml:space="preserve">
     <value>The location is absolute where an absolute address is required.</value>
   </data>
+  <data name="HtmlElement_MultipleMatchesFoundForAttribute" xml:space="preserve">
+    <value>Multiple elements were found for the attribute '{0}'.</value>
+  </data>
 </root>
