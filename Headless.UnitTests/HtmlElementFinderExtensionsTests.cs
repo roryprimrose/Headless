@@ -904,6 +904,73 @@
         }
 
         /// <summary>
+        ///     Runs a test for by predicate returns matching element.
+        /// </summary>
+        [TestMethod]
+        public void ByPredicateReturnsMatchingElementTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' id='DataId' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>
+";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByPredicate(x => x.Name == "SecondTest");
+
+            form.Name.Should().Be("SecondTest");
+        }
+
+        /// <summary>
+        ///     Runs a test for by predicate throws exception with null finder.
+        /// </summary>
+        [TestMethod]
+        public void ByPredicateThrowsExceptionWithNullFinderTest()
+        {
+            var target = (IHtmlElementFinder<AnyHtmlElement>)null;
+
+            Action action = () => target.ByPredicate(x => x.CssClass == string.Empty);
+
+            action.ShouldThrow<ArgumentNullException>();
+        }
+
+        /// <summary>
+        ///     Runs a test for by predicate throws exception with null predicate.
+        /// </summary>
+        [TestMethod]
+        public void ByPredicateThrowsExceptionWithNullPredicateTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' id='DataId' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>
+";
+
+            var page = new HtmlPageStub(Html);
+
+            Action action = () => page.Find<HtmlForm>().ByPredicate(null);
+
+            action.ShouldThrow<ArgumentNullException>();
+        }
+
+        /// <summary>
         ///     Runs a test for by tag name executes case insensitive query in node context.
         /// </summary>
         [TestMethod]

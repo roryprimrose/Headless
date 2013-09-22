@@ -534,6 +534,56 @@
         }
 
         /// <summary>
+        /// Finds an element by predicate anywhere under this node.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of element to find.
+        /// </typeparam>
+        /// <param name="finder">
+        /// The finder.
+        /// </param>
+        /// <param name="predicate">
+        /// The predicate.
+        /// </param>
+        /// <returns>
+        /// An <typeparamref name="T"/> value.
+        /// </returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// finder
+        ///     or
+        ///     predicate
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// The <paramref name="finder"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The <paramref name="predicate"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="InvalidHtmlElementMatchException">
+        /// No elements were found.
+        /// </exception>
+        /// <exception cref="InvalidHtmlElementMatchException">
+        /// More than one element was found.
+        /// </exception>
+        public static T ByPredicate<T>(this IHtmlElementFinder<T> finder, Func<T, bool> predicate)
+            where T : HtmlElement
+        {
+            if (finder == null)
+            {
+                throw new ArgumentNullException("finder");
+            }
+
+            if (predicate == null)
+            {
+                throw new ArgumentNullException("predicate");
+            }
+
+            var matches = finder.AllByPredicate(predicate);
+
+            return matches.EnsureSingle();
+        }
+
+        /// <summary>
         /// Finds the element by tag name under this node.
         /// </summary>
         /// <typeparam name="T">
