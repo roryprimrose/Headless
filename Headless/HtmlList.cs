@@ -164,7 +164,7 @@
 
                     if (navigator.IsSelected())
                     {
-                        var value = navigator.GetAttribute("value", string.Empty);
+                        var value = GetOptionValue(navigator);
 
                         yield return value;
                     }
@@ -233,7 +233,10 @@
             {
                 foreach (var node in Nodes)
                 {
-                    yield return node.GetNavigator().GetAttribute("value", string.Empty);
+                    var navigator = node.GetNavigator();
+                    var value = GetOptionValue(navigator);
+
+                    yield return value;
                 }
             }
         }

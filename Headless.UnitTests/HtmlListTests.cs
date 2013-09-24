@@ -42,6 +42,65 @@
         }
 
         /// <summary>
+        ///     Runs a test for selected values should return text when selected value is empty.
+        /// </summary>
+        [TestMethod]
+        public void SelectedValuesShouldReturnTextWhenSelectedValueIsEmptyTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <select name='Data'>
+               <option>1</option>
+            </select>
+        </form>
+    </body>
+</html>";
+            const string Expected = "1";
+
+            var page = new HtmlPageStub(Html);
+
+            var list = page.Find<HtmlList>().ByName("Data");
+
+            list.Value = Expected;
+
+            var values = list.SelectedValues.ToList();
+
+            values.Count.Should().Be(1);
+            values[0].Should().Be(Expected);
+        }
+
+        /// <summary>
+        ///     Runs a test for value should return text when selected value is empty.
+        /// </summary>
+        [TestMethod]
+        public void ValueShouldReturnTextWhenSelectedValueIsEmptyTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <select name='Data'>
+               <option>1</option>
+            </select>
+        </form>
+    </body>
+</html>";
+            const string Expected = "1";
+
+            var page = new HtmlPageStub(Html);
+
+            var list = page.Find<HtmlList>().ByName("Data");
+
+            list.Value = Expected;
+
+            list.Value.Should().Be(Expected);
+        }
+
+        /// <summary>
         ///     Runs a test for value should select option matching text when value is empty.
         /// </summary>
         [TestMethod]
@@ -70,6 +129,35 @@
             var actual = option.AttributeExists("selected");
 
             actual.Should().BeTrue();
+        }
+
+        /// <summary>
+        ///     Runs a test for values should return text when value is empty.
+        /// </summary>
+        [TestMethod]
+        public void ValuesShouldReturnTextWhenValueIsEmptyTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <select name='Data'>
+               <option>1</option>
+            </select>
+        </form>
+    </body>
+</html>";
+            const string Expected = "1";
+
+            var page = new HtmlPageStub(Html);
+
+            var list = page.Find<HtmlList>().ByName("Data");
+
+            var values = list.Values.ToList();
+
+            values.Count.Should().Be(1);
+            values[0].Should().Be(Expected);
         }
     }
 }
