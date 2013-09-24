@@ -376,6 +376,34 @@
         }
 
         /// <summary>
+        ///     Runs a test for all by tag name fails to resolve element in XHTML document.
+        /// </summary>
+        /// <remarks>Related to https://github.com/roryprimrose/Headless/issues/10 </remarks>
+        [TestMethod]
+        public void AllByTagNameFailsToResolveElementInXHTMLDocumentTest()
+        {
+            const string Html = @"<html xmlns=""http://www.w3.org/1999/xhtml""> 
+<head> 
+<title>IIS 8.0 Detailed Error - 500.0 - Internal Server Error</title>  
+</head> 
+<body> 
+<div id=""content""> 
+<div class=""content-container""> 
+  <h3>HTTP Error 500.0 - Internal Server Error</h3> 
+  <h4>The page cannot be displayed because an internal server error has occurred.</h4> 
+</div> 
+</div> 
+</body> 
+</html>";
+
+            var page = new HtmlPageStub(Html);
+
+            var elements = page.Find<AnyHtmlElement>().AllByTagName("h3").ToList();
+
+            elements.Count.Should().Be(1);
+        }
+
+        /// <summary>
         ///     Runs a test for all by tag name throws exception with empty tag name.
         /// </summary>
         [TestMethod]

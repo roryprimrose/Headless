@@ -249,7 +249,7 @@
             }
 
             // Tag names are already folded to lower case when the HTML was read
-            return finder.Execute(".//" + tagName.ToLowerInvariant());
+            return finder.Execute(".//*[self::*[local-name() = '" + tagName.ToLowerInvariant() + "']]");
         }
 
         /// <summary>
