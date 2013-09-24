@@ -22,7 +22,7 @@
 
             var page = new HtmlPageStub(Html);
 
-            var element = new HtmlForm(page, page.Node);
+            var element = new HtmlForm(page, ((IHtmlPage)page).Node);
 
             Action action = () => new DefaultHtmlElementFinder<HtmlForm>(element);
 
@@ -166,7 +166,6 @@
 
             actual.Count.Should().Be(1);
 
-
             actual[0].Name.Should().Be("Data");
         }
 
@@ -192,6 +191,24 @@
         }
 
         /// <summary>
+        ///     Tests that an XHTML namespace does not cause XPATH queries to fail.
+        /// </summary>
+        [TestMethod]
+        public void InputsCanBeFoundOnXHtmlPages()
+        {
+            // the namespace on the html forces the xml to use namespaces in xpath queries, or use local-name
+            const string Html =
+                @"<html xmlns=""http://www.w3.org/1999/xhtml""><body><input type=""submit"" name=""test"" value=""foo"" /></body></html>";
+
+            var page = new HtmlPageStub(Html);
+
+            var button = page.Find<HtmlButton>().AllByName("test").ToList();
+
+            button.Count.Should().Be(1);
+            button[0].Value.Should().Be("foo");
+        }
+
+        /// <summary>
         ///     Runs a test for throws exception when created with null HTML element.
         /// </summary>
         [TestMethod]
@@ -212,22 +229,5 @@
 
             action.ShouldThrow<ArgumentNullException>();
         }
-
-		/// <summary>
-		///		Tests that an XHTML namespace does not cause XPATH queries to fail.
-		/// </summary>
-		[TestMethod]
-		public void InputsCanBeFoundOnXHtmlPages()
-		{
-			// the namespace on the html forces the xml to use namespaces in xpath queries, or use local-name
-			const string Html = @"<html xmlns=""http://www.w3.org/1999/xhtml""><body><input type=""submit"" name=""test"" value=""foo"" /></body></html>";
-
-			var page = new HtmlPageStub(Html);
-
-			var button = page.Find<HtmlButton>().AllByName("test").ToList();
-
-			button.Count.Should().Be(1);
-			button[0].Value.Should().Be("foo");
-		}
     }
 }

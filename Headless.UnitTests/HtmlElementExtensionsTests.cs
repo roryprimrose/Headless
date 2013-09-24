@@ -23,7 +23,7 @@
             const string Html = "<form name='Test' />";
 
             var page = new HtmlPageStub(Html);
-            var element = new HtmlForm(page, page.Node);
+            var element = new HtmlForm(page, ((IHtmlPage)page).Node);
             var elements = new List<HtmlElement>
             {
                 element
@@ -43,7 +43,7 @@
             const string Html = "<form name='Test' />";
 
             var page = new HtmlPageStub(Html);
-            var element = new HtmlForm(page, page.Node);
+            var element = new HtmlForm(page, ((IHtmlPage)page).Node);
             var elements = new List<HtmlElement>
             {
                 element, 
@@ -190,7 +190,7 @@
 
             var page = new HtmlPageStub(Html);
 
-            Action action = () => page.Document.GetHtmlForm(page);
+            Action action = () => ((IHtmlPage)page).Document.GetHtmlForm(page);
 
             action.ShouldThrow<HtmlElementNotFoundException>();
         }

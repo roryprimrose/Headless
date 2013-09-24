@@ -11,7 +11,7 @@
     ///     The <see cref="HtmlElement" />
     ///     class provides the base wrapper around an HTML element.
     /// </summary>
-    public abstract class HtmlElement
+    public abstract class HtmlElement : IHtmlElement
     {
         /// <summary>
         ///     Stores a reference to the html node for the element.
@@ -166,12 +166,7 @@
             }
         }
 
-        /// <summary>
-        ///     Gets the HTML of the element.
-        /// </summary>
-        /// <value>
-        ///     The HTML of the element.
-        /// </value>
+        /// <inheritdoc />
         public string Html
         {
             [DebuggerStepThrough]
@@ -245,7 +240,7 @@
             [DebuggerStepThrough]
             get
             {
-                return _node;
+                return ((IHtmlElement)this).Node;
             }
         }
 
@@ -256,6 +251,26 @@
         ///     The owning page.
         /// </value>
         protected internal IHtmlPage Page
+        {
+            [DebuggerStepThrough]
+            get
+            {
+                return ((IHtmlElement)this).Page;
+            }
+        }
+
+        /// <inheritdoc />
+        IXPathNavigable IHtmlElement.Node
+        {
+            [DebuggerStepThrough]
+            get
+            {
+                return _node;
+            }
+        }
+
+        /// <inheritdoc />
+        IHtmlPage IHtmlElement.Page
         {
             [DebuggerStepThrough]
             get

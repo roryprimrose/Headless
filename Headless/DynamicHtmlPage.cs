@@ -105,6 +105,12 @@
         }
 
         /// <inheritdoc />
+        public override string ToString()
+        {
+            return this.BuildToString();
+        }
+
+        /// <inheritdoc />
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
             if (binder == null)
@@ -238,16 +244,6 @@
         }
 
         /// <inheritdoc />
-        public IXPathNavigable Document
-        {
-            [DebuggerStepThrough]
-            get
-            {
-                return _wrapperPage.Document;
-            }
-        }
-
-        /// <inheritdoc />
         public IHtmlElementFactory ElementFactory
         {
             get
@@ -257,21 +253,20 @@
         }
 
         /// <inheritdoc />
+        public string Html
+        {
+            get
+            {
+                return _wrapperPage.Html;
+            }
+        }
+
+        /// <inheritdoc />
         public Uri Location
         {
             get
             {
                 return _wrapperPage.Location;
-            }
-        }
-
-        /// <inheritdoc />
-        public IXPathNavigable Node
-        {
-            [DebuggerStepThrough]
-            get
-            {
-                return _wrapperPage.Node;
             }
         }
 
@@ -312,6 +307,56 @@
             get
             {
                 return _wrapperPage.TargetLocation;
+            }
+        }
+
+        /// <summary>
+        ///     Gets the HTML document of the page.
+        /// </summary>
+        /// <value>
+        ///     The HTML document of the page.
+        /// </value>
+        protected internal IXPathNavigable Document
+        {
+            [DebuggerStepThrough]
+            get
+            {
+                return ((IHtmlPage)this).Document;
+            }
+        }
+
+        /// <summary>
+        ///     Gets the node.
+        /// </summary>
+        /// <value>
+        ///     The node.
+        /// </value>
+        protected internal IXPathNavigable Node
+        {
+            [DebuggerStepThrough]
+            get
+            {
+                return ((IHtmlPage)this).Node;
+            }
+        }
+
+        /// <inheritdoc />
+        IXPathNavigable IHtmlPage.Document
+        {
+            [DebuggerStepThrough]
+            get
+            {
+                return ((IHtmlPage)_wrapperPage).Document;
+            }
+        }
+
+        /// <inheritdoc />
+        IXPathNavigable IHtmlPage.Node
+        {
+            [DebuggerStepThrough]
+            get
+            {
+                return ((IHtmlPage)_wrapperPage).Node;
             }
         }
     }

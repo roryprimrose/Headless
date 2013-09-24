@@ -9,6 +9,17 @@
     public interface IHtmlElement
     {
         /// <summary>
+        ///     Gets the HTML of the element.
+        /// </summary>
+        /// <value>
+        ///     The HTML of the element.
+        /// </value>
+        string Html
+        {
+            get;
+        }
+
+        /// <summary>
         ///     Gets the HTML node of the element.
         /// </summary>
         /// <value>

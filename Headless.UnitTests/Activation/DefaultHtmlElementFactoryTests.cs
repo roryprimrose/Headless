@@ -24,7 +24,7 @@
 
             var target = new DefaultHtmlElementFactory();
 
-            var actual = target.Create<HtmlElement>(page, page.Node);
+            var actual = target.Create<HtmlElement>(page, ((IHtmlPage)page).Node);
 
             actual.Should().NotBeNull();
             actual.Should().BeOfType<HtmlInput>();
@@ -40,7 +40,7 @@
 
             var target = new DefaultHtmlElementFactory();
 
-            var actual = target.Create<HtmlInput>(page, page.Node);
+            var actual = target.Create<HtmlInput>(page, ((IHtmlPage)page).Node);
 
             actual.Should().NotBeNull();
         }

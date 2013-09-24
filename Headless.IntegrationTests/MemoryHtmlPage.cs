@@ -135,6 +135,15 @@
                 private set;
             }
 
+            /// <summary>
+            /// Gets the html.
+            /// </summary>
+            public string Html
+            {
+                get;
+                private set;
+            }
+
             /// <inheritdoc />
             public Uri Location
             {

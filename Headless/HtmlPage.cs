@@ -51,7 +51,7 @@
 
         /// <inheritdoc />
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="page"/> parameter is <c>null</c>.
+        ///     The <paramref name="page" /> parameter is <c>null</c>.
         /// </exception>
         public void Initialize(IHtmlPage page)
         {
@@ -120,16 +120,6 @@
         }
 
         /// <inheritdoc />
-        public virtual IXPathNavigable Document
-        {
-            [DebuggerStepThrough]
-            get
-            {
-                return _content;
-            }
-        }
-
-        /// <inheritdoc />
         public virtual IHtmlElementFactory ElementFactory
         {
             get
@@ -144,7 +134,58 @@
         }
 
         /// <inheritdoc />
-        public virtual IXPathNavigable Node
+        public string Html
+        {
+            get
+            {
+                var navigator = Node.GetNavigator();
+
+                return navigator.OuterXml;
+            }
+        }
+
+        /// <summary>
+        ///     Gets the HTML document of the page.
+        /// </summary>
+        /// <value>
+        ///     The HTML document of the page.
+        /// </value>
+        protected internal IXPathNavigable Document
+        {
+            [DebuggerStepThrough]
+            get
+            {
+                return ((IHtmlPage)this).Document;
+            }
+        }
+
+        /// <summary>
+        ///     Gets the node.
+        /// </summary>
+        /// <value>
+        ///     The node.
+        /// </value>
+        protected internal IXPathNavigable Node
+        {
+            [DebuggerStepThrough]
+            get
+            {
+                return ((IHtmlPage)this).Node;
+            }
+        }
+
+        /// <inheritdoc />
+        IXPathNavigable IHtmlPage.Document
+        {
+            [DebuggerStepThrough]
+            get
+            {
+                return _content;
+            }
+        }
+
+        /// <inheritdoc />
+        IXPathNavigable IHtmlPage.Node
         {
             [DebuggerStepThrough]
             get

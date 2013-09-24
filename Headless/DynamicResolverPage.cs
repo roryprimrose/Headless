@@ -15,7 +15,7 @@
     /// </summary>
     [SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", 
         Justification = "This type is created dynamically.")]
-    internal class DynamicResolverPage : IPage
+    internal sealed class DynamicResolverPage : IPage
     {
         /// <summary>
         ///     The resolved page.
@@ -65,6 +65,12 @@
         public bool IsOn(Uri location, UriComponents compareWith)
         {
             return ResolvedPage.IsOn(location, compareWith);
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return this.BuildToString();
         }
 
         /// <inheritdoc />

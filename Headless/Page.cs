@@ -109,6 +109,12 @@
             return false;
         }
 
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return this.BuildToString();
+        }
+
         /// <summary>
         /// Sets the content of the string.
         /// </summary>
