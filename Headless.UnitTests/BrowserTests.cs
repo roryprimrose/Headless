@@ -63,5 +63,17 @@
                 action.ShouldThrow<ArgumentNullException>();
             }
         }
+
+        /// <summary>
+        ///     Runs a test for page returns null when no request made.
+        /// </summary>
+        [TestMethod]
+        public void PageReturnsNullWhenNoRequestMadeTest()
+        {
+            using (var browser = new Browser())
+            {
+                browser.Page.Should().BeNull();
+            }
+        }
     }
 }

@@ -45,6 +45,18 @@
         }
 
         /// <summary>
+        ///     Gets the last page loaded.
+        /// </summary>
+        /// <value>
+        ///     The last page loaded.
+        /// </value>
+        /// <remarks>Returns <c>null</c> before the first page has been loaded.</remarks>
+        IPage Page
+        {
+            get;
+        }
+
+        /// <summary>
         ///     Gets or sets the verification parts used to validate page locations.
         /// </summary>
         /// <value>

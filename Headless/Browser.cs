@@ -7,7 +7,6 @@
     using System.Globalization;
     using System.Net;
     using System.Net.Http;
-    using System.Net.Http.Headers;
     using System.Reflection;
     using Headless.Activation;
     using Headless.Properties;
@@ -180,6 +179,8 @@
                 }
             }
 
+            Page = page;
+
             var lastOutcome = outcomes[outcomes.Count - 1];
 
             if (lastOutcome.StatusCode != expectedStatusCode)
@@ -204,7 +205,7 @@
                     page.TargetLocation, 
                     page.GetType().FullName);
 
-                throw new InvalidOperationException(message);
+                throw new HttpOutcomeException(message);
             }
 
             return page;
@@ -392,6 +393,13 @@
             {
                 _userAgent = value;
             }
+        }
+
+        /// <inheritdoc />
+        public IPage Page
+        {
+            get;
+            private set;
         }
 
         /// <inheritdoc />

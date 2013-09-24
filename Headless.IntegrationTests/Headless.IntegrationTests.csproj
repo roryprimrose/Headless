@@ -86,6 +86,7 @@
     <Compile Include="FormTests.cs" />
     <Compile Include="LooseHtmlTests.cs" />
     <Compile Include="PageCloneAsTests.cs" />
+    <Compile Include="BrowserTests.cs" />
     <Compile Include="WebServer.cs" />
   </ItemGroup>
   <ItemGroup>
