@@ -7,11 +7,11 @@
     using NSubstitute;
 
     /// <summary>
-    ///     The <see cref="HtmlElementFinderExtensionsTests" />
-    ///     class tests the <see cref="HtmlElementFinderExtensions" /> class.
+    ///     The <see cref="HtmlElementFinderTests" />
+    ///     class tests the <see cref="DefaultHtmlElementFinder{T}" /> class.
     /// </summary>
     [TestClass]
-    public class HtmlElementFinderExtensionsTests
+    public class HtmlElementFinderTests
     {
         /// <summary>
         ///     Runs a test for all by attribute executes case insensitive query in node context.
@@ -77,7 +77,7 @@
         [TestMethod]
         public void AllByAttributeThrowsExceptionWithEmptyAttributeNameTest()
         {
-            var target = Substitute.For<IHtmlElementFinder<HtmlElement>>();
+            var target = Substitute.For<HtmlElementFinderBase<HtmlElement>>();
 
             Action action = () => target.AllByAttribute(string.Empty, "Test");
 
@@ -90,24 +90,11 @@
         [TestMethod]
         public void AllByAttributeThrowsExceptionWithNullAttributeNameTest()
         {
-            var target = Substitute.For<IHtmlElementFinder<HtmlElement>>();
+            var target = Substitute.For<HtmlElementFinderBase<HtmlElement>>();
 
             Action action = () => target.AllByAttribute(null, "Test");
 
             action.ShouldThrow<ArgumentException>();
-        }
-
-        /// <summary>
-        ///     Runs a test for all by attribute throws exception with null finder.
-        /// </summary>
-        [TestMethod]
-        public void AllByAttributeThrowsExceptionWithNullFinderTest()
-        {
-            var target = (IHtmlElementFinder<HtmlElement>)null;
-
-            Action action = () => target.AllByAttribute("test", "Test");
-
-            action.ShouldThrow<ArgumentNullException>();
         }
 
         /// <summary>
@@ -116,7 +103,7 @@
         [TestMethod]
         public void AllByAttributeThrowsExceptionWithWhiteSpaceAttributeNameTest()
         {
-            var target = Substitute.For<IHtmlElementFinder<HtmlElement>>();
+            var target = Substitute.For<HtmlElementFinderBase<HtmlElement>>();
 
             Action action = () => target.AllByAttribute("  ", "Test");
 
@@ -215,19 +202,6 @@
         }
 
         /// <summary>
-        ///     Runs a test for all by name throws exception with null finder.
-        /// </summary>
-        [TestMethod]
-        public void AllByNameThrowsExceptionWithNullFinderTest()
-        {
-            var target = (IHtmlElementFinder<HtmlElement>)null;
-
-            Action action = () => target.AllByName("Test");
-
-            action.ShouldThrow<ArgumentNullException>();
-        }
-
-        /// <summary>
         ///     Runs a test for all by name with case insensitive flag executes case insensitive query with name filter.
         /// </summary>
         [TestMethod]
@@ -322,25 +296,12 @@
         }
 
         /// <summary>
-        ///     Runs a test for all by predicate throws exception with null finder.
-        /// </summary>
-        [TestMethod]
-        public void AllByPredicateThrowsExceptionWithNullFinderTest()
-        {
-            var target = (IHtmlElementFinder<HtmlElement>)null;
-
-            Action action = () => target.AllByPredicate(x => true);
-
-            action.ShouldThrow<ArgumentNullException>();
-        }
-
-        /// <summary>
         ///     Runs a test for all by predicate throws exception with null predicate.
         /// </summary>
         [TestMethod]
         public void AllByPredicateThrowsExceptionWithNullPredicateTest()
         {
-            var target = Substitute.For<IHtmlElementFinder<HtmlElement>>();
+            var target = Substitute.For<HtmlElementFinderBase<HtmlElement>>();
 
             Action action = () => target.AllByPredicate(null);
 
@@ -409,24 +370,11 @@
         [TestMethod]
         public void AllByTagNameThrowsExceptionWithEmptyTagNameTest()
         {
-            var target = Substitute.For<IHtmlElementFinder<AnyHtmlElement>>();
+            var target = Substitute.For<HtmlElementFinderBase<AnyHtmlElement>>();
 
             Action action = () => target.AllByTagName(string.Empty);
 
             action.ShouldThrow<ArgumentException>();
-        }
-
-        /// <summary>
-        ///     Runs a test for all by tag name throws exception with null finder.
-        /// </summary>
-        [TestMethod]
-        public void AllByTagNameThrowsExceptionWithNullFinderTest()
-        {
-            var target = (IHtmlElementFinder<AnyHtmlElement>)null;
-
-            Action action = () => target.AllByTagName("test");
-
-            action.ShouldThrow<ArgumentNullException>();
         }
 
         /// <summary>
@@ -435,7 +383,7 @@
         [TestMethod]
         public void AllByTagNameThrowsExceptionWithNullTagNameTest()
         {
-            var target = Substitute.For<IHtmlElementFinder<AnyHtmlElement>>();
+            var target = Substitute.For<HtmlElementFinderBase<AnyHtmlElement>>();
 
             Action action = () => target.AllByTagName(null);
 
@@ -448,24 +396,11 @@
         [TestMethod]
         public void AllByTagNameThrowsExceptionWithWhiteSpaceTagNameTest()
         {
-            var target = Substitute.For<IHtmlElementFinder<AnyHtmlElement>>();
+            var target = Substitute.For<HtmlElementFinderBase<AnyHtmlElement>>();
 
             Action action = () => target.AllByTagName("  ");
 
             action.ShouldThrow<ArgumentException>();
-        }
-
-        /// <summary>
-        ///     Runs a test for all by text case sensitive throws exception with null finder.
-        /// </summary>
-        [TestMethod]
-        public void AllByTextCaseSensitiveThrowsExceptionWithNullFinderTest()
-        {
-            var target = (IHtmlElementFinder<AnyHtmlElement>)null;
-
-            Action action = () => target.AllByText("Test", false);
-
-            action.ShouldThrow<ArgumentNullException>();
         }
 
         /// <summary>
@@ -593,19 +528,6 @@
         }
 
         /// <summary>
-        ///     Runs a test for all by value throws exception with null finder.
-        /// </summary>
-        [TestMethod]
-        public void AllByValueThrowsExceptionWithNullFinderTest()
-        {
-            var target = (IHtmlElementFinder<HtmlElement>)null;
-
-            Action action = () => target.AllByValue("Test");
-
-            action.ShouldThrow<ArgumentNullException>();
-        }
-
-        /// <summary>
         ///     Runs a test for all by value with case insensitive flag executes case insensitive query with value filter.
         /// </summary>
         [TestMethod]
@@ -699,19 +621,6 @@
         }
 
         /// <summary>
-        ///     Runs a test for all throws exception with null finder.
-        /// </summary>
-        [TestMethod]
-        public void AllThrowsExceptionWithNullFinderTest()
-        {
-            var target = (IHtmlElementFinder<HtmlElement>)null;
-
-            Action action = () => target.All();
-
-            action.ShouldThrow<ArgumentNullException>();
-        }
-
-        /// <summary>
         ///     Runs a test for by attribute executes case insensitive query in node context.
         /// </summary>
         [TestMethod]
@@ -737,19 +646,6 @@
 
             form.Id.Should().Be("FirstForm");
             form.Name.Should().Be("Test");
-        }
-
-        /// <summary>
-        ///     Runs a test for by name throws exception with null finder.
-        /// </summary>
-        [TestMethod]
-        public void ByAttributeThrowsExceptionWithNullFinderTest()
-        {
-            var target = (IHtmlElementFinder<HtmlElement>)null;
-
-            Action action = () => target.ByAttribute("name", "test");
-
-            action.ShouldThrow<ArgumentNullException>();
         }
 
         /// <summary>
@@ -837,19 +733,6 @@
             actual.Should().NotBeNull();
             actual.Should().BeAssignableTo<HtmlInput>();
             actual.Id.Should().Be("DATAId");
-        }
-
-        /// <summary>
-        ///     Runs a test for by id throws exception with null finder.
-        /// </summary>
-        [TestMethod]
-        public void ByIdThrowsExceptionWithNullFinderTest()
-        {
-            var target = (IHtmlElementFinder<HtmlElement>)null;
-
-            Action action = () => target.ById("test");
-
-            action.ShouldThrow<ArgumentNullException>();
         }
 
         /// <summary>
@@ -950,19 +833,6 @@
         }
 
         /// <summary>
-        ///     Runs a test for by name throws exception with null finder.
-        /// </summary>
-        [TestMethod]
-        public void ByNameThrowsExceptionWithNullFinderTest()
-        {
-            var target = (IHtmlElementFinder<HtmlElement>)null;
-
-            Action action = () => target.ByName("test");
-
-            action.ShouldThrow<ArgumentNullException>();
-        }
-
-        /// <summary>
         ///     Runs a test for by name with case insensitive flag executes case insensitive query in node context.
         /// </summary>
         [TestMethod]
@@ -1056,19 +926,6 @@
         }
 
         /// <summary>
-        ///     Runs a test for by predicate throws exception with null finder.
-        /// </summary>
-        [TestMethod]
-        public void ByPredicateThrowsExceptionWithNullFinderTest()
-        {
-            var target = (IHtmlElementFinder<AnyHtmlElement>)null;
-
-            Action action = () => target.ByPredicate(x => x.CssClass == string.Empty);
-
-            action.ShouldThrow<ArgumentNullException>();
-        }
-
-        /// <summary>
         ///     Runs a test for by predicate throws exception with null predicate.
         /// </summary>
         [TestMethod]
@@ -1125,19 +982,6 @@
         }
 
         /// <summary>
-        ///     Runs a test for by tag name throws exception with null finder.
-        /// </summary>
-        [TestMethod]
-        public void ByTagNameThrowsExceptionWithNullFinderTest()
-        {
-            var target = (IHtmlElementFinder<AnyHtmlElement>)null;
-
-            Action action = () => target.ByTagName("test");
-
-            action.ShouldThrow<ArgumentNullException>();
-        }
-
-        /// <summary>
         ///     Runs a test for by text executes case insensitive query in node context.
         /// </summary>
         [TestMethod]
@@ -1160,19 +1004,6 @@
             actual.Should().NotBeNull();
             actual.Should().BeAssignableTo<AnyHtmlElement>();
             actual.Id.Should().Be("target");
-        }
-
-        /// <summary>
-        ///     Runs a test for by text throws exception with null finder.
-        /// </summary>
-        [TestMethod]
-        public void ByTextThrowsExceptionWithNullFinderTest()
-        {
-            var target = (IHtmlElementFinder<HtmlElement>)null;
-
-            Action action = () => target.ByText("test");
-
-            action.ShouldThrow<ArgumentNullException>();
         }
 
         /// <summary>
@@ -1258,19 +1089,6 @@
             actual.Should().NotBeNull();
             actual.Should().BeAssignableTo<HtmlInput>();
             actual.Value.Should().Be("Data");
-        }
-
-        /// <summary>
-        ///     Runs a test for by value throws exception with null finder.
-        /// </summary>
-        [TestMethod]
-        public void ByValueThrowsExceptionWithNullFinderTest()
-        {
-            var target = (IHtmlElementFinder<HtmlElement>)null;
-
-            Action action = () => target.ByValue("test");
-
-            action.ShouldThrow<ArgumentNullException>();
         }
 
         /// <summary>

@@ -16,7 +16,7 @@
     /// <typeparam name="T">
     /// The type of <see cref="HtmlElement"/> to find.
     /// </typeparam>
-    public class DefaultHtmlElementFinder<T> : IHtmlElementFinder<T> where T : HtmlElement
+    public class DefaultHtmlElementFinder<T> : HtmlElementFinderBase<T> where T : HtmlElement
     {
         /// <summary>
         ///     The HTML node.
@@ -74,7 +74,7 @@
         }
 
         /// <inheritdoc />
-        public virtual string BuildElementQuery()
+        public override string BuildElementQuery()
         {
             var elementType = typeof(T);
             var supportedTags = elementType.GetSupportedTags().ToList();
@@ -112,7 +112,7 @@
         }
 
         /// <inheritdoc />
-        public virtual IEnumerable<T> Execute(string query)
+        public override IEnumerable<T> Execute(string query)
         {
             var navigator = _node.GetNavigator();
 

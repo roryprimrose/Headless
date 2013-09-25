@@ -86,7 +86,7 @@
     <Compile Include="BrowserTests.cs" />
     <Compile Include="DefaultHtmlElementFinderTests.cs" />
     <Compile Include="HtmlElementExtensionsTests.cs" />
-    <Compile Include="HtmlElementFinderExtensionsTests.cs" />
+    <Compile Include="HtmlElementFinderTests.cs" />
     <Compile Include="PostEntryTests.cs" />
     <Compile Include="HtmlListTests.cs" />
   </ItemGroup>

@@ -95,8 +95,8 @@
     <Compile Include="HtmlCheckBox.cs">
       <DependentUpon>IHtmlElement.cs</DependentUpon>
     </Compile>
-    <Compile Include="HtmlElementFinderExtensions.cs">
-      <DependentUpon>Extensions.cs</DependentUpon>
+    <Compile Include="HtmlElementFinderBase.cs">
+      <DependentUpon>IHtmlElementFinder.cs</DependentUpon>
     </Compile>
     <Compile Include="HtmlElementNotFoundException.cs" />
     <Compile Include="HtmlFile.cs">
