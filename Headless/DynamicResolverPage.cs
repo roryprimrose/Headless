@@ -18,6 +18,11 @@
     internal sealed class DynamicResolverPage : IPage
     {
         /// <summary>
+        ///     The default media type used when the server does not send the media type header.
+        /// </summary>
+        private const string DefaultMediaType = "text/html";
+
+        /// <summary>
         ///     The resolved page.
         /// </summary>
         private IPage _resolvedPage;
@@ -41,7 +46,7 @@
             }
 
             // Look at the content type header to determine the correct type of page to return
-            var mediaType = response.Content.Headers.ContentType.MediaType;
+            var mediaType = DetermineMediaType(response);
 
             var contentType = browser.ContentTypeResolver.DeterminePageType(mediaType);
 
@@ -71,6 +76,36 @@
         public override string ToString()
         {
             return this.BuildToString();
+        }
+
+        /// <summary>
+        /// Determines the type of the media.
+        /// </summary>
+        /// <param name="response">The response.</param>
+        /// <returns>A <see cref="string"/> value.</returns>
+        private static string DetermineMediaType(HttpResponseMessage response)
+        {
+            if (response.Content == null)
+            {
+                return DefaultMediaType;
+            }
+
+            if (response.Content.Headers == null)
+            {
+                return DefaultMediaType;
+            }
+
+            if (response.Content.Headers.ContentType == null)
+            {
+                return DefaultMediaType;
+            }
+
+            if (string.IsNullOrWhiteSpace(response.Content.Headers.ContentType.MediaType))
+            {
+                return DefaultMediaType;
+            }
+
+            return response.Content.Headers.ContentType.MediaType;
         }
 
         /// <inheritdoc />
