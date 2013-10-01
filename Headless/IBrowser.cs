@@ -57,6 +57,18 @@
         }
 
         /// <summary>
+        ///     Gets or sets the timeout.
+        /// </summary>
+        /// <value>
+        ///     The timeout.
+        /// </value>
+        TimeSpan Timeout
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         ///     Gets or sets the verification parts used to validate page locations.
         /// </summary>
         /// <value>

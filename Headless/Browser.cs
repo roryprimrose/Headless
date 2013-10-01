@@ -8,6 +8,7 @@
     using System.Net;
     using System.Net.Http;
     using System.Reflection;
+    using System.Threading.Tasks;
     using Headless.Activation;
     using Headless.Properties;
 
@@ -78,6 +79,174 @@
         /// <inheritdoc />
         public T Execute<T>(HttpRequestMessage request, HttpStatusCode expectedStatusCode, IPageFactory pageFactory)
             where T : IPage, new()
+        {
+            try
+            {
+                return ExecuteInternal<T>(request, expectedStatusCode, pageFactory);
+            }
+            catch (AggregateException ex)
+            {
+                var exception = ex.Flatten();
+
+                if (exception.InnerExceptions.Count > 1)
+                {
+                    throw;
+                }
+
+                var canceledException = exception.InnerExceptions[0] as TaskCanceledException;
+
+                if (canceledException == null)
+                {
+                    throw;
+                }
+
+                throw new TimeoutException(canceledException.Message, canceledException);
+            }
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing">
+        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
+        ///     unmanaged resources.
+        /// </param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed == false)
+            {
+                if (disposing)
+                {
+                    // Dispose managed resources.
+                    _client.Dispose();
+                }
+
+                // There are no unmanaged resources to release, but
+                // if we add them, they need to be released here.
+            }
+
+            _disposed = true;
+        }
+
+        /// <summary>
+        ///     Builds the default user agent.
+        /// </summary>
+        /// <returns>
+        ///     A <see cref="string" /> value.
+        /// </returns>
+        private static string BuildDefaultUserAgent()
+        {
+            var assemblyPath = Assembly.GetExecutingAssembly().Location;
+
+            var info = FileVersionInfo.GetVersionInfo(assemblyPath);
+
+            const string UserAgentFormat = "Headless ({0}.{1}.{2})";
+
+            return string.Format(
+                CultureInfo.CurrentCulture, 
+                UserAgentFormat, 
+                info.ProductMajorPart, 
+                info.ProductMinorPart, 
+                info.ProductBuildPart);
+        }
+
+        /// <summary>
+        /// Determines whether the specified response is redirect.
+        /// </summary>
+        /// <param name="response">
+        /// The response.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified response is redirect; otherwise, <c>false</c>.
+        /// </returns>
+        private static bool IsRedirect(HttpResponseMessage response)
+        {
+            if (response.Headers.Location == null)
+            {
+                return false;
+            }
+
+            if (response.StatusCode == HttpStatusCode.Ambiguous)
+            {
+                return true;
+            }
+
+            if (response.StatusCode == HttpStatusCode.Moved)
+            {
+                return true;
+            }
+
+            if (response.StatusCode == HttpStatusCode.MovedPermanently)
+            {
+                return true;
+            }
+
+            if (response.StatusCode == HttpStatusCode.MultipleChoices)
+            {
+                return true;
+            }
+
+            if (response.StatusCode == HttpStatusCode.Found)
+            {
+                return true;
+            }
+
+            if (response.StatusCode == HttpStatusCode.Redirect)
+            {
+                return true;
+            }
+
+            if (response.StatusCode == HttpStatusCode.RedirectKeepVerb)
+            {
+                return true;
+            }
+
+            if (response.StatusCode == HttpStatusCode.RedirectMethod)
+            {
+                return true;
+            }
+
+            if (response.StatusCode == HttpStatusCode.SeeOther)
+            {
+                return true;
+            }
+
+            if (response.StatusCode == HttpStatusCode.TemporaryRedirect)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Executes the request internally.
+        /// </summary>
+        /// <typeparam name="T">
+        /// </typeparam>
+        /// <param name="request">
+        /// The request.
+        /// </param>
+        /// <param name="expectedStatusCode">
+        /// The expected status code.
+        /// </param>
+        /// <param name="pageFactory">
+        /// The page factory.
+        /// </param>
+        /// <returns>
+        /// The <see cref="T"/>.
+        /// </returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// request
+        ///     or
+        ///     pageFactory
+        /// </exception>
+        /// <exception cref="HttpOutcomeException">
+        /// </exception>
+        private T ExecuteInternal<T>(
+            HttpRequestMessage request, 
+            HttpStatusCode expectedStatusCode, 
+            IPageFactory pageFactory) where T : IPage, new()
         {
             var page = default(T);
 
@@ -212,121 +381,6 @@
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        /// <param name="disposing">
-        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
-        ///     unmanaged resources.
-        /// </param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_disposed == false)
-            {
-                if (disposing)
-                {
-                    // Dispose managed resources.
-                    _client.Dispose();
-                }
-
-                // There are no unmanaged resources to release, but
-                // if we add them, they need to be released here.
-            }
-
-            _disposed = true;
-        }
-
-        /// <summary>
-        ///     Builds the default user agent.
-        /// </summary>
-        /// <returns>
-        ///     A <see cref="string" /> value.
-        /// </returns>
-        private static string BuildDefaultUserAgent()
-        {
-            var assemblyPath = Assembly.GetExecutingAssembly().Location;
-
-            var info = FileVersionInfo.GetVersionInfo(assemblyPath);
-
-            const string UserAgentFormat = "Headless ({0}.{1}.{2})";
-
-            return string.Format(
-                CultureInfo.CurrentCulture, 
-                UserAgentFormat, 
-                info.ProductMajorPart, 
-                info.ProductMinorPart, 
-                info.ProductBuildPart);
-        }
-
-        /// <summary>
-        /// Determines whether the specified response is redirect.
-        /// </summary>
-        /// <param name="response">
-        /// The response.
-        /// </param>
-        /// <returns>
-        /// <c>true</c> if the specified response is redirect; otherwise, <c>false</c>.
-        /// </returns>
-        private static bool IsRedirect(HttpResponseMessage response)
-        {
-            if (response.Headers.Location == null)
-            {
-                return false;
-            }
-
-            if (response.StatusCode == HttpStatusCode.Ambiguous)
-            {
-                return true;
-            }
-
-            if (response.StatusCode == HttpStatusCode.Moved)
-            {
-                return true;
-            }
-
-            if (response.StatusCode == HttpStatusCode.MovedPermanently)
-            {
-                return true;
-            }
-
-            if (response.StatusCode == HttpStatusCode.MultipleChoices)
-            {
-                return true;
-            }
-
-            if (response.StatusCode == HttpStatusCode.Found)
-            {
-                return true;
-            }
-
-            if (response.StatusCode == HttpStatusCode.Redirect)
-            {
-                return true;
-            }
-
-            if (response.StatusCode == HttpStatusCode.RedirectKeepVerb)
-            {
-                return true;
-            }
-
-            if (response.StatusCode == HttpStatusCode.RedirectMethod)
-            {
-                return true;
-            }
-
-            if (response.StatusCode == HttpStatusCode.SeeOther)
-            {
-                return true;
-            }
-
-            if (response.StatusCode == HttpStatusCode.TemporaryRedirect)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
         /// Sets the current page.
         /// </summary>
         /// <param name="page">
@@ -380,6 +434,20 @@
         {
             get;
             private set;
+        }
+
+        /// <inheritdoc />
+        public TimeSpan Timeout
+        {
+            get
+            {
+                return _client.Timeout;
+            }
+
+            set
+            {
+                _client.Timeout = value;
+            }
         }
 
         /// <summary>

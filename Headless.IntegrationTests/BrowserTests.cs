@@ -14,6 +14,22 @@
     public class BrowserTests
     {
         /// <summary>
+        ///     Runs a test for go to throws exception when timeout expired.
+        /// </summary>
+        [TestMethod]
+        public void GoToThrowsExceptionWhenTimeoutExpiredTest()
+        {
+            using (var browser = new Browser())
+            {
+                browser.Timeout = TimeSpan.FromMilliseconds(10);
+
+                Action action = () => browser.GoTo(new Uri("https://google.com"));
+
+                action.ShouldThrow<TimeoutException>();
+            }
+        }
+
+        /// <summary>
         ///     Runs a test for page returns loaded page on successful request.
         /// </summary>
         [TestMethod]
@@ -28,7 +44,7 @@
         }
 
         /// <summary>
-        /// Runs a test for page returns loaded page when HTTP outcome fails.
+        ///     Runs a test for page returns loaded page when HTTP outcome fails.
         /// </summary>
         [TestMethod]
         public void PageReturnsLoadedPageWhenHttpOutcomeFailsTest()
@@ -44,7 +60,7 @@
         }
 
         /// <summary>
-        /// Runs a test for page returns loaded page when location validation fails.
+        ///     Runs a test for page returns loaded page when location validation fails.
         /// </summary>
         [TestMethod]
         public void PageReturnsLoadedPageWhenLocationValidationFailsTest()
