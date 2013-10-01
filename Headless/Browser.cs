@@ -179,7 +179,7 @@
                 }
             }
 
-            Page = page;
+            SetCurrentPage(page);
 
             var lastOutcome = outcomes[outcomes.Count - 1];
 
@@ -326,6 +326,26 @@
             return false;
         }
 
+        /// <summary>
+        /// Sets the current page.
+        /// </summary>
+        /// <param name="page">
+        /// The page.
+        /// </param>
+        private void SetCurrentPage(IPage page)
+        {
+            var dynamicPage = page as DynamicResolverPage;
+
+            if (dynamicPage == null)
+            {
+                Page = page;
+            }
+            else
+            {
+                Page = dynamicPage.ResolvedPage;
+            }
+        }
+
         /// <inheritdoc />
         public virtual IPageContentTypeResolver ContentTypeResolver
         {
@@ -353,6 +373,13 @@
             {
                 return _handler.CookieContainer;
             }
+        }
+
+        /// <inheritdoc />
+        public IPage Page
+        {
+            get;
+            private set;
         }
 
         /// <summary>
@@ -393,13 +420,6 @@
             {
                 _userAgent = value;
             }
-        }
-
-        /// <inheritdoc />
-        public IPage Page
-        {
-            get;
-            private set;
         }
 
         /// <inheritdoc />

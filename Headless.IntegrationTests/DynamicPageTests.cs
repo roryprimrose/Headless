@@ -39,6 +39,54 @@
         }
 
         /// <summary>
+        ///     Runs a test for dynamic returns binary page for binary media type.
+        /// </summary>
+        [TestMethod]
+        public void DynamicReturnsBinaryPageForBinaryMediaTypeTest()
+        {
+            using (var browser = new Browser())
+            {
+                var page = browser.GoTo(Content.BinaryTest) as BinaryPage;
+
+                page.Should().NotBeNull();
+
+                browser.Page.Should().BeSameAs(page);
+            }
+        }
+
+        /// <summary>
+        ///     Runs a test for dynamic returns IHtmlPage for HTML media type.
+        /// </summary>
+        [TestMethod]
+        public void DynamicReturnsIHtmlPageForHtmlMediaTypeTest()
+        {
+            using (var browser = new Browser())
+            {
+                var page = browser.GoTo(Redirect.Index) as IHtmlPage;
+
+                page.Should().NotBeNull();
+
+                browser.Page.Should().BeSameAs(page);
+            }
+        }
+
+        /// <summary>
+        ///     Runs a test for dynamic returns text page for text media type.
+        /// </summary>
+        [TestMethod]
+        public void DynamicReturnsTextPageForTextMediaTypeTest()
+        {
+            using (var browser = new Browser())
+            {
+                var page = browser.GoTo(Content.TextTest) as TextPage;
+
+                page.Should().NotBeNull();
+
+                browser.Page.Should().BeSameAs(page);
+            }
+        }
+
+        /// <summary>
         ///     Runs a test for go to location returns page.
         /// </summary>
         [TestMethod]

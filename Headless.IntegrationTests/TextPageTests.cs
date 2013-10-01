@@ -15,7 +15,9 @@
         /// <summary>
         ///     Runs a test for can read text page using dynamic.
         /// </summary>
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1119:StatementMustNotUseUnnecessaryParenthesis", Justification = "Reviewed. Suppression is OK here."),TestMethod]
+        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1119:StatementMustNotUseUnnecessaryParenthesis", 
+            Justification = "Reviewed. Suppression is OK here.")]
+        [TestMethod]
         public void CanReadTextPageUsingDynamicTest()
         {
             using (var browser = new Browser())
