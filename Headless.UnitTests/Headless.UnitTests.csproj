@@ -71,6 +71,7 @@
     <Compile Include="Activation\TypeExtensionsTests.cs" />
     <Compile Include="Activation\SupportedTagAttributeTests.cs" />
     <Compile Include="Activation\SupportedTagAttributeComparerTests.cs" />
+    <Compile Include="AncestorHtmlElementFinderTests.cs" />
     <Compile Include="HtmlPageTests.cs" />
     <Compile Include="HtmlPageWrapper.cs" />
     <Compile Include="PostFileStreamEntryTests.cs" />

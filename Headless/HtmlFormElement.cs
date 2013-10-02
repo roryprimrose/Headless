@@ -1,6 +1,7 @@
 ﻿namespace Headless
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Xml.XPath;
 
     /// <summary>
@@ -29,6 +30,22 @@
         protected internal virtual IEnumerable<PostEntry> BuildPostData()
         {
             yield return new PostEntry(Name, Value);
+        }
+
+        /// <summary>
+        ///     Gets the HTML form that contains the current element.
+        /// </summary>
+        /// <value>
+        ///     The form.
+        /// </value>
+        /// <exception cref="Headless.HtmlElementNotFoundException">No form element was found for the requested element.</exception>
+        /// <exception cref="InvalidHtmlElementMatchException">More than one form element was found for the requested element</exception>
+        public HtmlForm Form
+        {
+            get
+            {
+                return FindAncestor<HtmlForm>().All().Single();
+            }
         }
 
         /// <summary>

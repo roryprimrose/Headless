@@ -50,6 +50,12 @@
         }
 
         /// <inheritdoc />
+        public virtual IHtmlElementFinder<T> FindAncestor<T>() where T : HtmlElement
+        {
+            return new AncestorHtmlElementFinder<T>(this);
+        }
+
+        /// <inheritdoc />
         /// <exception cref="System.ArgumentNullException">
         ///     The <paramref name="page" /> parameter is <c>null</c>.
         /// </exception>
@@ -67,7 +73,7 @@
 
         /// <inheritdoc />
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="content"/> parameter is <c>null</c>.
+        ///     The <paramref name="content" /> parameter is <c>null</c>.
         /// </exception>
         protected internal override void SetContent(HttpContent content)
         {

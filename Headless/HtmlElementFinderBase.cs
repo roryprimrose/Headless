@@ -16,6 +16,11 @@
     /// </typeparam>
     public abstract class HtmlElementFinderBase<T> : IHtmlElementFinder<T> where T : HtmlElement
     {
+        /// <summary>
+        ///     The default query axes.
+        /// </summary>
+        protected const string DefaultQueryAxes = "descendant";
+
         /// <inheritdoc />
         public IEnumerable<T> All()
         {
@@ -65,7 +70,7 @@
 
         /// <inheritdoc />
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="predicate"/> parameter is <c>null</c>.
+        ///     The <paramref name="predicate" /> parameter is <c>null</c>.
         /// </exception>
         public IEnumerable<T> AllByPredicate(Func<T, bool> predicate)
         {
@@ -90,8 +95,15 @@
                 throw new ArgumentException(Resources.Guard_NoValueProvided, "tagName");
             }
 
+            var axes = QueryAxes();
+
+            if (string.IsNullOrEmpty(axes))
+            {
+                axes = DefaultQueryAxes;
+            }
+
             // Tag names are already folded to lower case when the HTML was read
-            return Execute(".//*[self::*[local-name() = '" + tagName.ToLowerInvariant() + "']]");
+            return Execute("./" + axes + "::*[self::*[local-name() = '" + tagName.ToLowerInvariant() + "']]");
         }
 
         /// <inheritdoc />
@@ -345,5 +357,14 @@
 
         /// <inheritdoc />
         public abstract IEnumerable<T> Execute(string query);
+
+        /// <summary>
+        ///     Gets the xpath query axes.
+        /// </summary>
+        /// <returns>A <see cref="string" /> value.</returns>
+        protected virtual string QueryAxes()
+        {
+            return DefaultQueryAxes;
+        }
     }
 }

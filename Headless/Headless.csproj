@@ -64,6 +64,7 @@
     </Compile>
     <Compile Include="Activation\IHtmlElementFactory.cs" />
     <Compile Include="Activation\IPageFactory.cs" />
+    <Compile Include="AncestorHtmlElementFinder.cs" />
     <Compile Include="BinaryPage.cs">
       <DependentUpon>IPage.cs</DependentUpon>
     </Compile>

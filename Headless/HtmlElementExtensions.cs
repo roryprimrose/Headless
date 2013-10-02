@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using System.Xml.XPath;
     using Headless.Properties;
 
     /// <summary>
@@ -34,95 +33,6 @@
         public static T EnsureSingle<T>(this IEnumerable<T> elements) where T : HtmlElement
         {
             return EnsureSingle(elements, Resources.HtmlElement_MultipleMatchesFound);
-        }
-
-        /// <summary>
-        /// Gets the HTML form that contains the specified element.
-        /// </summary>
-        /// <param name="element">
-        /// The element.
-        /// </param>
-        /// <returns>
-        /// A <see cref="HtmlForm"/> value.
-        /// </returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="element"/> parameter is <c>null</c>.
-        /// </exception>
-        /// <exception cref="Headless.HtmlElementNotFoundException">
-        /// No form element was found for the requested element.
-        /// </exception>
-        /// <exception cref="InvalidHtmlElementMatchException">
-        /// More than one form element was found for the requested element
-        /// </exception>
-        public static HtmlForm GetHtmlForm(this HtmlElement element)
-        {
-            if (element == null)
-            {
-                throw new ArgumentNullException("element");
-            }
-
-            var currentElement = element as HtmlForm;
-
-            if (currentElement != null)
-            {
-                return currentElement;
-            }
-
-            var navigable = element.Node;
-            var page = element.Page;
-
-            return GetHtmlForm(navigable, page);
-        }
-
-        /// <summary>
-        /// Gets the HTML form.
-        /// </summary>
-        /// <param name="navigable">
-        /// The navigable.
-        /// </param>
-        /// <param name="page">
-        /// The page.
-        /// </param>
-        /// <returns>
-        /// A <see cref="HtmlForm"/> value.
-        /// </returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="navigable"/> parameter is <c>null</c>.
-        /// </exception>
-        /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="page"/> parameter is <c>null</c>.
-        /// </exception>
-        /// <exception cref="Headless.HtmlElementNotFoundException">
-        /// No form element was found for the requested element.
-        /// </exception>
-        /// <exception cref="InvalidHtmlElementMatchException">
-        /// More than one form element was found for the requested element
-        /// </exception>
-        public static HtmlForm GetHtmlForm(this IXPathNavigable navigable, IHtmlPage page)
-        {
-            if (navigable == null)
-            {
-                throw new ArgumentNullException("navigable");
-            }
-
-            if (page == null)
-            {
-                throw new ArgumentNullException("page");
-            }
-
-            var navigator = navigable.GetNavigator();
-
-            var form =
-                navigator.SelectAncestors(XPathNodeType.Element, true)
-                    .OfType<XPathNavigator>()
-                    .FirstOrDefault(x => x.Name.Equals("form", StringComparison.OrdinalIgnoreCase));
-
-            if (form == null)
-            {
-                throw new HtmlElementNotFoundException(Resources.HtmlElement_GetHtmlForm_FormNotFound, navigable);
-            }
-
-            return new HtmlForm(page, form);
         }
 
         /// <summary>

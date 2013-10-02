@@ -97,6 +97,12 @@
             }
 
             /// <inheritdoc />
+            public IHtmlElementFinder<T> FindAncestor<T>() where T : HtmlElement
+            {
+                throw new NotImplementedException();
+            }
+
+            /// <inheritdoc />
             public void Initialize(IBrowser browser, HttpResponseMessage response, HttpResult result)
             {
                 throw new NotImplementedException();

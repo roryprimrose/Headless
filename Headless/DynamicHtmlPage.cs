@@ -39,6 +39,12 @@
         }
 
         /// <inheritdoc />
+        public virtual IHtmlElementFinder<T> FindAncestor<T>() where T : HtmlElement
+        {
+            return new AncestorHtmlElementFinder<T>(this);
+        }
+
+        /// <inheritdoc />
         /// <exception cref="System.ArgumentNullException">
         /// The <paramref name="page"/> parameter is <c>null</c>.
         /// </exception>

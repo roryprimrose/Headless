@@ -38,7 +38,7 @@
         /// </returns>
         public dynamic Click()
         {
-            var form = this.GetHtmlForm();
+            var form = Form;
 
             return form.Submit(this);
         }
@@ -52,7 +52,7 @@
         /// </returns>
         public T Click<T>() where T : IPage, new()
         {
-            var form = this.GetHtmlForm();
+            var form = Form;
 
             return form.Submit<T>(this);
         }

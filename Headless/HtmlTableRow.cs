@@ -1,7 +1,6 @@
 ﻿namespace Headless
 {
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Xml.XPath;
     using Headless.Activation;
 
@@ -28,14 +27,15 @@
         /// <summary>
         ///     Gets the cells in the table row.
         /// </summary>
-        /// <returns>An <see cref="IEnumerable{T}" /> value.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", 
-            Justification =
-                "The method calculates a result on each invocation " +
-                "making a property misleading about the state of the instance.")]
-        public IEnumerable<HtmlTableCell> GetCells()
+        /// <value>
+        ///     The cells.
+        /// </value>
+        public IEnumerable<HtmlTableCell> Cells
         {
-            return Find<HtmlTableCell>().All();
+            get
+            {
+                return Find<HtmlTableCell>().All();
+            }
         }
     }
 }

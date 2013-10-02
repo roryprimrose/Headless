@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Headless</id>
-    <version>1.0.75-beta</version>
+    <version>1.0.87-beta</version>
     <title>Headless</title>
     <authors>Rory Primrose, Jon Wagner</authors>
     <description>A web browser replacement for testing websites without the browser overhead.</description>

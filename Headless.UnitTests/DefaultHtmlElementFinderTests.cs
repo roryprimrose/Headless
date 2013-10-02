@@ -45,10 +45,32 @@
         }
 
         /// <summary>
-        ///     Runs a test for execute returns any elements from type hierarchy from root.
+        ///     Runs a test for execute on multiple tags does not return node in context.
         /// </summary>
         [TestMethod]
-        public void ExecuteReturnsAnyElementsFromTypeHierarchyFromRootTest()
+        public void ExecuteOnMultipleTagsDoesNotReturnNodeInContextTest()
+        {
+            const string Html =
+                "<html><head /><body><form name='Test'><input type='text' name='Data' /><input type='checkbox' name='IsSet' /></form></body></html>";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByName("Test");
+
+            var target = new DefaultHtmlElementFinder<HtmlElement>(form);
+
+            var query = target.BuildElementQuery();
+
+            var actual = target.Execute(query).ToList();
+
+            actual.Any(x => x.TagName == "form").Should().BeFalse();
+        }
+
+        /// <summary>
+        ///     Runs a test for execute on multiple tags returns any elements from type hierarchy from root.
+        /// </summary>
+        [TestMethod]
+        public void ExecuteOnMultipleTagsReturnsAnyElementsFromTypeHierarchyFromRootTest()
         {
             const string Html =
                 "<html><head /><body><form name='Test'><input type='text' name='Data' /><input type='checkbox' name='IsSet' /></form></body></html>";
@@ -70,13 +92,13 @@
         }
 
         /// <summary>
-        ///     Runs a test for execute returns any elements from type hierarchy from specific node.
+        ///     Runs a test for execute on multiple tags returns any elements from type hierarchy from specific node.
         /// </summary>
         [TestMethod]
-        public void ExecuteReturnsAnyElementsFromTypeHierarchyFromSpecificNodeTest()
+        public void ExecuteOnMultipleTagsReturnsAnyElementsFromTypeHierarchyFromSpecificNodeTest()
         {
             const string Html =
-                "<html><head /><body><form name='Test'><input type='text' name='Data' /><input type='checkbox' name='IsSet' /></form></body></html>";
+                "<html><head /><body><form name='Test'><input type='text' name='Data' /><input type='checkbox' name='IsSet' /></form><form name='other'><input type='hidden' name='source' value'here' /></form></body></html>";
 
             var page = new HtmlPageStub(Html);
 
@@ -95,10 +117,10 @@
         }
 
         /// <summary>
-        ///     Runs a test for execute returns elements from type hierarchy from root.
+        ///     Runs a test for execute on multiple tags returns elements from type hierarchy from root.
         /// </summary>
         [TestMethod]
-        public void ExecuteReturnsElementsFromTypeHierarchyFromRootTest()
+        public void ExecuteOnMultipleTagsReturnsElementsFromTypeHierarchyFromRootTest()
         {
             const string Html = @"
 <html>
@@ -126,10 +148,10 @@
         }
 
         /// <summary>
-        ///     Runs a test for execute returns elements from type hierarchy from specific node.
+        ///     Runs a test for execute on multiple tags returns elements from type hierarchy from specific node.
         /// </summary>
         [TestMethod]
-        public void ExecuteReturnsElementsFromTypeHierarchyFromSpecificNodeTest()
+        public void ExecuteOnMultipleTagsReturnsElementsFromTypeHierarchyFromSpecificNodeTest()
         {
             const string Html =
                 "<html><head /><body><form name='Test'><input type='text' name='Data' /><input type='checkbox' name='IsSet' /></form></body></html>";
@@ -148,10 +170,10 @@
         }
 
         /// <summary>
-        ///     Runs a test for execute returns filtered radio buttons.
+        ///     Runs a test for execute on single tag returns filtered radio buttons.
         /// </summary>
         [TestMethod]
-        public void ExecuteReturnsFilteredRadioButtonsTest()
+        public void ExecuteOnSingleTagReturnsFilteredRadioButtonsTest()
         {
             const string Html =
                 "<html><head /><body><form name='Test'><input type='radio' name='Data' /><input type='radio' name='Data' /></form></body></html>";
@@ -170,10 +192,10 @@
         }
 
         /// <summary>
-        ///     Runs a test for execute returns specific element type.
+        ///     Runs a test for execute on single tag returns specific element type.
         /// </summary>
         [TestMethod]
-        public void ExecuteReturnsSpecificElementTypeTest()
+        public void ExecuteOnSingleTagReturnsSpecificElementTypeTest()
         {
             const string Html = "<html><head /><body><form name='Test' /></body></html>";
 
@@ -188,6 +210,50 @@
             actual.Count.Should().Be(1);
 
             actual[0].Name.Should().Be("Test");
+        }
+
+        /// <summary>
+        ///     Runs a test for execute on specific tag does not return node in context.
+        /// </summary>
+        [TestMethod]
+        public void ExecuteOnSpecificTagDoesNotReturnNodeInContextTest()
+        {
+            const string Html =
+                "<html><head /><body><form name='Test'><input type='text' name='Data' /><input type='checkbox' name='IsSet' /></form></body></html>";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByName("Test");
+
+            var target = new DefaultHtmlElementFinder<HtmlForm>(form);
+
+            var query = target.BuildElementQuery();
+
+            var actual = target.Execute(query).ToList();
+
+            actual.Count.Should().Be(0);
+        }
+
+        /// <summary>
+        ///     Runs a test for execute on wildcard tag name does not return node in context.
+        /// </summary>
+        [TestMethod]
+        public void ExecuteOnWildcardTagNameDoesNotReturnNodeInContextTest()
+        {
+            const string Html =
+                "<html><head /><body><form name='Test'><input type='text' name='Data' /><input type='checkbox' name='IsSet' /></form></body></html>";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByName("Test");
+
+            var target = new DefaultHtmlElementFinder<AnyHtmlElement>(form);
+
+            var query = target.BuildElementQuery();
+
+            var actual = target.Execute(query).ToList();
+
+            actual.Any(x => x.TagName == "form").Should().BeFalse();
         }
 
         /// <summary>

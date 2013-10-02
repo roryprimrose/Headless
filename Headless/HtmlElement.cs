@@ -3,6 +3,7 @@
     using System;
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Xml.XPath;
     using Headless.Activation;
@@ -80,7 +81,7 @@
         }
 
         /// <summary>
-        ///     Provides a finding implementation for searching for child <see cref="HtmlElement" /> values.
+        ///     Provides a finding implementation for searching for descendant <see cref="HtmlElement" /> values.
         /// </summary>
         /// <typeparam name="T">The type of <see cref="HtmlElement" /> to find.</typeparam>
         /// <returns>A <see cref="IHtmlElementFinder{T}" /> value.</returns>
@@ -88,6 +89,16 @@
         public IHtmlElementFinder<T> Find<T>() where T : HtmlElement
         {
             return new DefaultHtmlElementFinder<T>(this);
+        }
+
+        /// <summary>
+        ///     Provides a finding implementation for searching for ancestor <see cref="HtmlElement" /> values.
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="HtmlElement" /> to find.</typeparam>
+        /// <returns>A <see cref="IHtmlElementFinder{T}" /> value.</returns>
+        public virtual IHtmlElementFinder<T> FindAncestor<T>() where T : HtmlElement
+        {
+            return new AncestorHtmlElementFinder<T>(this);
         }
 
         /// <summary>
@@ -125,6 +136,38 @@
         public void SetAttribute(string attributeName, string attributeValue)
         {
             Node.SetAttribute(string.Empty, attributeName, string.Empty, attributeValue);
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            const string Layout = "{0}: {1}";
+
+            // Calculate the first element
+            var html = Html;
+
+            // Clean up the html first
+            html = html.Trim();
+            html = html.Replace(Environment.NewLine, " ");
+
+            while (html.Contains("  "))
+            {
+                html = html.Replace("  ", " ");
+            }
+
+            var endIndex = html.IndexOf('>');
+            string tag;
+
+            if (endIndex < 50)
+            {
+                tag = html.Substring(0, endIndex + 1);
+            }
+            else
+            {
+                tag = html.Substring(0, 50) + "...";
+            }
+
+            return string.Format(CultureInfo.CurrentCulture, Layout, GetType().Name, tag);
         }
 
         /// <summary>

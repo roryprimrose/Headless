@@ -30,7 +30,7 @@
         /// </param>
         public HtmlRadioButton(IHtmlPage page, IXPathNavigable node) : base(page, node)
         {
-            _relatedNodes = FindRelatedNodes(page, node);
+            _relatedNodes = FindRelatedNodes();
         }
 
         /// <inheritdoc />
@@ -54,20 +54,14 @@
         }
 
         /// <summary>
-        /// Finds the related nodes.
+        ///     Finds the related nodes.
         /// </summary>
-        /// <param name="page">
-        /// The page.
-        /// </param>
-        /// <param name="node">
-        /// The node.
-        /// </param>
         /// <returns>
-        /// The <see cref="IList{T}"/>.
+        ///     The <see cref="IList{T}" />.
         /// </returns>
-        private ReadOnlyCollection<IXPathNavigable> FindRelatedNodes(IHtmlPage page, IXPathNavigable node)
+        private ReadOnlyCollection<IXPathNavigable> FindRelatedNodes()
         {
-            var form = node.GetHtmlForm(page);
+            var form = Form;
 
             // We want to use the finder to build the xpath query for radio buttons
             var query = form.Find<HtmlRadioButton>().BuildElementQuery() + "[@name='" + Name + "']";

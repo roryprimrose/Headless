@@ -17,11 +17,18 @@
         T CloneAs<T>() where T : IHtmlPage, new();
 
         /// <summary>
-        ///     Provides a finding implementation for searching for child <see cref="HtmlElement" /> values.
+        ///     Provides a finding implementation for searching for descendant <see cref="HtmlElement" /> values.
         /// </summary>
         /// <typeparam name="T">The type of <see cref="HtmlElement" /> to find.</typeparam>
         /// <returns>A <see cref="IHtmlElementFinder{T}" /> value.</returns>
         IHtmlElementFinder<T> Find<T>() where T : HtmlElement;
+
+        /// <summary>
+        ///     Provides a finding implementation for searching for ancestor <see cref="HtmlElement" /> values.
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="HtmlElement" /> to find.</typeparam>
+        /// <returns>A <see cref="IHtmlElementFinder{T}" /> value.</returns>
+        IHtmlElementFinder<T> FindAncestor<T>() where T : HtmlElement;
 
         /// <summary>
         /// Initializes the page using the details of another page.
