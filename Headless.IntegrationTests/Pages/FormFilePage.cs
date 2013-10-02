@@ -100,7 +100,7 @@
         {
             get
             {
-                return Find<HtmlButton>().All().Single();
+                return Find<HtmlButton>().Singular();
             }
         }
     }

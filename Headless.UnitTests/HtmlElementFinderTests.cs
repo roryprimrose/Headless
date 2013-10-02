@@ -1156,5 +1156,86 @@
 
             action.ShouldThrow<InvalidHtmlElementMatchException>();
         }
+
+        /// <summary>
+        ///     Runs a test for single returns single element.
+        /// </summary>
+        [TestMethod]
+        public void SingleReturnsSingleElementTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>
+";
+
+            var page = new HtmlPageStub(Html);
+
+            var actual = page.Find<HtmlCheckBox>().Singular();
+
+            actual.Name.Should().Be("IsSet");
+        }
+
+        /// <summary>
+        ///     Runs a test for single throws exception when multiple elements found.
+        /// </summary>
+        [TestMethod]
+        public void SingleThrowsExceptionWhenMultipleElementsFoundTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>
+";
+
+            var page = new HtmlPageStub(Html);
+
+            Action action = () => page.Find<HtmlElement>().Singular();
+
+            action.ShouldThrow<InvalidHtmlElementMatchException>();
+        }
+
+        /// <summary>
+        ///     Runs a test for single throws exception when no elements found.
+        /// </summary>
+        [TestMethod]
+        public void SingleThrowsExceptionWhenNoElementsFoundTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <input type='text' name='Data' />
+        </form>
+        <form name='SecondTest'>
+            <input type='checkbox' name='IsSet' />
+        </form>
+    </body>
+</html>
+";
+
+            var page = new HtmlPageStub(Html);
+
+            Action action = () => page.Find<HtmlList>().Singular();
+
+            action.ShouldThrow<InvalidHtmlElementMatchException>();
+        }
     }
 }

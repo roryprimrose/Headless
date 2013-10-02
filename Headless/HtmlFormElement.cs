@@ -44,7 +44,7 @@
         {
             get
             {
-                return FindAncestor<HtmlForm>().All().Single();
+                return FindAncestor<HtmlForm>().Singular();
             }
         }
 

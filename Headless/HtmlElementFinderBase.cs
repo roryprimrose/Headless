@@ -358,6 +358,12 @@
         /// <inheritdoc />
         public abstract IEnumerable<T> Execute(string query);
 
+        /// <inheritdoc />
+        public T Singular()
+        {
+            return All().EnsureSingle();
+        }
+
         /// <summary>
         ///     Gets the xpath query axes.
         /// </summary>

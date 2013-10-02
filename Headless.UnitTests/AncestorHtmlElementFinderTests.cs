@@ -124,7 +124,7 @@
 
             var page = new HtmlPageStub(Html);
 
-            var input = page.Find<HtmlListItem>().All().Single();
+            var input = page.Find<HtmlListItem>().Singular();
 
             var target = new AncestorHtmlElementFinder<HtmlFormElement>(input);
 

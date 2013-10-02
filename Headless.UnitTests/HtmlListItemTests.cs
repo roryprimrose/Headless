@@ -24,7 +24,7 @@
 
             var page = new HtmlPageStub(Html);
 
-            var form = page.Find<HtmlForm>().All().Single();
+            var form = page.Find<HtmlForm>().Singular();
 
             var parameters = form.BuildPostParameters(null).ToList();
 
