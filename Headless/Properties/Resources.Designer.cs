@@ -169,6 +169,15 @@ namespace Headless.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No option element found with the value or text of &apos;{0}&apos;..
+        /// </summary>
+        internal static string HtmlList_NoOptionFoundForValue {
+            get {
+                return ResourceManager.GetString("HtmlList_NoOptionFoundForValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No HttpOutcome have been provided..
         /// </summary>
         internal static string HttpResult_NoHttpOutcomeProvided {

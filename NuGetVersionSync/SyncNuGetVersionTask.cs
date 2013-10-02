@@ -36,9 +36,10 @@
         /// The binary version reader.
         /// </param>
         /// <exception cref="System.ArgumentNullException">
-        /// eventWriter
-        ///     or
-        ///     binaryVersionReader
+        /// The <paramref name="eventWriter"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="binaryVersionReader"/> parameter is <c>null</c>.
         /// </exception>
         [ImportingConstructor]
         public SyncNuGetVersionTask(

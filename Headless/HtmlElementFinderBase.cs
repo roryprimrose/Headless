@@ -64,6 +64,9 @@
         }
 
         /// <inheritdoc />
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="predicate"/> parameter is <c>null</c>.
+        /// </exception>
         public IEnumerable<T> AllByPredicate(Func<T, bool> predicate)
         {
             if (predicate == null)

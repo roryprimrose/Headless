@@ -234,12 +234,13 @@
         /// The page factory.
         /// </param>
         /// <returns>
-        /// The <see cref="T"/>.
+        /// A <typeparamref name="T"/> value.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
-        /// request
-        ///     or
-        ///     pageFactory
+        /// The <paramref name="request"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="pageFactory"/> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="HttpOutcomeException">
         /// </exception>

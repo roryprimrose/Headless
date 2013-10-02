@@ -20,6 +20,9 @@
         /// <returns>
         /// A <see cref="XPathNavigator"/> value.
         /// </returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="navigable"/> parameter is <c>null</c>.
+        /// </exception>
         /// <exception cref="System.InvalidOperationException">
         /// The navigator could not be created.
         /// </exception>

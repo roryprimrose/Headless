@@ -49,6 +49,12 @@
         /// <returns>
         /// A <see cref="Type"/> value.
         /// </returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="elementType"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="node"/> parameter is <c>null</c>.
+        /// </exception>
         /// <exception cref="InvalidHtmlElementMatchException">
         /// No type could be found to match the node.
         /// </exception>
@@ -133,6 +139,9 @@
         /// <returns>
         /// An <see cref="IEnumerable{T}"/> value.
         /// </returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="elementType"/> parameter is <c>null</c>.
+        /// </exception>
         public static ReadOnlyCollection<Type> GetMatchingTypes(this Type elementType)
         {
             if (elementType == null)
@@ -178,6 +187,9 @@
         /// <returns>
         /// An <see cref="ReadOnlyCollection{T}"/> value.
         /// </returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="elementType"/> parameter is <c>null</c>.
+        /// </exception>
         /// <exception cref="System.InvalidOperationException">
         /// The type does not indicate any supported tags.
         /// </exception>

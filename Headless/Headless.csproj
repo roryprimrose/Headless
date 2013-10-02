@@ -117,6 +117,9 @@
     <Compile Include="HtmlList.cs">
       <DependentUpon>IHtmlElement.cs</DependentUpon>
     </Compile>
+    <Compile Include="HtmlListItem.cs">
+      <DependentUpon>IHtmlElement.cs</DependentUpon>
+    </Compile>
     <Compile Include="HtmlPage.cs">
       <DependentUpon>IPage.cs</DependentUpon>
     </Compile>

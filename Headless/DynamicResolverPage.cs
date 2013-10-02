@@ -28,6 +28,15 @@
         private IPage _resolvedPage;
 
         /// <inheritdoc />
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="browser"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="response"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="result"/> parameter is <c>null</c>.
+        /// </exception>
         public void Initialize(IBrowser browser, HttpResponseMessage response, HttpResult result)
         {
             if (browser == null)

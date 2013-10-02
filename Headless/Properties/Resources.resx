@@ -169,4 +169,7 @@
   <data name="HtmlElement_MultipleMatchesFoundForAttribute" xml:space="preserve">
     <value>Multiple elements were found for the attribute '{0}'.</value>
   </data>
+  <data name="HtmlList_NoOptionFoundForValue" xml:space="preserve">
+    <value>No option element found with the value or text of '{0}'.</value>
+  </data>
 </root>

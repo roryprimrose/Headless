@@ -24,6 +24,9 @@
         /// <param name="outcomes">
         /// The http request outcomes.
         /// </param>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="outcomes"/> parameter is <c>null</c>.
+        /// </exception>
         public HttpResult(IEnumerable<HttpOutcome> outcomes)
         {
             if (outcomes == null)

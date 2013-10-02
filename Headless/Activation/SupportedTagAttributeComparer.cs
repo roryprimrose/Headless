@@ -51,6 +51,9 @@
         }
 
         /// <inheritdoc />
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="obj"/> parameter is <c>null</c>.
+        /// </exception>
         public int GetHashCode(SupportedTagAttribute obj)
         {
             if (obj == null)

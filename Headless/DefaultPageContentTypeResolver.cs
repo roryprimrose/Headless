@@ -9,6 +9,9 @@
     public class DefaultPageContentTypeResolver : IPageContentTypeResolver
     {
         /// <inheritdoc />
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="mediaType"/> parameter is <c>null</c>.
+        /// </exception>
         public virtual PageContentType DeterminePageType(string mediaType)
         {
             if (mediaType == null)

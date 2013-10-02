@@ -3,9 +3,12 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Globalization;
     using System.Linq;
+    using System.Runtime.CompilerServices;
     using System.Xml.XPath;
     using Headless.Activation;
+    using Headless.Properties;
 
     /// <summary>
     ///     The <see cref="HtmlList" />
@@ -33,16 +36,19 @@
         /// <param name="value">
         /// The value.
         /// </param>
+        /// <exception cref="HtmlElementNotFoundException">
+        /// No option element found for the specified value.
+        /// </exception>
         public void Deselect(string value)
         {
-            var node = this[value];
+            var item = this[value];
 
-            if (node == null)
+            if (item == null)
             {
-                return;
+                throw BuildItemNotFoundException(value);
             }
 
-            node.SetSelected(false);
+            item.Selected = false;
         }
 
         /// <summary>
@@ -51,78 +57,62 @@
         /// <param name="value">
         /// The value.
         /// </param>
+        /// <exception cref="HtmlElementNotFoundException">
+        /// No option element found for the specified value.
+        /// </exception>
         public void Select(string value)
         {
-            var node = this[value];
+            var item = this[value];
 
-            if (node == null)
+            if (item == null)
             {
-                return;
+                throw BuildItemNotFoundException(value);
             }
-
-            node.SetSelected(true);
+            
+            item.Selected = true;
         }
 
         /// <inheritdoc />
         protected internal override IEnumerable<PostEntry> BuildPostData()
         {
-            var selectedEntries = new List<PostEntry>();
+            var selectedItems = SelectedItems;
 
-            foreach (var node in Nodes)
+            if (selectedItems.Count == 0)
             {
-                var optionNavigator = node.GetNavigator();
-
-                if (optionNavigator.IsSelected() == false)
-                {
-                    continue;
-                }
-
-                var value = GetOptionValue(optionNavigator);
-
-                var entry = new PostEntry(Name, value);
-
-                selectedEntries.Add(entry);
-            }
-
-            if (selectedEntries.Count == 0)
-            {
-                return selectedEntries;
+                yield break;
             }
 
             if (IsDropDown)
             {
-                var lastEntry = selectedEntries[selectedEntries.Count - 1];
+                // Return only the last item
+                var lastEntry = selectedItems.Last();
 
-                return new[]
-                {
-                    lastEntry
-                };
+                var postEntry = new PostEntry(Name, lastEntry.PostValue);
+
+                yield return postEntry;
             }
+            else
+            {
+                foreach (var selectedItem in selectedItems)
+                {
+                    var postEntry = new PostEntry(Name, selectedItem.PostValue);
 
-            return selectedEntries;
+                    yield return postEntry;
+                }
+            }
         }
 
         /// <summary>
-        /// Gets the option value.
+        /// Throws the item not found.
         /// </summary>
-        /// <param name="navigator">
-        /// The navigator.
-        /// </param>
-        /// <returns>
-        /// A <see cref="string"/> value.
-        /// </returns>
-        private static string GetOptionValue(XPathNavigator navigator)
+        /// <param name="value">The value.</param>
+        /// <returns>A <see cref="HtmlElementNotFoundException"/> value.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private HtmlElementNotFoundException BuildItemNotFoundException(string value)
         {
-            var nodeValue = navigator.GetAttribute("value", string.Empty);
+            var message = string.Format(CultureInfo.CurrentCulture, Resources.HtmlList_NoOptionFoundForValue, value);
 
-            if (string.IsNullOrEmpty(nodeValue))
-            {
-                // The value attribute does not exist
-                // There might be a match on the text of the option element
-                nodeValue = navigator.Value;
-            }
-
-            return nodeValue;
+            return new HtmlElementNotFoundException(message, Node);
         }
 
         /// <summary>
@@ -149,37 +139,95 @@
         }
 
         /// <summary>
-        ///     Gets the selected values.
+        ///     Gets the items.
         /// </summary>
         /// <value>
-        ///     The selected values.
+        ///     The items.
         /// </value>
+        public IReadOnlyCollection<HtmlListItem> Items
+        {
+            get
+            {
+                var items = Find<HtmlListItem>().All();
+
+                return new ReadOnlyCollection<HtmlListItem>(items.ToList());
+            }
+        }
+
+        /// <summary>
+        ///     Gets the selected items.
+        /// </summary>
+        /// <value>
+        ///     The selected items.
+        /// </value>
+        public IReadOnlyCollection<HtmlListItem> SelectedItems
+        {
+            get
+            {
+                var items = Find<HtmlListItem>().AllByPredicate(x => x.Selected);
+
+                return new ReadOnlyCollection<HtmlListItem>(items.ToList());
+            }
+        }
+
+        /// <summary>
+        ///     Gets the selected values in the list.
+        /// </summary>
+        /// <value>
+        ///     The selected values in the list.
+        /// </value>
+        /// <exception cref="HtmlElementNotFoundException">No option element found for the specified value.</exception>
         public IEnumerable<string> SelectedValues
         {
             get
             {
-                foreach (var node in Nodes)
+                return SelectedItems.Select(x => x.PostValue);
+            }
+
+            set
+            {
+                var items = Items.ToList();
+
+                items.ForEach(x => x.Selected = false);
+
+                if (value == null)
                 {
-                    var navigator = node.GetNavigator();
+                    return;
+                }
 
-                    if (navigator.IsSelected())
+                foreach (var item in value)
+                {
+                    if (string.IsNullOrEmpty(item))
                     {
-                        var value = GetOptionValue(navigator);
-
-                        yield return value;
+                        continue;
                     }
+
+                    var matchingItems = items.Where(x => x.PostValue.Equals(item, StringComparison.Ordinal)).ToList();
+
+                    if (matchingItems.Count == 0)
+                    {
+                        throw BuildItemNotFoundException(item);
+                    }
+
+                    matchingItems.ForEach(x => x.Selected = true);
                 }
             }
         }
 
         /// <inheritdoc />
+        /// <exception cref="HtmlElementNotFoundException">No option element found for the specified value.</exception>
         public override string Value
         {
             get
             {
-                var values = SelectedValues;
+                var values = SelectedValues.ToList();
 
-                return string.Join(Environment.NewLine, values);
+                if (values.Count == 0)
+                {
+                    return string.Empty;
+                }
+
+                return values.Aggregate((current, next) => current + Environment.NewLine + next);
             }
 
             set
@@ -196,94 +244,45 @@
                         StringSplitOptions.RemoveEmptyEntries).ToList();
                 }
 
-                foreach (var node in Nodes)
-                {
-                    var navigator = node.GetNavigator();
-
-                    if (value == null)
-                    {
-                        navigator.SetSelected(false);
-
-                        continue;
-                    }
-
-                    var nodeValue = GetOptionValue(navigator);
-
-                    if (values.Contains(nodeValue, StringComparer.Ordinal))
-                    {
-                        navigator.SetSelected(true);
-                    }
-                    else
-                    {
-                        navigator.SetSelected(false);
-                    }
-                }
+                SelectedValues = values;
             }
         }
 
         /// <summary>
-        ///     Gets the values available by the radio button set.
+        ///     Gets the values available in the list.
         /// </summary>
         /// <value>
-        ///     The values available by the radio button set.
+        ///     The values available in the list.
         /// </value>
         public IEnumerable<string> Values
         {
             get
             {
-                foreach (var node in Nodes)
-                {
-                    var navigator = node.GetNavigator();
-                    var value = GetOptionValue(navigator);
-
-                    yield return value;
-                }
+                return Items.Select(x => x.PostValue);
             }
         }
 
         /// <summary>
-        ///     Gets the nodes.
+        /// Gets the <see cref="HtmlListItem"/> with the specified value.
         /// </summary>
         /// <value>
-        ///     The nodes.
+        /// The <see cref="HtmlListItem"/>.
         /// </value>
-        protected ReadOnlyCollection<IXPathNavigable> Nodes
-        {
-            get
-            {
-                var navigator = Node.GetNavigator();
-
-                var nodes = navigator.Select("option").OfType<IXPathNavigable>();
-
-                return new ReadOnlyCollection<IXPathNavigable>(nodes.ToList());
-            }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="IXPathNavigable"/> with the specified value.
-        /// </summary>
-        /// <value>
-        /// The <see cref="IXPathNavigable"/>.
-        /// </value>
-        /// <param value="value">
-        /// The value.
-        /// </param>
         /// <param name="value">
         /// The value.
         /// </param>
         /// <returns>
-        /// A <see cref="IXPathNavigable"/> value.
+        /// A <see cref="HtmlListItem"/> value.
         /// </returns>
-        public IXPathNavigable this[string value]
+        public HtmlListItem this[string value]
         {
             get
             {
-                var navigator = Node.GetNavigator();
+                var matchingItems =
+                    Find<HtmlListItem>()
+                        .AllByPredicate(x => x.PostValue.Equals(value, StringComparison.Ordinal));
 
-                var nodes = navigator.Select("option[@value='" + value + "']").OfType<IXPathNavigable>();
-                var node = nodes.FirstOrDefault();
-
-                return node;
+                return matchingItems.FirstOrDefault();
             }
         }
     }

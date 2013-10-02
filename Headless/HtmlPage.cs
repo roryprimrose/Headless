@@ -66,6 +66,9 @@
         }
 
         /// <inheritdoc />
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="content"/> parameter is <c>null</c>.
+        /// </exception>
         protected internal override void SetContent(HttpContent content)
         {
             if (content == null)

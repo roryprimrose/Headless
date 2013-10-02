@@ -32,8 +32,24 @@
         /// <param name="node">
         /// The node.
         /// </param>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="page"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="node"/> parameter is <c>null</c>.
+        /// </exception>
         protected HtmlElement(IHtmlPage page, IXPathNavigable node)
         {
+            if (page == null)
+            {
+                throw new ArgumentNullException("page");
+            }
+
+            if (node == null)
+            {
+                throw new ArgumentNullException("node");
+            }
+
             _page = page;
             _node = node;
 
