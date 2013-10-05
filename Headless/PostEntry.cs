@@ -1,14 +1,103 @@
 ﻿namespace Headless
 {
     using System;
+    using System.Globalization;
     using Headless.Properties;
 
     /// <summary>
     ///     The <see cref="PostEntry" />
-    ///     structure is used to describe an entry for sending POST data.
+    ///     class describes an entry for sending POST data.
     /// </summary>
     public class PostEntry
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PostEntry"/> class.
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <remarks>
+        /// This constructor uses <see cref="CultureInfo.InvariantCulture"/> to convert the value to a
+        ///     <see cref="string"/>.
+        /// </remarks>
+        public PostEntry(string name, short value) : this(name, value.ToString(CultureInfo.InvariantCulture))
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PostEntry"/> class.
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <remarks>
+        /// This constructor uses <see cref="CultureInfo.InvariantCulture"/> to convert the value to a
+        ///     <see cref="string"/>.
+        /// </remarks>
+        public PostEntry(string name, int value) : this(name, value.ToString(CultureInfo.InvariantCulture))
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PostEntry"/> class.
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <remarks>
+        /// This constructor uses <see cref="CultureInfo.InvariantCulture"/> to convert the value to a
+        ///     <see cref="string"/>.
+        /// </remarks>
+        public PostEntry(string name, long value) : this(name, value.ToString(CultureInfo.InvariantCulture))
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PostEntry"/> class.
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        public PostEntry(string name, Guid value) : this(name, value.ToString())
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PostEntry"/> class.
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        public PostEntry(string name, object value)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentException(Resources.Guard_NoValueProvided, "name");
+            }
+
+            Name = name;
+
+            if (value != null)
+            {
+                Value = value.ToString();
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PostEntry"/> class.
         /// </summary>
