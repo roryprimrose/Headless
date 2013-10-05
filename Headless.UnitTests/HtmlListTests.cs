@@ -42,6 +42,184 @@
         }
 
         /// <summary>
+        ///     Runs a test for selected items returns empty with multiselect and no explicitly selected items.
+        /// </summary>
+        [TestMethod]
+        public void SelectedItemsReturnsEmptyWithMultiselectAndNoExplicitlySelectedItemsTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <select name='Data' multiple>
+               <option>1</option>
+               <option>2</option>
+            </select>
+        </form>
+    </body>
+</html>";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByName("Test");
+            var list = form.Find<HtmlList>().ByName("Data");
+
+            var values = list.SelectedItems.ToList();
+
+            values.Count.Should().Be(0);
+        }
+
+        /// <summary>
+        ///     Runs a test for selected items returns explicitly selected item.
+        /// </summary>
+        [TestMethod]
+        public void SelectedItemsReturnsExplicitlySelectedItemTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <select name='Data'>
+               <option>1</option>
+               <option selected>2</option>
+            </select>
+        </form>
+    </body>
+</html>";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByName("Test");
+            var list = form.Find<HtmlList>().ByName("Data");
+
+            var values = list.SelectedItems.ToList();
+
+            values.Count.Should().Be(1);
+            values[0].PostValue.Should().Be("2");
+        }
+
+        /// <summary>
+        ///     Runs a test for selected items returns implicitly selected item in drop down list.
+        /// </summary>
+        [TestMethod]
+        public void SelectedItemsReturnsImplicitlySelectedItemInDropDownListTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <select name='Data'>
+               <option>1</option>
+               <option>2</option>
+            </select>
+        </form>
+    </body>
+</html>";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByName("Test");
+            var list = form.Find<HtmlList>().ByName("Data");
+
+            var values = list.SelectedItems.ToList();
+
+            values.Count.Should().Be(1);
+            values[0].PostValue.Should().Be("1");
+        }
+
+        /// <summary>
+        ///     Runs a test for selected values returns empty with multiselect and no explicitly selected items.
+        /// </summary>
+        [TestMethod]
+        public void SelectedValuesReturnsEmptyWithMultiselectAndNoExplicitlySelectedItemsTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <select name='Data' multiple>
+               <option>1</option>
+               <option>2</option>
+            </select>
+        </form>
+    </body>
+</html>";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByName("Test");
+            var list = form.Find<HtmlList>().ByName("Data");
+
+            var values = list.SelectedValues.ToList();
+
+            values.Count.Should().Be(0);
+        }
+
+        /// <summary>
+        ///     Runs a test for selected values returns explicitly selected item.
+        /// </summary>
+        [TestMethod]
+        public void SelectedValuesReturnsExplicitlySelectedItemTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <select name='Data'>
+               <option>1</option>
+               <option selected>2</option>
+            </select>
+        </form>
+    </body>
+</html>";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByName("Test");
+            var list = form.Find<HtmlList>().ByName("Data");
+
+            var values = list.SelectedValues.ToList();
+
+            values.Count.Should().Be(1);
+            values[0].Should().Be("2");
+        }
+
+        /// <summary>
+        ///     Runs a test for selected values returns implicitly selected item in drop down list.
+        /// </summary>
+        [TestMethod]
+        public void SelectedValuesReturnsImplicitlySelectedItemInDropDownListTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <select name='Data'>
+               <option>1</option>
+               <option>2</option>
+            </select>
+        </form>
+    </body>
+</html>";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByName("Test");
+            var list = form.Find<HtmlList>().ByName("Data");
+
+            var values = list.SelectedValues.ToList();
+
+            values.Count.Should().Be(1);
+            values[0].Should().Be("1");
+        }
+
+        /// <summary>
         ///     Runs a test for selected values should return text when selected value is empty.
         /// </summary>
         [TestMethod]
@@ -70,6 +248,87 @@
 
             values.Count.Should().Be(1);
             values[0].Should().Be(Expected);
+        }
+
+        /// <summary>
+        ///     Runs a test for value returns empty with multiselect and no explicitly selected items.
+        /// </summary>
+        [TestMethod]
+        public void ValueReturnsEmptyWithMultiselectAndNoExplicitlySelectedItemsTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <select name='Data' multiple>
+               <option>1</option>
+               <option>2</option>
+            </select>
+        </form>
+    </body>
+</html>";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByName("Test");
+            var list = form.Find<HtmlList>().ByName("Data");
+
+            list.Value.Should().BeEmpty();
+        }
+
+        /// <summary>
+        ///     Runs a test for value returns explicitly selected item.
+        /// </summary>
+        [TestMethod]
+        public void ValueReturnsExplicitlySelectedItemTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <select name='Data'>
+               <option>1</option>
+               <option selected>2</option>
+            </select>
+        </form>
+    </body>
+</html>";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByName("Test");
+            var list = form.Find<HtmlList>().ByName("Data");
+
+            list.Value.Should().Be("2");
+        }
+
+        /// <summary>
+        ///     Runs a test for value returns implicitly selected item in drop down list.
+        /// </summary>
+        [TestMethod]
+        public void ValueReturnsImplicitlySelectedItemInDropDownListTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <select name='Data'>
+               <option>1</option>
+               <option>2</option>
+            </select>
+        </form>
+    </body>
+</html>";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByName("Test");
+            var list = form.Find<HtmlList>().ByName("Data");
+
+            list.Value.Should().Be("1");
         }
 
         /// <summary>

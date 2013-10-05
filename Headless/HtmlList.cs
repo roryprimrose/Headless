@@ -164,9 +164,29 @@
         {
             get
             {
-                var items = Find<HtmlListItem>().AllByPredicate(x => x.Selected);
+                var items = Find<HtmlListItem>().AllByPredicate(x => x.Selected).ToList();
 
-                return new ReadOnlyCollection<HtmlListItem>(items.ToList());
+                if (items.Count > 0)
+                {
+                    return new ReadOnlyCollection<HtmlListItem>(items);
+                }
+
+                if (IsDropDown == false)
+                {
+                    return new ReadOnlyCollection<HtmlListItem>(items);
+                }
+
+                // This is a drop down but nothing is explicltly selected
+                // We will take the first available item
+                var implicitItems = new List<HtmlListItem>();
+                var firstItem = Items.FirstOrDefault();
+
+                if (firstItem != null)
+                {
+                    implicitItems.Add(firstItem);
+                }
+
+                return new ReadOnlyCollection<HtmlListItem>(implicitItems);
             }
         }
 
