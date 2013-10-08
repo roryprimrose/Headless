@@ -42,6 +42,103 @@
         }
 
         /// <summary>
+        ///     Runs a test for deselect should match item by text when it has value.
+        /// </summary>
+        [TestMethod]
+        public void DeselectShouldMatchItemByTextWhenItHasValueTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <select name='Data' multiple>
+               <option value='1' selected>Test</option>
+               <option value='2' selected>Next</option>
+            </select>
+        </form>
+    </body>
+</html>";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByName("Test");
+            var list = form.Find<HtmlList>().ByName("Data");
+
+            var selectedValues = list.SelectedValues.ToList();
+
+            selectedValues.Count.Should().Be(2);
+
+            list.Deselect("Next");
+
+            selectedValues = list.SelectedValues.ToList();
+
+            selectedValues.Count.Should().Be(1);
+            selectedValues[0].Should().Be("1");
+        }
+
+        /// <summary>
+        ///     Runs a test for indexer should match list item by text when it has value.
+        /// </summary>
+        [TestMethod]
+        public void IndexerShouldMatchListItemByTextWhenItHasValueTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <select name='Data'>
+               <option value='1'>Test</option>
+            </select>
+        </form>
+    </body>
+</html>";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByName("Test");
+            var list = form.Find<HtmlList>().ByName("Data");
+
+            var item = list["Test"];
+
+            item.Should().NotBeNull();
+            item.Value.Should().Be("1");
+        }
+
+        /// <summary>
+        ///     Runs a test for select should match item by text when it has value.
+        /// </summary>
+        [TestMethod]
+        public void SelectShouldMatchItemByTextWhenItHasValueTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <select name='Data'>
+               <option value='1'>Test</option>
+               <option value='2'>Next</option>
+            </select>
+        </form>
+    </body>
+</html>";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByName("Test");
+            var list = form.Find<HtmlList>().ByName("Data");
+
+            list.Select("Next");
+
+            var selectedValues = list.SelectedValues.ToList();
+
+            selectedValues.Count.Should().Be(1);
+            selectedValues[0].Should().Be("2");
+        }
+
+        /// <summary>
         ///     Runs a test for selected items returns empty with multiselect and no explicitly selected items.
         /// </summary>
         [TestMethod]
@@ -248,6 +345,76 @@
 
             values.Count.Should().Be(1);
             values[0].Should().Be(Expected);
+        }
+
+        /// <summary>
+        ///     Runs a test for setting selected values should match item by text when it has value.
+        /// </summary>
+        [TestMethod]
+        public void SettingSelectedValuesShouldMatchItemByTextWhenItHasValueTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <select name='Data' multiple>
+               <option value='1'>Test</option>
+               <option value='2'>Next</option>
+            </select>
+        </form>
+    </body>
+</html>";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByName("Test");
+            var list = form.Find<HtmlList>().ByName("Data");
+
+            list.SelectedValues.Count().Should().Be(0);
+
+            list.SelectedValues = new[]
+            {
+                "Test", "Next"
+            };
+
+            var selectedValues = list.SelectedValues.ToList();
+
+            selectedValues.Count.Should().Be(2);
+        }
+
+        /// <summary>
+        ///     Runs a test for setting value should match item by text when it has value.
+        /// </summary>
+        [TestMethod]
+        public void SettingValueShouldMatchItemByTextWhenItHasValueTest()
+        {
+            const string Html = @"
+<html>
+    <head />
+    <body>
+        <form name='Test'>
+            <select name='Data' multiple>
+               <option value='1'>Test</option>
+               <option value='2'>Next</option>
+            </select>
+        </form>
+    </body>
+</html>";
+
+            var page = new HtmlPageStub(Html);
+
+            var form = page.Find<HtmlForm>().ByName("Test");
+            var list = form.Find<HtmlList>().ByName("Data");
+
+            list.SelectedValues.Count().Should().Be(0);
+
+            list.Value = "Next";
+
+            var selectedValues = list.SelectedValues.ToList();
+
+            selectedValues.Count.Should().Be(1);
+            selectedValues[0].Should().Be("2");
         }
 
         /// <summary>

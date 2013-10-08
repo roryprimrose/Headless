@@ -68,7 +68,7 @@
             {
                 throw BuildItemNotFoundException(value);
             }
-            
+
             item.Selected = true;
         }
 
@@ -103,10 +103,60 @@
         }
 
         /// <summary>
+        /// Determines whether the item matches the specified value.
+        /// </summary>
+        /// <param name="item">
+        /// The item.
+        /// </param>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the item matches the value; otherwise <c>false</c>.
+        /// </returns>
+        private static bool MatchesItem(HtmlFormElement item, string value)
+        {
+            if (item == null)
+            {
+                return false;
+            }
+
+            if (item.Value == null)
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    return true;
+                }
+            }
+            else if (item.Value.Equals(value, StringComparison.Ordinal))
+            {
+                return true;
+            }
+
+            if (item.Text == null)
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    return true;
+                }
+            }
+            else if (item.Text.Equals(value, StringComparison.Ordinal))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Throws the item not found.
         /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>A <see cref="HtmlElementNotFoundException"/> value.</returns>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// A <see cref="HtmlElementNotFoundException"/> value.
+        /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private HtmlElementNotFoundException BuildItemNotFoundException(string value)
         {
@@ -222,8 +272,10 @@
                         continue;
                     }
 
-                    var matchingItems = items.Where(x => x.PostValue.Equals(item, StringComparison.Ordinal)).ToList();
-
+                    var itemValue = item;
+                    
+                    var matchingItems = items.Where(x => MatchesItem(x, itemValue)).ToList();
+                    
                     if (matchingItems.Count == 0)
                     {
                         throw BuildItemNotFoundException(item);
@@ -299,8 +351,7 @@
             get
             {
                 var matchingItems =
-                    Find<HtmlListItem>()
-                        .AllByPredicate(x => x.PostValue.Equals(value, StringComparison.Ordinal));
+                    Find<HtmlListItem>().AllByPredicate(x => MatchesItem(x, value));
 
                 return matchingItems.FirstOrDefault();
             }
