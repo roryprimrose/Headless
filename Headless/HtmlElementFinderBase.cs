@@ -365,7 +365,7 @@
         }
 
         /// <summary>
-        ///     Gets the xpath query axes.
+        ///     Gets the axes for the xpath query.
         /// </summary>
         /// <returns>A <see cref="string" /> value.</returns>
         protected virtual string QueryAxes()

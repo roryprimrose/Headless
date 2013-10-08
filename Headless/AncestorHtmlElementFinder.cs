@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// The <see cref="AncestorHtmlElementFinder{T}"/>
-    ///     class is used to provide the common wrapper around the finding logic for <see cref="HtmlElement"/> instances in a
+    ///     class is used to find <see cref="HtmlElement"/> instances in a
     ///     <see cref="HtmlPage"/> by searching ancestor elements.
     /// </summary>
     /// <typeparam name="T">
@@ -14,7 +14,7 @@
         /// Initializes a new instance of the <see cref="AncestorHtmlElementFinder{T}"/> class.
         /// </summary>
         /// <param name="page">
-        /// The page.
+        /// The page to search.
         /// </param>
         /// <exception cref="System.ArgumentNullException">
         /// The <paramref name="page"/> parameter is <c>null</c>.
@@ -27,7 +27,7 @@
         /// Initializes a new instance of the <see cref="AncestorHtmlElementFinder{T}"/> class.
         /// </summary>
         /// <param name="element">
-        /// The element.
+        /// The element to search.
         /// </param>
         /// <exception cref="System.ArgumentNullException">
         /// The <paramref name="element"/> parameter is <c>null</c>.

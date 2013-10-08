@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Rebuild;Package" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Headless</RootNamespace>
+    <AssemblyName>Headless</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">$(MSBuildThisFileDirectory)</SolutionDir>
+	<OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\Release\Headless.XML</DocumentationFile>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>..\Solution Items\Application.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <Target Name="Clean">
+	<RemoveDir Directories="$(OutDir)" />
+  </Target>
+  <PropertyGroup>
+    <CoreBuildDependsOn>
+	  PrepareOutputDir;
+      IncrementVersion;
+	  BuildCore;
+	  CleanOutputDir;
+    </CoreBuildDependsOn>
+  </PropertyGroup>
+  <Target Name="Build" DependsOnTargets="$(CoreBuildDependsOn)" />
+  
+  <Target Name="PrepareOutputDir">
+  
+	<MakeDir Directories="$(OutDir)" />
+  
+  </Target>
+  
+  <Target Name="IncrementVersion" Condition="$(Configuration) == Release">
+	<Exec Command="&quot;$(SolutionDir)References\BuildTaskExecutor\BuildTaskExecutor.exe&quot; iav /pattern:&quot;$(SolutionDir)Solution Items\ProductInfo.cs&quot; /b" />
+  </Target>
+    
+  <Target Name="BuildCore">
+  
+    <MSBuild Projects="NuGetVersionSync\NuGetVersionSync.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform);SolutionDir=$(SolutionDir)" StopOnFirstFailure="True" />
+
+    <ItemGroup>
+        <ProjectReferences Include="Headless\Headless.csproj" />
+        <ProjectReferences Include="Headless.Documentation\Headless.Documentation.shfbproj" />
+    </ItemGroup>
+
+    <MSBuild Projects="@(ProjectReferences)" Properties="Configuration=$(Configuration);Platform=$(Platform);SolutionDir=$(SolutionDir);OutDir=$(OutDir);OutputPath=$(OutDir)" StopOnFirstFailure="True" />
+  
+  </Target>
+  
+  
+  <Target Name="CleanOutputDir">
+  
+	<ItemGroup>
+		<RedundantFiles Include="$(OutDir)*CodeAnalysis*.*" />
+		<RedundantFiles Include="$(OutDir)*.log" />
+	</ItemGroup>
+  
+	<!-- Clean up the output folder -->
+	<Delete Files="@(RedundantFiles)" />
+  
+  </Target>
+  
+  <Target Name="Package" Condition="$(Configuration) == Release">
+
+	<ItemGroup>
+		<PreviousPackages Include="$(OutDir)*.nupkg" />
+	</ItemGroup>
+  
+	<Delete Files="@(PreviousPackages)" />
+	  
+  	<Exec Command="&quot;$(SolutionDir)References\BuildTaskExecutor\BuildTaskExecutor.exe&quot; snv /pattern:&quot;$(SolutionDir)Solution Items\Headless.nuspec&quot; /source:&quot;$(OutDir)Headless.dll&quot;" />
+	
+	<!-- Copy the nuspec to the output directory - fixes issue with -BasePath not working -->
+	<Copy SourceFiles="$(SolutionDir)Solution Items\Headless.nuspec" DestinationFolder="$(OutDir)" />
+	  
+    <Exec Command="&quot;$(SolutionDir).nuget\nuget.exe&quot; pack &quot;Headless.nuspec&quot; -verbosity detailed"
+		ConsoleToMSBuild="true" IgnoreExitCode="true"
+		WorkingDirectory="$(OutDir)">
+		<Output TaskParameter="ExitCode" PropertyName="ExecExitCode" />
+		<Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
+	</Exec>
+  
+	<Delete Files="$(OutDir)Headless.nuspec" />
+	
+	<Error Text="$(OutputOfExec)" Condition="$(ExecExitCode) != 0" />
+    <Message Text="$(OutputOfExec)" />
+  
+  </Target>
+  
+  <Target Name="Rebuild" DependsOnTargets="Clean;Build;">
+  </Target>
+</Project>

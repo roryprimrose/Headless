@@ -21,6 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		Solution Items\Application.ruleset = Solution Items\Application.ruleset
 		Solution Items\CustomDictionary.xml = Solution Items\CustomDictionary.xml
+		Solution Items\Headless.nuspec = Solution Items\Headless.nuspec
 		Headless.sln.DotSettings = Headless.sln.DotSettings
 		LICENSE = LICENSE
 		Solution Items\ProductInfo.cs = Solution Items\ProductInfo.cs
@@ -53,6 +54,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{F659CF4C-3BA6-46C5-BF07-F95D5C16E386}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGetVersionSync", "NuGetVersionSync\NuGetVersionSync.csproj", "{D6F36D08-1E3D-47C9-B23D-1A4D41B8FA5D}"
+EndProject
+Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "Headless.Documentation", "Headless.Documentation\Headless.Documentation.shfbproj", "{0AC41409-DA60-45B0-8C30-D6E80ECD0BBB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -94,6 +97,11 @@ Global
 		{D6F36D08-1E3D-47C9-B23D-1A4D41B8FA5D}.Release|Any CPU.Build.0 = Release|x86
 		{D6F36D08-1E3D-47C9-B23D-1A4D41B8FA5D}.Release|x86.ActiveCfg = Release|x86
 		{D6F36D08-1E3D-47C9-B23D-1A4D41B8FA5D}.Release|x86.Build.0 = Release|x86
+		{0AC41409-DA60-45B0-8C30-D6E80ECD0BBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AC41409-DA60-45B0-8C30-D6E80ECD0BBB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0AC41409-DA60-45B0-8C30-D6E80ECD0BBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AC41409-DA60-45B0-8C30-D6E80ECD0BBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AC41409-DA60-45B0-8C30-D6E80ECD0BBB}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

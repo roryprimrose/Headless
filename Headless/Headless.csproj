@@ -205,22 +205,17 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Headless.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <PropertyGroup>
-    <PreBuildEvent>if $(ConfigurationName) == Release (
-    "$(SolutionDir)References\BuildTaskExecutor\BuildTaskExecutor.exe" iav /pattern:"$(SolutionDir)Solution Items\ProductInfo.cs" /b
-)</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>if $(ConfigurationName) == Release (
-    del /F /Q "$(TargetDir)*.nupkg"
-    "$(SolutionDir)References\BuildTaskExecutor\BuildTaskExecutor.exe" snv /pattern:"$(ProjectDir)Headless.nuspec" /source:"$(TargetPath)"
-    "$(SolutionDir).nuget\nuget.exe" pack "$(ProjectDir)Headless.nuspec"
-)</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
