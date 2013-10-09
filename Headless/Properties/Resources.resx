@@ -172,4 +172,7 @@
   <data name="HtmlList_NoOptionFoundForValue" xml:space="preserve">
     <value>No option element found with the value or text of '{0}'.</value>
   </data>
+  <data name="HtmlPage_NoHtmlContentProvided" xml:space="preserve">
+    <value>HTML content was expected but none was provided.</value>
+  </data>
 </root>

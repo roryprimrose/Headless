@@ -22,6 +22,51 @@
         /// </summary>
         private HtmlPageWrapper _wrapperPage;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="DynamicHtmlPage" /> class.
+        /// </summary>
+        public DynamicHtmlPage()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DynamicHtmlPage"/> class.
+        /// </summary>
+        /// <param name="browser">
+        /// The browser.
+        /// </param>
+        /// <param name="html">
+        /// The HTML.
+        /// </param>
+        /// <remarks>
+        /// This constructor supports the usage of a dynamic HTML page generated from in-memory HTML rather than resulting
+        ///     from a browser request.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException">
+        /// The <paramref name="browser"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The <paramref name="html"/> parameter is <c>null</c>, empty or only contains white
+        ///     space.
+        /// </exception>
+        public DynamicHtmlPage(IBrowser browser, string html)
+        {
+            if (browser == null)
+            {
+                throw new ArgumentNullException("browser");
+            }
+
+            if (string.IsNullOrWhiteSpace(html))
+            {
+                throw new ArgumentException(Resources.HtmlPage_NoHtmlContentProvided, "html");
+            }
+
+            // Create a wrapper page using the MemoryHtmlPage
+            var wrapperPage = new MemoryHtmlPage(browser, html);
+
+            Initialize(wrapperPage);
+        }
+
         /// <inheritdoc />
         public T CloneAs<T>() where T : IHtmlPage, new()
         {
@@ -46,7 +91,7 @@
 
         /// <inheritdoc />
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="page"/> parameter is <c>null</c>.
+        ///     The <paramref name="page" /> parameter is <c>null</c>.
         /// </exception>
         public void Initialize(IHtmlPage page)
         {
@@ -64,13 +109,13 @@
 
         /// <inheritdoc />
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="browser"/> parameter is <c>null</c>.
+        ///     The <paramref name="browser" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="response"/> parameter is <c>null</c>.
+        ///     The <paramref name="response" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="result"/> parameter is <c>null</c>.
+        ///     The <paramref name="result" /> parameter is <c>null</c>.
         /// </exception>
         public void Initialize(IBrowser browser, HttpResponseMessage response, HttpResult result)
         {
@@ -130,7 +175,7 @@
 
         /// <inheritdoc />
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="binder"/> parameter is <c>null</c>.
+        ///     The <paramref name="binder" /> parameter is <c>null</c>.
         /// </exception>
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {

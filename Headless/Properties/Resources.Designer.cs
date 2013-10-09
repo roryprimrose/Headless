@@ -178,6 +178,15 @@ namespace Headless.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HTML content was expected but none was provided..
+        /// </summary>
+        internal static string HtmlPage_NoHtmlContentProvided {
+            get {
+                return ResourceManager.GetString("HtmlPage_NoHtmlContentProvided", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No HttpOutcome have been provided..
         /// </summary>
         internal static string HttpResult_NoHttpOutcomeProvided {

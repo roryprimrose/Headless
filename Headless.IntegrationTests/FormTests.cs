@@ -23,9 +23,9 @@
         [TestMethod]
         public void CheckBoxWithNoValueSubmitsDefaultConventionTest()
         {
-            const string Html = @"
+            var html = @"
 <html><head /><body>
-<form action='Home/Echo' method='post'>
+<form action='" + Config.BaseWebAddress + @"Home/Echo' method='post'>
 <input type='checkbox' name='IsSet' checked='checked' />
 <input type='submit' name='Submit' />
 </form></body></html>
@@ -33,7 +33,7 @@
 
             using (var browser = new Browser())
             {
-                dynamic page = new MemoryHtmlPage(browser, Html);
+                dynamic page = new DynamicHtmlPage(browser, html);
 
                 var echo = page.Submit.Click();
 

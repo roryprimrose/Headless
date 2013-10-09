@@ -40,6 +40,7 @@
     <Reference Include="FluentAssertions">
       <HintPath>..\packages\FluentAssertions.2.0.1\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="NSubstitute">
       <HintPath>..\packages\NSubstitute.1.6.1.0\lib\NET40\NSubstitute.dll</HintPath>
     </Reference>
@@ -72,6 +73,8 @@
     <Compile Include="Activation\SupportedTagAttributeTests.cs" />
     <Compile Include="Activation\SupportedTagAttributeComparerTests.cs" />
     <Compile Include="AncestorHtmlElementFinderTests.cs" />
+    <Compile Include="MemoryHtmlPageTests.cs" />
+    <Compile Include="DynamicHtmlPageTests.cs" />
     <Compile Include="HtmlPageTests.cs" />
     <Compile Include="HtmlPageWrapper.cs" />
     <Compile Include="PostFileStreamEntryTests.cs" />

@@ -167,6 +167,9 @@
     <Compile Include="InvalidHtmlElementMatchException.cs" />
     <Compile Include="IPage.cs" />
     <Compile Include="IPageContentTypeResolver.cs" />
+    <Compile Include="MemoryHtmlPage.cs">
+      <DependentUpon>IPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="PageContentType.cs" />
     <Compile Include="PostEntry.cs" />
     <Compile Include="PostFileEntry.cs">

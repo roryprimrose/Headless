@@ -147,7 +147,7 @@
         /// <param name="result">
         /// The result.
         /// </param>
-        protected virtual void Initialize(
+        protected void Initialize(
             IBrowser browser, 
             HttpStatusCode statusCode, 
             string statusDescription, 
