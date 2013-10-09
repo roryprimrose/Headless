@@ -355,27 +355,17 @@
 
             if (lastOutcome.StatusCode != expectedStatusCode)
             {
-                var message = string.Format(
-                    CultureInfo.CurrentCulture, 
-                    Resources.Browser_InvalidResponseStatus, 
-                    expectedStatusCode, 
-                    lastOutcome.StatusCode);
+                var result = new HttpResult(outcomes);
 
-                throw new HttpOutcomeException(message);
+                throw new HttpOutcomeException(result, expectedStatusCode);
             }
 
             // Validate that the final address matches the page
             if (page.IsOn(currentResourceLocation, VerificationParts) == false)
             {
-                // We have been requested to go to a location that doesn't match the requested page
-                var message = string.Format(
-                    CultureInfo.CurrentCulture, 
-                    "The url requested is {0} which does not match the location of {1} defined by page {2}.", 
-                    currentResourceLocation, 
-                    page.TargetLocation, 
-                    page.GetType().FullName);
+                var result = new HttpResult(outcomes);
 
-                throw new HttpOutcomeException(message);
+                throw new HttpOutcomeException(result, page.TargetLocation);
             }
 
             return page;

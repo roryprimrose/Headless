@@ -4,13 +4,15 @@
     using System.Globalization;
     using System.Net;
     using System.Net.Http;
+    using System.Runtime.Serialization;
     using Headless.Properties;
 
     /// <summary>
     ///     The <see cref="HttpOutcome" />
     ///     class is used to identify the outcome of a HTTP request.
     /// </summary>
-    public class HttpOutcome
+    [Serializable]
+    public class HttpOutcome : ISerializable
     {
         /// <summary>
         ///     The location.
@@ -72,7 +74,7 @@
             {
                 throw new ArgumentNullException("location");
             }
-            
+
             if (location.IsAbsoluteUri == false)
             {
                 throw new ArgumentException(Resources.Uri_LocationMustBeAbsolute, "location");
@@ -83,6 +85,48 @@
             _statusCode = statusCode;
             _responseMessage = responseMessage;
             _responseTime = responseTime;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HttpOutcome"/> class.
+        /// </summary>
+        /// <param name="info">
+        /// The information.
+        /// </param>
+        /// <param name="context">
+        /// The context.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// The <paramref name="info"/> is <c>null</c>.
+        /// </exception>
+        protected HttpOutcome(SerializationInfo info, StreamingContext context)
+        {
+            if (info == null)
+            {
+                throw new ArgumentNullException("info");
+            }
+
+            _location = new Uri(info.GetString("Location"));
+            _method = new HttpMethod(info.GetString("Method"));
+            _statusCode = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), info.GetString("StatusCode"));
+            _responseMessage = info.GetString("ResonseMessage");
+            _responseTime = new TimeSpan(info.GetInt64("ResonseTime"));
+        }
+
+        /// <inheritdoc />
+        /// <exception cref="ArgumentNullException">The <paramref name="info" /> is <c>null</c>.</exception>
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            if (info == null)
+            {
+                throw new ArgumentNullException("info");
+            }
+
+            info.AddValue("Location", _location.ToString());
+            info.AddValue("Method", _method.ToString());
+            info.AddValue("StatusCode", _statusCode.ToString());
+            info.AddValue("ResonseMessage", _responseMessage);
+            info.AddValue("ResonseTime", _responseTime.Ticks);
         }
 
         /// <inheritdoc />
@@ -116,7 +160,7 @@
         }
 
         /// <summary>
-        ///     Gets the requet method.
+        ///     Gets the request method.
         /// </summary>
         /// <value>
         ///     The request method.

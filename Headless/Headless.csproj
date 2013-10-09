@@ -129,7 +129,7 @@
     <Compile Include="HtmlPageWrapper.cs">
       <DependentUpon>DynamicHtmlPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="HtmlOutcomeException.cs" />
+    <Compile Include="HttpOutcomeException.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="HtmlElementExtensions.cs">
       <DependentUpon>Extensions.cs</DependentUpon>

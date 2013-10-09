@@ -11,6 +11,7 @@
     /// The <see cref="HttpResult"/>
     ///     class provides the results for an HTTP request.
     /// </summary>
+    [Serializable]
     public class HttpResult
     {
         /// <summary>

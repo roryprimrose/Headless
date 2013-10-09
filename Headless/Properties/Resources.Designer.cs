@@ -61,15 +61,6 @@ namespace Headless.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Status code expected was {0} but {1} was returned..
-        /// </summary>
-        internal static string Browser_InvalidResponseStatus {
-            get {
-                return ResourceManager.GetString("Browser_InvalidResponseStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to No HTML element was found with a matching id, name or text of &apos;{0}&apos;..
         /// </summary>
         internal static string DynamicHtmlPage_DynamicElementNotFound {
@@ -183,6 +174,26 @@ namespace Headless.Properties {
         internal static string HtmlPage_NoHtmlContentProvided {
             get {
                 return ResourceManager.GetString("HtmlPage_NoHtmlContentProvided", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The url returned was {0} which does not match the expected location of {1}. The responses for this request were:
+        ///{2}.
+        /// </summary>
+        internal static string HttpOutcomeException_InvalidLocation {
+            get {
+                return ResourceManager.GetString("HttpOutcomeException_InvalidLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status code expected was {0} but {1} was returned. The responses for this request were:
+        ///{2}.
+        /// </summary>
+        internal static string HttpOutcomeException_InvalidResponseStatus {
+            get {
+                return ResourceManager.GetString("HttpOutcomeException_InvalidResponseStatus", resourceCulture);
             }
         }
         

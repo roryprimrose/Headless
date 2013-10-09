@@ -117,8 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Browser_InvalidResponseStatus" xml:space="preserve">
-    <value>Status code expected was {0} but {1} was returned.</value>
+  <data name="HttpOutcomeException_InvalidResponseStatus" xml:space="preserve">
+    <value>Status code expected was {0} but {1} was returned. The responses for this request were:
+{2}</value>
   </data>
   <data name="HtmlElement_GetHtmlForm_FormNotFound" xml:space="preserve">
     <value>No form element was found for the requested element.</value>
@@ -174,5 +175,9 @@
   </data>
   <data name="HtmlPage_NoHtmlContentProvided" xml:space="preserve">
     <value>HTML content was expected but none was provided.</value>
+  </data>
+  <data name="HttpOutcomeException_InvalidLocation" xml:space="preserve">
+    <value>The url returned was {0} which does not match the expected location of {1}. The responses for this request were:
+{2}</value>
   </data>
 </root>
