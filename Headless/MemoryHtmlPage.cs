@@ -17,7 +17,7 @@
         /// <summary>
         ///     The target location of the memory page.
         /// </summary>
-        private readonly Uri _targetLocation = new Uri("https://github.com/roryprimrose/Headless");
+        private readonly Uri _targetLocation = new Uri("http://localhost");
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MemoryHtmlPage"/> class.
