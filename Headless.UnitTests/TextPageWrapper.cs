@@ -17,8 +17,8 @@
         ///     Initializes a new instance of the <see cref="TextPageWrapper" /> class.
         /// </summary>
         public TextPageWrapper()
+            : this(new Uri("https://google.com"))
         {
-            _targetLocation = new Uri("https://google.com");
         }
 
         /// <summary>

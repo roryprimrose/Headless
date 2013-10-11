@@ -368,6 +368,8 @@
         ///     Gets the axes for the xpath query.
         /// </summary>
         /// <returns>A <see cref="string" /> value.</returns>
+        /// <remarks>See <a href="http://www.w3schools.com/xpath/xpath_axes.asp" target="_blank">http://www.w3schools.com/xpath/xpath_axes.asp</a>
+        /// for futher information about Axes in XPath queries.</remarks>
         protected virtual string QueryAxes()
         {
             return DefaultQueryAxes;

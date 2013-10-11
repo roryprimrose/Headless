@@ -5,7 +5,7 @@
 
     /// <summary>
     ///     The <see cref="AnyHtmlElement" />
-    ///     class is used to match any HTML element.
+    ///     class is used by <see cref="IHtmlElementFinder{T}"/> to match any HTML element.
     /// </summary>
     [SupportedTag("*")]
     public class AnyHtmlElement : HtmlElement
@@ -19,6 +19,12 @@
         /// <param name="node">
         /// The node.
         /// </param>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="page"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="node"/> parameter is <c>null</c>.
+        /// </exception>
         public AnyHtmlElement(IHtmlPage page, IXPathNavigable node) : base(page, node)
         {
         }

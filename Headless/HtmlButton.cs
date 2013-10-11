@@ -26,6 +26,12 @@
         /// <param name="node">
         /// The node.
         /// </param>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="page"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="node"/> parameter is <c>null</c>.
+        /// </exception>
         public HtmlButton(IHtmlPage page, IXPathNavigable node) : base(page, node)
         {
         }

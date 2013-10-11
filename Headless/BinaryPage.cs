@@ -5,8 +5,12 @@
 
     /// <summary>
     ///     The <see cref="BinaryPage" />
-    ///     class provides the Binary response from a <see cref="Browser" /> request.
+    ///     class provides the binary response from a <see cref="Browser" /> request as an in-memory byte array.
     /// </summary>
+    /// <remarks>This class stores the binary response from the server in memory. 
+    /// Care must be taken when using this class to load large amounts of binary data.
+    /// Any data loaded from the server will remain in memory until the page instance is garbage collected.
+    /// </remarks>
     public abstract class BinaryPage : Page
     {
         /// <summary>
@@ -15,7 +19,7 @@
         private byte[] _content;
 
         /// <summary>
-        ///     Gets the content.
+        ///     Gets the content of the page.
         /// </summary>
         /// <returns>A <see cref="byte" /> array.</returns>
         public byte[] GetContent()

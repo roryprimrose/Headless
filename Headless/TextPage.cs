@@ -31,10 +31,10 @@
         }
 
         /// <summary>
-        ///     Gets the content.
+        ///     Gets the content of the page.
         /// </summary>
         /// <value>
-        ///     The content.
+        ///     The content of the page.
         /// </value>
         public string Content
         {

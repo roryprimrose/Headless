@@ -10,12 +10,134 @@
     using System.Reflection;
     using System.Threading.Tasks;
     using Headless.Activation;
-    using Headless.Properties;
 
     /// <summary>
     ///     The <see cref="Browser" />
-    ///     class provides a wrapper around a HTTP browsing session.
+    ///     class provides the implementation of a HTTP browsing session.
     /// </summary>
+    /// <example>
+    /// <para>
+    /// The <see cref="Browser"/> class executes HTTP requests and returns an <see cref="IPage"/> result. It can either return a strongly typed page (page model) or a dynamic page (dynamic model).
+    /// </para>
+    /// <para><b>Page Model</b></para>
+    /// <para>
+    /// The page model design uses strongly typed pages that provide reusability of a page and its model.
+    /// </para>
+    /// <code lang="C#" title="Page model example">
+    /// <![CDATA[
+    /// public class HomeIndexPage : HtmlPage
+    /// {
+    ///     public HtmlLink SignIn
+    ///     {
+    ///         get
+    ///         {
+    ///             return Find<HtmlLink>().ByText("Sign in");
+    ///         }
+    ///     }
+    /// 
+    ///     public override Uri TargetLocation
+    ///     {
+    ///         get
+    ///         {
+    ///             return HomeLocation.Index;
+    ///         }
+    ///     }
+    /// }
+    /// 
+    /// public class SignInPage : HtmlPage
+    /// {
+    ///     public HtmlInput UserName
+    ///     {
+    ///         get
+    ///         {
+    ///             return Find<HtmlInput>().ByName("UserName");
+    ///         }
+    ///     }
+    /// 
+    ///     public HtmlInput Password
+    ///     {
+    ///         get
+    ///         {
+    ///             return Find<HtmlInput>().ByName("Password");
+    ///         }
+    ///     }
+    /// 
+    ///     public HtmlButton Submit
+    ///     {
+    ///         get
+    ///         {
+    ///             return Find<HtmlButton>().ByText("Sign in");
+    ///         }
+    ///     }
+    /// 
+    ///     public override Uri TargetLocation
+    ///     {
+    ///         get
+    ///         {
+    ///             return HomeLocation.SignIn;
+    ///         }
+    ///     }
+    /// }
+    /// 
+    /// public class AccountIndexPage : HtmlPage
+    /// {
+    ///     public override Uri TargetLocation
+    ///     {
+    ///         get
+    ///         {
+    ///             return AccountLocation.Index;
+    ///         }
+    ///     }
+    /// }
+    /// 
+    /// [TestMethod]
+    /// public void SignInRedirectsToAccountIndexPageTest()
+    /// {
+    ///     using (var browser = new Browser())
+    ///     {
+    ///         var homePage = browser.GoTo<HomeIndexPage>();
+    /// 
+    ///         var signInPage = homePage.SignIn.Click<SignInPage>();
+    /// 
+    ///         signInPage.UserName.Value = "account name";
+    ///         signInPage.Password.Value = "account password";
+    /// 
+    ///         // The response from a click using the page model will validate location and 200 status code by default
+    ///         signInPage.Submit.Click<AccountIndexPage>();
+    ///     }
+    /// }
+    /// 
+    /// ]]>
+    /// </code>
+    /// <para><b>Dynamic Model</b></para>
+    /// <para>
+    /// The dynamic model design uses dynamic types to make requests and process results.
+    /// </para>
+    /// <code lang="C#" title="Page model example">
+    /// <![CDATA[
+    /// [TestMethod]
+    /// public void SignInRedirectsToAccountIndexPageTest()
+    /// {
+    ///     using (var browser = new Browser())
+    ///     {
+    ///         var homePage = browser.GoTo<HomeIndexPage>();
+    /// 
+    ///         var signInPage = homePage.SignIn.Click();
+    /// 
+    ///         signInPage.UserName.Value = "account name";
+    ///         signInPage.Password.Value = "account password";
+    /// 
+    ///         // The response from a click using the dynamic model will only validate a 200 status code by default,
+    ///         // it does not validate the ultimate location because there is no known target
+    ///         var accountPage = signInPage.Submit.Click();
+    /// 
+    ///         // Validate final url of the page against an expected value
+    ///         accountPage.IsOn(AccountLocation.Index).Should().BeTrue();
+    ///     }
+    /// }
+    /// ]]>
+    /// </code>
+    /// </example>
     public class Browser : IDisposable, IBrowser
     {
         /// <summary>
@@ -223,6 +345,7 @@
         /// Executes the request internally.
         /// </summary>
         /// <typeparam name="T">
+        /// The type of page to return.
         /// </typeparam>
         /// <param name="request">
         /// The request.
