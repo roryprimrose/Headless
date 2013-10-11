@@ -1,5 +1,6 @@
 ﻿namespace Headless.IntegrationTests
 {
+    using System;
     using System.Net;
     using FluentAssertions;
     using Headless.IntegrationTests.Pages;
@@ -103,6 +104,20 @@
                 page.Result.TraceResults();
 
                 page.StatusCode.Should().Be(HttpStatusCode.OK);
+            }
+        }
+
+        /// <summary>
+        ///     Runs a test for throws exception when final location does not match target location.
+        /// </summary>
+        [TestMethod]
+        public void ThrowsExceptionWhenFinalLocationDoesNotMatchTargetLocationTest()
+        {
+            using (var browser = new Browser())
+            {
+                Action action = () => browser.GoTo<RedirectTemporaryPage>();
+
+                action.ShouldThrow<HttpOutcomeException>();
             }
         }
     }

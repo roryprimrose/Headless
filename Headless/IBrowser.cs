@@ -45,6 +45,18 @@
         }
 
         /// <summary>
+        ///     Gets or sets the location validator.
+        /// </summary>
+        /// <value>
+        ///     The location validator.
+        /// </value>
+        ILocationValidator LocationValidator
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         ///     Gets the last page loaded.
         /// </summary>
         /// <value>
@@ -63,18 +75,6 @@
         ///     The timeout.
         /// </value>
         TimeSpan Timeout
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        ///     Gets or sets the verification parts used to validate page locations.
-        /// </summary>
-        /// <value>
-        ///     The verification parts used to validate page locations.
-        /// </value>
-        UriComponents VerificationParts
         {
             get;
             set;

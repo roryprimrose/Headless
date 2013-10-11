@@ -1,7 +1,6 @@
 ﻿namespace Headless.IntegrationTests.Pages
 {
     using System;
-    using System.Linq;
 
     /// <summary>
     ///     The <see cref="FormIndexPage" />
@@ -10,9 +9,9 @@
     public class FormIndexPage : HtmlPage
     {
         /// <inheritdoc />
-        public override bool IsOn(Uri location, UriComponents compareWith)
+        public override bool IsOn(Uri location)
         {
-            var value = base.IsOn(location, compareWith);
+            var value = base.IsOn(location);
 
             if (value)
             {
@@ -138,17 +137,6 @@
         }
 
         /// <summary>
-        ///     Gets the location.
-        /// </summary>
-        public override Uri TargetLocation
-        {
-            get
-            {
-                return Form.Index;
-            }
-        }
-
-        /// <summary>
         ///     Gets the month.
         /// </summary>
         /// <value>
@@ -243,6 +231,17 @@
             get
             {
                 return Find<HtmlButton>().Singular();
+            }
+        }
+
+        /// <summary>
+        ///     Gets the location.
+        /// </summary>
+        public override Uri TargetLocation
+        {
+            get
+            {
+                return Form.Index;
             }
         }
 

@@ -16,14 +16,17 @@
     ///     class provides the implementation of a HTTP browsing session.
     /// </summary>
     /// <example>
-    /// <para>
-    /// The <see cref="Browser"/> class executes HTTP requests and returns an <see cref="IPage"/> result. It can either return a strongly typed page (page model) or a dynamic page (dynamic model).
-    /// </para>
-    /// <para><b>Page Model</b></para>
-    /// <para>
-    /// The page model design uses strongly typed pages that provide reusability of a page and its model.
-    /// </para>
-    /// <code lang="C#" title="Page model example">
+    ///     <para>
+    ///         The <see cref="Browser" /> class executes HTTP requests and returns an <see cref="IPage" /> result. It can
+    ///         either return a strongly typed page (page model) or a dynamic page (dynamic model).
+    ///     </para>
+    ///     <para>
+    ///         <b>Page Model</b>
+    ///     </para>
+    ///     <para>
+    ///         The page model design uses strongly typed pages that provide reusability of a page and its model.
+    ///     </para>
+    ///     <code lang="C#" title="Page model example">
     /// <![CDATA[
     /// public class HomeIndexPage : HtmlPage
     /// {
@@ -109,11 +112,13 @@
     /// 
     /// ]]>
     /// </code>
-    /// <para><b>Dynamic Model</b></para>
-    /// <para>
-    /// The dynamic model design uses dynamic types to make requests and process results.
-    /// </para>
-    /// <code lang="C#" title="Page model example">
+    ///     <para>
+    ///         <b>Dynamic Model</b>
+    ///     </para>
+    ///     <para>
+    ///         The dynamic model design uses dynamic types to make requests and process results.
+    ///     </para>
+    ///     <code lang="C#" title="Page model example">
     /// <![CDATA[
     /// [TestMethod]
     /// public void SignInRedirectsToAccountIndexPageTest()
@@ -151,11 +156,6 @@
         private readonly HttpClientHandler _handler;
 
         /// <summary>
-        ///     Stores the content type resolver.
-        /// </summary>
-        private IPageContentTypeResolver _contentTypeResolver;
-
-        /// <summary>
         ///     Stores whether this instance has been disposed.
         /// </summary>
         private bool _disposed;
@@ -177,8 +177,8 @@
                 AllowAutoRedirect = false
             };
             _client = new HttpClient(_handler);
-            _contentTypeResolver = new DefaultPageContentTypeResolver();
-            VerificationParts = UriComponents.SchemeAndServer | UriComponents.Path;
+            ContentTypeResolver = new DefaultPageContentTypeResolver();
+            LocationValidator = new RelaxedFolderLocationValidator();
         }
 
         /// <summary>
@@ -484,7 +484,7 @@
             }
 
             // Validate that the final address matches the page
-            if (page.IsOn(currentResourceLocation, VerificationParts) == false)
+            if (page.IsOn(currentResourceLocation) == false)
             {
                 var result = new HttpResult(outcomes);
 
@@ -515,17 +515,10 @@
         }
 
         /// <inheritdoc />
-        public virtual IPageContentTypeResolver ContentTypeResolver
+        public IPageContentTypeResolver ContentTypeResolver
         {
-            get
-            {
-                return _contentTypeResolver;
-            }
-
-            set
-            {
-                _contentTypeResolver = value;
-            }
+            get;
+            set;
         }
 
         /// <summary>
@@ -541,6 +534,13 @@
             {
                 return _handler.CookieContainer;
             }
+        }
+
+        /// <inheritdoc />
+        public ILocationValidator LocationValidator
+        {
+            get;
+            set;
         }
 
         /// <inheritdoc />
@@ -602,13 +602,6 @@
             {
                 _userAgent = value;
             }
-        }
-
-        /// <inheritdoc />
-        public UriComponents VerificationParts
-        {
-            get;
-            set;
         }
     }
 }

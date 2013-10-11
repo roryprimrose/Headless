@@ -77,7 +77,7 @@
     <Compile Include="DynamicHtmlPageTests.cs" />
     <Compile Include="HtmlPageTests.cs" />
     <Compile Include="HtmlPageWrapper.cs" />
-    <Compile Include="PageTests.cs" />
+    <Compile Include="RelaxedFolderLocationValidatorTests.cs" />
     <Compile Include="PostFileStreamEntryTests.cs" />
     <Compile Include="PostFileEntryTests.cs" />
     <Compile Include="HtmlPageStub.cs" />

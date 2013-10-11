@@ -217,7 +217,7 @@ namespace Headless.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The location is absolute where an absolute address is required..
+        ///   Looks up a localized string similar to The location is relative where an absolute location is required..
         /// </summary>
         internal static string Uri_LocationMustBeAbsolute {
             get {

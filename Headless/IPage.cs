@@ -30,13 +30,10 @@
         /// <param name="location">
         /// The current location.
         /// </param>
-        /// <param name="compareWith">
-        /// The compare with.
-        /// </param>
         /// <returns>
         /// <c>true</c> if the specified location is valid for the page; otherwise, <c>false</c>.
         /// </returns>
-        bool IsOn(Uri location, UriComponents compareWith);
+        bool IsOn(Uri location);
 
         /// <summary>
         ///     Gets the owning browser.

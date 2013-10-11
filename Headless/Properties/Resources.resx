@@ -165,7 +165,7 @@
     <value>No HttpOutcome have been provided.</value>
   </data>
   <data name="Uri_LocationMustBeAbsolute" xml:space="preserve">
-    <value>The location is absolute where an absolute address is required.</value>
+    <value>The location is relative where an absolute location is required.</value>
   </data>
   <data name="HtmlElement_MultipleMatchesFoundForAttribute" xml:space="preserve">
     <value>Multiple elements were found for the attribute '{0}'.</value>

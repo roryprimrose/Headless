@@ -18,7 +18,7 @@
         {
             get
             {
-                return Find<HtmlLink>().AllByText("External").EnsureSingle();
+                return Find<HtmlLink>().ByText("External");
             }
         }
 
@@ -41,7 +41,7 @@
         {
             get
             {
-                return Find<HtmlLink>().AllByText("Permanent").EnsureSingle();
+                return Find<HtmlLink>().ByText("Permanent");
             }
         }
 
@@ -55,7 +55,7 @@
         {
             get
             {
-                return Find<HtmlLink>().AllByText("Temporary").EnsureSingle();
+                return Find<HtmlLink>().ByText("Temporary");
             }
         }
     }

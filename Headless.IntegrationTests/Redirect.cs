@@ -18,7 +18,21 @@
         {
             get
             {
-                return new Uri(Config.BaseWebAddress, "redirect/index");
+                return new Uri(Config.BaseWebAddress, "redirect");
+            }
+        }
+
+        /// <summary>
+        ///     Gets the temporary.
+        /// </summary>
+        /// <value>
+        ///     The temporary.
+        /// </value>
+        public static Uri Temporary
+        {
+            get
+            {
+                return new Uri(Config.BaseWebAddress, "redirect/temporary");
             }
         }
     }

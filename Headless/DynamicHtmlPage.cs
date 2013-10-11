@@ -158,13 +158,7 @@
         /// </exception>
         public bool IsOn(Uri location)
         {
-            return IsOn(location, _wrapperPage.Browser.VerificationParts);
-        }
-
-        /// <inheritdoc />
-        public bool IsOn(Uri location, UriComponents compareWith)
-        {
-            return _wrapperPage.IsOn(location, compareWith);
+            return _wrapperPage.IsOn(location);
         }
 
         /// <inheritdoc />

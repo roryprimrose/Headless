@@ -39,6 +39,22 @@
         }
 
         /// <summary>
+        ///     Runs a test for dynamic page does not validation final location against original request.
+        /// </summary>
+        [TestMethod]
+        public void DynamicPageDoesNotValidationFinalLocationAgainstOriginalRequestTest()
+        {
+            using (var browser = new Browser())
+            {
+                var page = browser.GoTo(Redirect.Temporary);
+
+                bool actual = page.IsOn(Home.About);
+
+                actual.Should().BeTrue();
+            }
+        }
+
+        /// <summary>
         ///     Runs a test for dynamic returns binary page for binary media type.
         /// </summary>
         [TestMethod]
@@ -192,7 +208,7 @@
 
                 page.Result.TraceResults();
 
-                page.IsOn(Home.About, browser.VerificationParts).Should().BeTrue();
+                page.IsOn(Home.About).Should().BeTrue();
                 page.StatusCode.Should().Be(HttpStatusCode.OK);
             }
         }

@@ -79,43 +79,9 @@
         /// <exception cref="System.ArgumentException">
         /// The <paramref name="location"/> parameter is a relative location.
         /// </exception>
-        public bool IsOn(Uri location)
+        public virtual bool IsOn(Uri location)
         {
-            return IsOn(location, _browser.VerificationParts);
-        }
-
-        /// <inheritdoc />
-        /// <exception cref="System.ArgumentNullException">
-        ///     The <paramref name="location" /> parameter is <c>null</c>.
-        /// </exception>
-        /// <exception cref="System.ArgumentException">
-        ///     The <paramref name="location" /> parameter is a relative location.
-        /// </exception>
-        public virtual bool IsOn(Uri location, UriComponents compareWith)
-        {
-            if (location == null)
-            {
-                throw new ArgumentNullException("location");
-            }
-
-            if (location.IsAbsoluteUri == false)
-            {
-                throw new ArgumentException(Resources.Uri_LocationMustBeAbsolute, "location");
-            }
-
-            const UriFormat CompareFormat = UriFormat.SafeUnescaped;
-
-            var compareValue = string.Compare(
-                Location.GetComponents(compareWith, CompareFormat), 
-                location.GetComponents(compareWith, CompareFormat), 
-                StringComparison.OrdinalIgnoreCase);
-
-            if (compareValue == 0)
-            {
-                return true;
-            }
-
-            return false;
+            return _browser.LocationValidator.Matches(TargetLocation, location);
         }
 
         /// <inheritdoc />
@@ -125,10 +91,10 @@
         }
 
         /// <summary>
-        /// Sets the content of the string.
+        /// Sets the content of the page from the specified content.
         /// </summary>
         /// <param name="content">
-        /// The content.
+        /// The HTTP response content.
         /// </param>
         protected internal abstract void SetContent(HttpContent content);
 
