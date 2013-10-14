@@ -1,6 +1,7 @@
 ﻿namespace Headless.DemoSite.Controllers
 {
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
@@ -40,6 +41,22 @@
             var fileData = files.Where(x => x != null).ToList();
 
             data.FileCount = fileData.Count;
+            data.PostedFiles = new List<FileMetadata>();
+
+            foreach (var file in fileData)
+            {
+                var metadata = new FileMetadata();
+
+                using (var reader = new StreamReader(file.InputStream))
+                {
+                    metadata.Content = reader.ReadToEnd();
+                }
+
+                metadata.FileName = file.FileName;
+                metadata.ContentType = file.ContentType;
+
+                data.PostedFiles.Add(metadata);
+            }
 
             return View(data);
         }

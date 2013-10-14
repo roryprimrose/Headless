@@ -180,13 +180,17 @@
         [TestMethod]
         public void FilesOnDynamicPageTest()
         {
-            var firstFile = Path.GetTempFileName();
-            var secondFile = Path.GetTempFileName();
+            var firstFileName = Guid.NewGuid().ToString("N") + ".txt";
+            var firstFile = Path.Combine(Path.GetTempPath(), firstFileName);
+            var firstFileContent = Guid.NewGuid().ToString();
+            var secondFileName = Guid.NewGuid().ToString("N") + ".txt";
+            var secondFile = Path.Combine(Path.GetTempPath(), secondFileName);
+            var secondFileContent = Guid.NewGuid().ToString();
 
             try
             {
-                File.WriteAllText(firstFile, Guid.NewGuid().ToString());
-                File.WriteAllText(secondFile, Guid.NewGuid().ToString());
+                File.WriteAllText(firstFile, firstFileContent);
+                File.WriteAllText(secondFile, secondFileContent);
 
                 using (var browser = new Browser())
                 {
@@ -206,6 +210,22 @@
 
                     ((string)postedPage.SomeData.Value).Should().Be(textValue);
                     ((string)postedPage.FileCount.Text).Should().Be("2");
+
+                    var firstFileCells =
+                        ((IHtmlElementFinder<HtmlTableRow>)postedPage.Find<HtmlTableRow>()).ByPredicate(
+                            x => x.Html.Contains(firstFileName)).Cells.ToList();
+
+                    firstFileCells[0].Text.Should().Be(firstFileName);
+                    firstFileCells[1].Text.Should().Be("text/plain");
+                    firstFileCells[2].Text.Should().Be(firstFileContent);
+
+                    var secondFileCells =
+                        ((IHtmlElementFinder<HtmlTableRow>)postedPage.Find<HtmlTableRow>()).ByPredicate(
+                            x => x.Html.Contains(secondFileName)).Cells.ToList();
+
+                    secondFileCells[0].Text.Should().Be(secondFileName);
+                    secondFileCells[1].Text.Should().Be("text/plain");
+                    secondFileCells[2].Text.Should().Be(secondFileContent);
                 }
             }
             finally
@@ -221,13 +241,17 @@
         [TestMethod]
         public void FilesOnStaticPageTest()
         {
-            var firstFile = Path.GetTempFileName();
-            var secondFile = Path.GetTempFileName();
+            var firstFileName = Guid.NewGuid().ToString("N") + ".txt";
+            var firstFile = Path.Combine(Path.GetTempPath(), firstFileName);
+            var firstFileContent = Guid.NewGuid().ToString();
+            var secondFileName = Guid.NewGuid().ToString("N") + ".txt";
+            var secondFile = Path.Combine(Path.GetTempPath(), secondFileName);
+            var secondFileContent = Guid.NewGuid().ToString();
 
             try
             {
-                File.WriteAllText(firstFile, Guid.NewGuid().ToString());
-                File.WriteAllText(secondFile, Guid.NewGuid().ToString());
+                File.WriteAllText(firstFile, firstFileContent);
+                File.WriteAllText(secondFile, secondFileContent);
 
                 using (var browser = new Browser())
                 {
@@ -247,6 +271,24 @@
 
                     postedPage.SomeData.Value.Should().Be(textValue);
                     postedPage.FileCount.Text.Should().Be("2");
+
+                    var firstFileCells =
+                        postedPage.PostedFiles.Find<HtmlTableRow>()
+                            .ByPredicate(x => x.Html.Contains(firstFileName))
+                            .Cells.ToList();
+
+                    firstFileCells[0].Text.Should().Be(firstFileName);
+                    firstFileCells[1].Text.Should().Be("text/plain");
+                    firstFileCells[2].Text.Should().Be(firstFileContent);
+
+                    var secondFileCells =
+                        postedPage.PostedFiles.Find<HtmlTableRow>()
+                            .ByPredicate(x => x.Html.Contains(secondFileName))
+                            .Cells.ToList();
+
+                    secondFileCells[0].Text.Should().Be(secondFileName);
+                    secondFileCells[1].Text.Should().Be("text/plain");
+                    secondFileCells[2].Text.Should().Be(secondFileContent);
                 }
             }
             finally

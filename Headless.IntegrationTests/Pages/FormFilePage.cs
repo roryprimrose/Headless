@@ -1,7 +1,6 @@
 ﻿namespace Headless.IntegrationTests.Pages
 {
     using System;
-    using System.Linq;
 
     /// <summary>
     ///     The <see cref="FormFilePage" />
@@ -66,13 +65,16 @@
         }
 
         /// <summary>
-        ///     Gets the location.
+        ///     Gets the posted files.
         /// </summary>
-        public override Uri TargetLocation
+        /// <value>
+        ///     The posted files.
+        /// </value>
+        public HtmlTable PostedFiles
         {
             get
             {
-                return Form.Files;
+                return Find<HtmlTable>().Singular();
             }
         }
 
@@ -101,6 +103,17 @@
             get
             {
                 return Find<HtmlButton>().Singular();
+            }
+        }
+
+        /// <summary>
+        ///     Gets the location.
+        /// </summary>
+        public override Uri TargetLocation
+        {
+            get
+            {
+                return Form.Files;
             }
         }
     }

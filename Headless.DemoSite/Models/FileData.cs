@@ -1,5 +1,7 @@
 ﻿namespace Headless.DemoSite.Models
 {
+    using System.Collections.Generic;
+
     /// <summary>
     ///     The <see cref="FileData" />
     ///     class is used as the model for testing file uploads with form data.
@@ -13,6 +15,18 @@
         ///     The file count.
         /// </value>
         public int FileCount
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        ///     Gets or sets the posted files.
+        /// </summary>
+        /// <value>
+        ///     The posted files.
+        /// </value>
+        public List<FileMetadata> PostedFiles
         {
             get;
             set;

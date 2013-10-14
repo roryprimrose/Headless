@@ -25,8 +25,8 @@
         /// <param name="name">
         /// The name.
         /// </param>
-        /// <param name="value">
-        /// The value.
+        /// <param name="fileName">
+        /// The file name.
         /// </param>
         /// <param name="data">
         /// The data.
@@ -35,10 +35,11 @@
         /// The <paramref name="data"/> parameter is <c>null</c>.
         /// </exception>
         /// <remarks>
-        /// The <paramref name="value"/> parameter should be the name of the file or the path to a file.
+        /// The <paramref name="fileName"/> parameter should be the name of the file or the path to a file.
         ///     The <paramref name="data"/> stream is disposed when this instance is disposed.
         /// </remarks>
-        public PostFileStreamEntry(string name, string value, Stream data) : base(name, value)
+        public PostFileStreamEntry(string name, string fileName, Stream data)
+            : base(name, fileName)
         {
             if (data == null)
             {

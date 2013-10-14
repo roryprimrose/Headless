@@ -14,13 +14,13 @@
         /// <param name="name">
         /// The name.
         /// </param>
-        /// <param name="value">
-        /// The value.
+        /// <param name="filePath">
+        /// The file path.
         /// </param>
         /// <remarks>
-        /// The <paramref name="value"/> parameter must contain the absolute file path for the file file.
+        /// The <paramref name="filePath"/> parameter must contain the absolute file path for the file file.
         /// </remarks>
-        public PostFileEntry(string name, string value) : base(name, value)
+        public PostFileEntry(string name, string filePath) : base(name, filePath)
         {
         }
 

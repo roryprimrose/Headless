@@ -38,4 +38,21 @@
         </ol>
         <input type="submit" value="Submit" name="Submit" />
     </fieldset>
+    
+    if (Model.PostedFiles != null)
+    {
+        <div>
+            <p>Posted content:</p>
+            <table>
+                @for (int index = 0; index < Model.PostedFiles.Count; index++)
+                {
+                    <tr>
+                        <td>@Model.PostedFiles[index].FileName</td>
+                        <td>@Model.PostedFiles[index].ContentType</td>
+                        <td>@Model.PostedFiles[index].Content</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
 }
