@@ -1,10 +1,12 @@
 ﻿namespace Headless
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.Net;
     using System.Net.Http;
+    using System.Text.RegularExpressions;
     using Headless.Activation;
 
     /// <summary>
@@ -29,13 +31,13 @@
 
         /// <inheritdoc />
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="browser"/> parameter is <c>null</c>.
+        ///     The <paramref name="browser" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="response"/> parameter is <c>null</c>.
+        ///     The <paramref name="response" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="result"/> parameter is <c>null</c>.
+        ///     The <paramref name="result" /> parameter is <c>null</c>.
         /// </exception>
         public void Initialize(IBrowser browser, HttpResponseMessage response, HttpResult result)
         {
@@ -90,8 +92,12 @@
         /// <summary>
         /// Determines the type of the media.
         /// </summary>
-        /// <param name="response">The response.</param>
-        /// <returns>A <see cref="string"/> value.</returns>
+        /// <param name="response">
+        /// The response.
+        /// </param>
+        /// <returns>
+        /// A <see cref="string"/> value.
+        /// </returns>
         private static string DetermineMediaType(HttpResponseMessage response)
         {
             if (response.Content == null)
@@ -133,6 +139,15 @@
             get
             {
                 return ResolvedPage.Location;
+            }
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<Regex> LocationExpressions
+        {
+            get
+            {
+                return ResolvedPage.LocationExpressions;
             }
         }
 

@@ -1,12 +1,14 @@
 ﻿namespace Headless
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Dynamic;
     using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Text.RegularExpressions;
     using System.Xml.XPath;
     using Headless.Activation;
     using Headless.Properties;
@@ -327,6 +329,15 @@
             get
             {
                 return _wrapperPage.Location;
+            }
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<Regex> LocationExpressions
+        {
+            get
+            {
+                return _wrapperPage.LocationExpressions;
             }
         }
 

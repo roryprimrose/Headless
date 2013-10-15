@@ -95,6 +95,8 @@
     <Compile Include="PostEntryTests.cs" />
     <Compile Include="HtmlListTests.cs" />
     <Compile Include="HtmlListItemTests.cs" />
+    <Compile Include="RegexLocationValidatorTests.cs" />
+    <Compile Include="CompositeLocationValidatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Headless\Headless.csproj">

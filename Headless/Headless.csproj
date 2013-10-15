@@ -85,6 +85,9 @@
     <Compile Include="ComponentsLocationValidator.cs">
       <DependentUpon>ILocationValidator.cs</DependentUpon>
     </Compile>
+    <Compile Include="CompositeLocationValidator.cs">
+      <DependentUpon>ILocationValidator.cs</DependentUpon>
+    </Compile>
     <Compile Include="DefaultPageContentTypeResolver.cs">
       <DependentUpon>IPageContentTypeResolver.cs</DependentUpon>
     </Compile>
@@ -171,6 +174,7 @@
     <Compile Include="InvalidHtmlElementMatchException.cs" />
     <Compile Include="IPage.cs" />
     <Compile Include="IPageContentTypeResolver.cs" />
+    <Compile Include="LocationValidationType.cs" />
     <Compile Include="MemoryHtmlPage.cs">
       <DependentUpon>IPage.cs</DependentUpon>
     </Compile>
@@ -190,6 +194,9 @@
     <Compile Include="Activation\SupportedTagAttribute.cs" />
     <Compile Include="Activation\SupportedTagAttributeComparer.cs" />
     <Compile Include="QueryFactory.cs" />
+    <Compile Include="RegexLocationValidator.cs">
+      <DependentUpon>ILocationValidator.cs</DependentUpon>
+    </Compile>
     <Compile Include="RelaxedFolderLocationValidator.cs">
       <DependentUpon>ILocationValidator.cs</DependentUpon>
     </Compile>

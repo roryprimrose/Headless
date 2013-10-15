@@ -26,16 +26,16 @@
 
         /// <inheritdoc />
         /// <exception cref="System.ArgumentNullException">
-        ///     The <paramref name="expectedLocation" /> parameter is <c>null</c>.
-        /// </exception>
-        /// <exception cref="System.ArgumentException">
-        ///     The <paramref name="expectedLocation" /> is a relative location where an absolute location is required.
-        /// </exception>
-        /// <exception cref="System.ArgumentNullException">
         ///     The <paramref name="actualLocation" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentException">
         ///     The <paramref name="actualLocation" /> is a relative location where an absolute location is required.
+        /// </exception>
+        /// <exception cref="System.ArgumentNullException">
+        ///     The <paramref name="expectedLocation" /> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="System.ArgumentException">
+        ///     The <paramref name="expectedLocation" /> is a relative location where an absolute location is required.
         /// </exception>
         /// <remarks>
         ///     This method appends a forward slash character to the path part of each <see cref="Uri" />
@@ -43,14 +43,14 @@
         ///     This fixes validation issues where http://test.com/testing does not match http://test.com/testing/ where the server
         ///     is likely to interpret the two as the same resource.
         /// </remarks>
-        public override bool Matches(Uri expectedLocation, Uri actualLocation)
+        public override bool Matches(Uri actualLocation, Uri expectedLocation)
         {
             CheckLocationValues(expectedLocation, actualLocation);
 
             var convertedExpected = MakeSafeFolderLocation(expectedLocation);
             var convertedActual = MakeSafeFolderLocation(actualLocation);
 
-            return base.Matches(convertedExpected, convertedActual);
+            return base.Matches(convertedActual, convertedExpected);
         }
 
         /// <summary>

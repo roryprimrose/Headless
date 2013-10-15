@@ -1,10 +1,11 @@
 ﻿namespace Headless
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Net;
     using System.Net.Http;
-    using Headless.Properties;
+    using System.Text.RegularExpressions;
 
     /// <summary>
     ///     The <see cref="Page" />
@@ -34,13 +35,13 @@
 
         /// <inheritdoc />
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="browser"/> parameter is <c>null</c>.
+        ///     The <paramref name="browser" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="response"/> parameter is <c>null</c>.
+        ///     The <paramref name="response" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="result"/> parameter is <c>null</c>.
+        ///     The <paramref name="result" /> parameter is <c>null</c>.
         /// </exception>
         public virtual void Initialize(IBrowser browser, HttpResponseMessage response, HttpResult result)
         {
@@ -81,7 +82,25 @@
         /// </exception>
         public virtual bool IsOn(Uri location)
         {
-            return _browser.LocationValidator.Matches(TargetLocation, location);
+            var validator = _browser.LocationValidator;
+
+            if (validator.ValidationType != LocationValidationType.UriOnly)
+            {
+                if (validator.Matches(location, LocationExpressions))
+                {
+                    return true;
+                }
+            }
+
+            if (validator.ValidationType != LocationValidationType.RegexOnly)
+            {
+                if (validator.Matches(location, TargetLocation))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <inheritdoc />
@@ -141,6 +160,15 @@
             get
             {
                 return _result.Outcomes[_result.Outcomes.Count - 1].Location;
+            }
+        }
+
+        /// <inheritdoc />
+        public virtual IEnumerable<Regex> LocationExpressions
+        {
+            get
+            {
+                yield return new Regex(Regex.Escape(TargetLocation.ToString()));
             }
         }
 

@@ -1,8 +1,10 @@
 ﻿namespace Headless
 {
     using System;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
+    using System.Text.RegularExpressions;
 
     /// <summary>
     ///     The <see cref="IPage" />
@@ -53,6 +55,17 @@
         ///     The current location of the page.
         /// </value>
         Uri Location
+        {
+            get;
+        }
+
+        /// <summary>
+        ///     Gets the location expressions for validating the location of the page.
+        /// </summary>
+        /// <value>
+        ///     The location expressions for validating the location of the page.
+        /// </value>
+        IEnumerable<Regex> LocationExpressions
         {
             get;
         }

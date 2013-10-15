@@ -178,7 +178,7 @@
             };
             _client = new HttpClient(_handler);
             ContentTypeResolver = new DefaultPageContentTypeResolver();
-            LocationValidator = new RelaxedFolderLocationValidator();
+            LocationValidator = new CompositeLocationValidator();
         }
 
         /// <summary>

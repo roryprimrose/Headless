@@ -1,6 +1,8 @@
 ﻿namespace Headless
 {
     using System;
+    using System.Collections.Generic;
+    using System.Text.RegularExpressions;
     using Headless.Properties;
 
     /// <summary>
@@ -22,7 +24,7 @@
         /// <exception cref="System.ArgumentException">
         ///     The <paramref name="actualLocation" /> is a relative location where an absolute location is required.
         /// </exception>
-        public virtual bool Matches(Uri expectedLocation, Uri actualLocation)
+        public virtual bool Matches(Uri actualLocation, Uri expectedLocation)
         {
             CheckLocationValues(expectedLocation, actualLocation);
 
@@ -52,6 +54,12 @@
             return false;
         }
 
+        /// <inheritdoc />
+        public virtual bool Matches(Uri actualLocation, IEnumerable<Regex> matchingExpressions)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Checks the location values.
         /// </summary>
@@ -63,16 +71,6 @@
         /// </param>
         protected static void CheckLocationValues(Uri expectedLocation, Uri actualLocation)
         {
-            if (expectedLocation == null)
-            {
-                throw new ArgumentNullException("expectedLocation");
-            }
-
-            if (expectedLocation.IsAbsoluteUri == false)
-            {
-                throw new ArgumentException(Resources.Uri_LocationMustBeAbsolute, "expectedLocation");
-            }
-
             if (actualLocation == null)
             {
                 throw new ArgumentNullException("actualLocation");
@@ -81,6 +79,16 @@
             if (actualLocation.IsAbsoluteUri == false)
             {
                 throw new ArgumentException(Resources.Uri_LocationMustBeAbsolute, "actualLocation");
+            }
+
+            if (expectedLocation == null)
+            {
+                throw new ArgumentNullException("expectedLocation");
+            }
+
+            if (expectedLocation.IsAbsoluteUri == false)
+            {
+                throw new ArgumentException(Resources.Uri_LocationMustBeAbsolute, "expectedLocation");
             }
         }
 
@@ -106,6 +114,15 @@
         {
             get;
             set;
+        }
+
+        /// <inheritdoc />
+        public virtual LocationValidationType ValidationType
+        {
+            get
+            {
+                return LocationValidationType.UriOnly;
+            }
         }
 
         /// <summary>
