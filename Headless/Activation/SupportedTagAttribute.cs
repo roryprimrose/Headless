@@ -5,7 +5,7 @@
 
     /// <summary>
     ///     The <see cref="SupportedTagAttribute" />
-    ///     class identifies the tag name associated with its related <see cref="HtmlElement" /> class.
+    ///     class identifies the tag name (and optional attribute) associated with its related <see cref="HtmlElement" /> class.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public sealed class SupportedTagAttribute : Attribute

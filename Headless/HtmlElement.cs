@@ -5,12 +5,14 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using System.Xml.XPath;
     using Headless.Activation;
+    using Headless.Properties;
 
     /// <summary>
     ///     The <see cref="HtmlElement" />
-    ///     class provides the base wrapper around an HTML element.
+    ///     class provides the base wrapper around a HTML element.
     /// </summary>
     public abstract class HtmlElement : IHtmlElement
     {
@@ -122,6 +124,39 @@
             }
 
             return navigator.Value;
+        }
+
+        /// <summary>
+        /// Determines whether the element contains the specified CSS class.
+        /// </summary>
+        /// <param name="cssClass">
+        /// The CSS class to find.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the element contains the specified CSS class; otherwise, <c>false</c>.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// The <paramref name="cssClass"/> parameter is <c>null</c>, empty or only contains
+        ///     white-space.
+        /// </exception>
+        public bool HasClass(string cssClass)
+        {
+            if (string.IsNullOrWhiteSpace(cssClass))
+            {
+                throw new ArgumentException(Resources.Guard_NoValueProvided, "cssClass");
+            }
+
+            var css = CssClass;
+
+            if (string.IsNullOrWhiteSpace(css))
+            {
+                return false;
+            }
+
+            var matches = Regex.Matches(css, @"\w\S+\w", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+            return matches.OfType<Match>()
+                .Any(x => string.Equals(x.Value, cssClass, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>

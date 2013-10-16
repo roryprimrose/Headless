@@ -9,7 +9,7 @@
 
     /// <summary>
     /// The <see cref="HttpResult"/>
-    ///     class provides the results for an HTTP request.
+    ///     class provides the overall result for a HTTP request.
     /// </summary>
     [Serializable]
     public class HttpResult

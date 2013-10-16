@@ -6,7 +6,7 @@
 
     /// <summary>
     ///     The <see cref="HtmlFormElement" />
-    ///     class provides the base description of an element in an HTML form.
+    ///     class provides the base implementation of an element in a HTML form.
     /// </summary>
     public abstract class HtmlFormElement : HtmlElement
     {

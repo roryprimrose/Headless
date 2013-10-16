@@ -1,13 +1,16 @@
 ﻿namespace Headless
 {
     using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using System.Net;
     using System.Xml.XPath;
     using Headless.Activation;
 
     /// <summary>
     ///     The <see cref="HtmlForm" />
-    ///     class exposes all the form fields for a form tag.
+    ///     class is used to represent a HTML form.
     /// </summary>
     [SupportedTag("form")]
     public class HtmlForm : HtmlElement
@@ -32,7 +35,7 @@
         }
 
         /// <summary>
-        ///     Submits the specified form.
+        ///     Submits the specified form and returns the response from the server.
         /// </summary>
         /// <returns>
         ///     A <see cref="IPage" /> value.
@@ -43,27 +46,27 @@
         }
 
         /// <summary>
-        /// Submits the specified form.
+        /// Submits the specified form and returns the response from the server.
         /// </summary>
         /// <param name="sourceButton">
-        /// The source button.
+        /// The button that invoked the submit action.
         /// </param>
         /// <returns>
         /// A <see cref="IPage"/> value.
         /// </returns>
         public dynamic Submit(HtmlButton sourceButton)
         {
-            var parameters = this.BuildPostParameters(sourceButton);
+            var parameters = BuildPostParameters(sourceButton);
 
             return Page.Browser.PostTo(parameters, PostLocation, HttpStatusCode.OK);
         }
 
         /// <summary>
-        /// Submits the specified form.
+        ///     Submits the specified form and returns the response from the server.
         /// </summary>
         /// <typeparam name="T">The type of page returned.</typeparam>
         /// <returns>
-        /// A <typeparamref name="T"/> value.
+        ///     A <typeparamref name="T" /> value.
         /// </returns>
         public T Submit<T>() where T : IPage, new()
         {
@@ -71,16 +74,20 @@
         }
 
         /// <summary>
-        /// Submits the specified form.
+        /// Submits the specified form and returns the response from the server.
         /// </summary>
-        /// <typeparam name="T">The type of page returned.</typeparam>
-        /// <param name="sourceButton">The source button.</param>
+        /// <typeparam name="T">
+        /// The type of page returned.
+        /// </typeparam>
+        /// <param name="sourceButton">
+        /// The button that invoked the submit action.
+        /// </param>
         /// <returns>
         /// A <typeparamref name="T"/> value.
         /// </returns>
         public T Submit<T>(HtmlButton sourceButton) where T : IPage, new()
         {
-            var parameters = this.BuildPostParameters(sourceButton);
+            var parameters = BuildPostParameters(sourceButton);
 
             return Page.Browser.PostTo<T>(parameters, PostLocation, HttpStatusCode.OK);
         }
@@ -128,10 +135,10 @@
         }
 
         /// <summary>
-        ///     Gets the post location.
+        ///     Gets the location that the form will post to.
         /// </summary>
         /// <value>
-        ///     The post location.
+        ///     The location that the form will post to.
         /// </value>
         public Uri PostLocation
         {
@@ -171,6 +178,33 @@
             {
                 return GetAttribute("target");
             }
+        }
+
+        /// <summary>
+        /// Builds the post parameters.
+        /// </summary>
+        /// <param name="sourceButton">
+        /// The source button.
+        /// </param>
+        /// <returns>
+        /// A <see cref="IEnumerable{T}"/> value.
+        /// </returns>
+        [SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters", 
+            Justification = "The types here are logically correct for the purpose of the method.")]
+        public virtual IEnumerable<PostEntry> BuildPostParameters(HtmlButton sourceButton)
+        {
+            // Find all the form elements that are not buttons
+            var availableElements = Find<HtmlFormElement>().All().Where(x => x is HtmlButton == false).ToList();
+
+            if (sourceButton != null && string.IsNullOrWhiteSpace(sourceButton.Name) == false)
+            {
+                // The source button can be identified to the server so it must be added to the post data
+                availableElements.Add(sourceButton);
+            }
+
+            var postData = availableElements.SelectMany(x => x.BuildPostData());
+
+            return postData;
         }
     }
 }

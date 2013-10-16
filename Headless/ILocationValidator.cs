@@ -11,10 +11,10 @@
     public interface ILocationValidator
     {
         /// <summary>
-        /// Determines whether the actual location matches the expected location.
+        /// Determines whether the location to verify matches the expected location.
         /// </summary>
-        /// <param name="actualLocation">
-        /// The actual location.
+        /// <param name="location">
+        /// The location to verify.
         /// </param>
         /// <param name="expectedLocation">
         /// The expected location.
@@ -22,21 +22,21 @@
         /// <returns>
         /// <c>true</c> if the locations match; otherwise <c>false</c>.
         /// </returns>
-        bool Matches(Uri actualLocation, Uri expectedLocation);
+        bool Matches(Uri location, Uri expectedLocation);
 
         /// <summary>
-        /// Matches the actual location matches any of the specified regular expressions.
+        /// Determines whether the location matches any of the specified regular expressions.
         /// </summary>
-        /// <param name="actualLocation">
-        /// The actual location.
+        /// <param name="location">
+        /// The location to verify.
         /// </param>
         /// <param name="matchingExpressions">
         /// The matching expressions.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the locations match; otherwise <c>false</c>.
+        /// <c>true</c> if the location matches any provided expression; otherwise <c>false</c>.
         /// </returns>
-        bool Matches(Uri actualLocation, IEnumerable<Regex> matchingExpressions);
+        bool Matches(Uri location, IEnumerable<Regex> matchingExpressions);
 
         /// <summary>
         ///     Gets the type of the validation that this validator supports.

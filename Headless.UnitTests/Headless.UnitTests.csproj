@@ -90,13 +90,13 @@
     <Compile Include="BrowserExtensionsTests.cs" />
     <Compile Include="BrowserTests.cs" />
     <Compile Include="DefaultHtmlElementFinderTests.cs" />
-    <Compile Include="HtmlElementExtensionsTests.cs" />
     <Compile Include="HtmlElementFinderTests.cs" />
     <Compile Include="PostEntryTests.cs" />
     <Compile Include="HtmlListTests.cs" />
     <Compile Include="HtmlListItemTests.cs" />
     <Compile Include="RegexLocationValidatorTests.cs" />
     <Compile Include="CompositeLocationValidatorTests.cs" />
+    <Compile Include="HtmlElementTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Headless\Headless.csproj">

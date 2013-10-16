@@ -5,7 +5,7 @@
 
     /// <summary>
     ///     The <see cref="HtmlButton" />
-    ///     class provides access to HTML button elements.
+    ///     class is used to represent a HTML button.
     /// </summary>
     /// <remarks>
     ///     This class does not support the button element or input type=button because they are usually for JavaScript
@@ -37,7 +37,7 @@
         }
 
         /// <summary>
-        ///     Clicks the specified button.
+        ///     Clicks the button and returns the response from the server.
         /// </summary>
         /// <returns>
         ///     A <see cref="IPage" /> value.
@@ -50,7 +50,7 @@
         }
 
         /// <summary>
-        ///     Clicks the specified button.
+        ///     Clicks the button and returns the response from the server.
         /// </summary>
         /// <typeparam name="T">The type of page to return.</typeparam>
         /// <returns>

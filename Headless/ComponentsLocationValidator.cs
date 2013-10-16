@@ -19,14 +19,14 @@
         ///     The <paramref name="expectedLocation" /> is a relative location where an absolute location is required.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        ///     The <paramref name="actualLocation" /> parameter is <c>null</c>.
+        ///     The <paramref name="location" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentException">
-        ///     The <paramref name="actualLocation" /> is a relative location where an absolute location is required.
+        ///     The <paramref name="location" /> is a relative location where an absolute location is required.
         /// </exception>
-        public virtual bool Matches(Uri actualLocation, Uri expectedLocation)
+        public virtual bool Matches(Uri location, Uri expectedLocation)
         {
-            CheckLocationValues(expectedLocation, actualLocation);
+            ValidateParameters(expectedLocation, location);
 
             var compareWith = VerificationParts;
 
@@ -43,7 +43,7 @@
 
             var compareValue = string.Compare(
                 expectedLocation.GetComponents(compareWith, CompareFormat), 
-                actualLocation.GetComponents(compareWith, CompareFormat), 
+                location.GetComponents(compareWith, CompareFormat), 
                 comparisonType);
 
             if (compareValue == 0)
@@ -55,13 +55,14 @@
         }
 
         /// <inheritdoc />
-        public virtual bool Matches(Uri actualLocation, IEnumerable<Regex> matchingExpressions)
+        /// <exception cref="NotImplementedException">This method is not implemented.</exception>
+        public virtual bool Matches(Uri location, IEnumerable<Regex> matchingExpressions)
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Checks the location values.
+        /// Validates that appropriate parameters are supplied.
         /// </summary>
         /// <param name="expectedLocation">
         /// The expected location.
@@ -69,7 +70,19 @@
         /// <param name="actualLocation">
         /// The actual location.
         /// </param>
-        protected static void CheckLocationValues(Uri expectedLocation, Uri actualLocation)
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="expectedLocation"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="System.ArgumentException">
+        /// The <paramref name="expectedLocation"/> is a relative location where an absolute location is required.
+        /// </exception>
+        /// <exception cref="System.ArgumentNullException">
+        /// The <paramref name="actualLocation"/> parameter is <c>null</c>.
+        /// </exception>
+        /// <exception cref="System.ArgumentException">
+        /// The <paramref name="actualLocation"/> is a relative location where an absolute location is required.
+        /// </exception>
+        protected static void ValidateParameters(Uri expectedLocation, Uri actualLocation)
         {
             if (actualLocation == null)
             {

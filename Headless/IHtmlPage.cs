@@ -31,10 +31,10 @@
         IHtmlElementFinder<T> FindAncestor<T>() where T : HtmlElement;
 
         /// <summary>
-        /// Initializes the page using the details of another page.
+        /// Initializes the page using the details of the specified page.
         /// </summary>
         /// <param name="page">
-        /// The page.
+        /// The page to initialize from.
         /// </param>
         /// <remarks>
         /// This is used internally as part of the <see cref="CloneAs{T}"/> method.
@@ -64,10 +64,10 @@
         }
 
         /// <summary>
-        ///     Gets the HTML of the element.
+        ///     Gets the HTML of the page.
         /// </summary>
         /// <value>
-        ///     The HTML of the element.
+        ///     The HTML of the page.
         /// </value>
         string Html
         {

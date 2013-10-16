@@ -12,7 +12,7 @@
 
     /// <summary>
     ///     The <see cref="HtmlList" />
-    ///     class provides access to the HTML list and dropdown elements.
+    ///     class is used to represent a HTML list.
     /// </summary>
     [SupportedTag("select")]
     public class HtmlList : HtmlFormElement

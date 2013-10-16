@@ -37,6 +37,20 @@
         }
 
         /// <summary>
+        ///     Gets the failure.
+        /// </summary>
+        /// <value>
+        ///     The failure.
+        /// </value>
+        public static Uri Failure
+        {
+            get
+            {
+                return new Uri(Config.BaseWebAddress, "home/failure");
+            }
+        }
+
+        /// <summary>
         ///     Gets the index address.
         /// </summary>
         /// <value>

@@ -6,7 +6,7 @@
 
     /// <summary>
     ///     The <see cref="HtmlListItem" />
-    ///     class provides access to the HTML option elements for lists.
+    ///     class is used to represent a HTML option element in a <see cref="HtmlList"/>.
     /// </summary>
     [SupportedTag("option")]
     public class HtmlListItem : HtmlFormElement

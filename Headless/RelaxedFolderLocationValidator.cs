@@ -26,10 +26,10 @@
 
         /// <inheritdoc />
         /// <exception cref="System.ArgumentNullException">
-        ///     The <paramref name="actualLocation" /> parameter is <c>null</c>.
+        ///     The <paramref name="location" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentException">
-        ///     The <paramref name="actualLocation" /> is a relative location where an absolute location is required.
+        ///     The <paramref name="location" /> is a relative location where an absolute location is required.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
         ///     The <paramref name="expectedLocation" /> parameter is <c>null</c>.
@@ -43,12 +43,12 @@
         ///     This fixes validation issues where http://test.com/testing does not match http://test.com/testing/ where the server
         ///     is likely to interpret the two as the same resource.
         /// </remarks>
-        public override bool Matches(Uri actualLocation, Uri expectedLocation)
+        public override bool Matches(Uri location, Uri expectedLocation)
         {
-            CheckLocationValues(expectedLocation, actualLocation);
+            ValidateParameters(expectedLocation, location);
 
             var convertedExpected = MakeSafeFolderLocation(expectedLocation);
-            var convertedActual = MakeSafeFolderLocation(actualLocation);
+            var convertedActual = MakeSafeFolderLocation(location);
 
             return base.Matches(convertedActual, convertedExpected);
         }

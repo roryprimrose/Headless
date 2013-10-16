@@ -6,7 +6,7 @@
 
     /// <summary>
     ///     The <see cref="HtmlFile" />
-    ///     class is used to provide access to HTML file input elements.
+    ///     class is used to represent a HTML file input.
     /// </summary>
     [SupportedTag("input", "type", "file")]
     public class HtmlFile : HtmlFormElement

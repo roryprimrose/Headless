@@ -9,7 +9,7 @@
 
     /// <summary>
     ///     The <see cref="HtmlRadioButton" />
-    ///     class is used to represent an HTML radio button set.
+    ///     class is used to represent a HTML radio button set.
     /// </summary>
     [SupportedTag("input", "type", "radio")]
     public class HtmlRadioButton : HtmlFormElement

@@ -71,10 +71,10 @@
         }
 
         /// <summary>
-        ///     Gets the HTTP result.
+        ///     Gets the HTTP result for the page.
         /// </summary>
         /// <value>
-        ///     The HTTP result.
+        ///     The HTTP result for the page.
         /// </value>
         HttpResult Result
         {
@@ -82,10 +82,10 @@
         }
 
         /// <summary>
-        ///     Gets the status code.
+        ///     Gets the final status code for the page.
         /// </summary>
         /// <value>
-        ///     The status code.
+        ///     The final status code for the page.
         /// </value>
         HttpStatusCode StatusCode
         {
@@ -109,6 +109,11 @@
         /// <value>
         ///     The location the browser should navigate to in order to load this page.
         /// </value>
+        /// <remarks>
+        ///     The <see cref="IBrowser" /> may also use this location for validation that the final response matches this
+        ///     location. The actual implementation of this logic is determined by the
+        ///     <see cref="IBrowser.LocationValidator" />.
+        /// </remarks>
         Uri TargetLocation
         {
             get;

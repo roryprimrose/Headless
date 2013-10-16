@@ -6,7 +6,7 @@
 
     /// <summary>
     ///     The <see cref="HtmlLink" />
-    ///     class provides access to HTML anchor elements.
+    ///     class is used to represent a HTML anchor.
     /// </summary>
     [SupportedTag("a")]
     public class HtmlLink : HtmlElement

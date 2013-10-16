@@ -1,71 +1,16 @@
 ﻿namespace Headless.UnitTests
 {
     using System;
-    using System.Collections.Generic;
     using FluentAssertions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
-    ///     The <see cref="HtmlElementExtensionsTests" />
-    ///     class tests the <see cref="HtmlElementExtensions" /> class.
+    ///     The <see cref="HtmlElementTests" />
+    ///     class tests the <see cref="HtmlElement" /> class.
     /// </summary>
     [TestClass]
-    public class HtmlElementExtensionsTests
+    public class HtmlElementTests
     {
-        /// <summary>
-        ///     Runs a test for ensure single returns single instance in set.
-        /// </summary>
-        [TestMethod]
-        public void EnsureSingleReturnsSingleInstanceInSetTest()
-        {
-            const string Html = "<form name='Test' />";
-
-            var page = new HtmlPageStub(Html);
-            var element = new HtmlForm(page, ((IHtmlPage)page).Node);
-            var elements = new List<HtmlElement>
-            {
-                element
-            };
-
-            var actual = elements.EnsureSingle();
-
-            actual.Should().Be(element);
-        }
-
-        /// <summary>
-        ///     Runs a test for ensure single throws exception when multiple elements found.
-        /// </summary>
-        [TestMethod]
-        public void EnsureSingleThrowsExceptionWhenMultipleElementsFoundTest()
-        {
-            const string Html = "<form name='Test' />";
-
-            var page = new HtmlPageStub(Html);
-            var element = new HtmlForm(page, ((IHtmlPage)page).Node);
-            var elements = new List<HtmlElement>
-            {
-                element, 
-                element
-            };
-
-            Action action = () => elements.EnsureSingle();
-
-            action.ShouldThrow<InvalidHtmlElementMatchException>();
-        }
-
-        /// <summary>
-        ///     Runs a test for ensure single throws exception when no elements found.
-        /// </summary>
-        [TestMethod]
-        public void EnsureSingleThrowsExceptionWhenNoElementsFoundTest()
-        {
-            var elements = new List<HtmlElement>();
-
-            Action action = () => elements.EnsureSingle();
-
-            action.ShouldThrow<InvalidHtmlElementMatchException>();
-        }
-
         /// <summary>
         ///     Runs a test for has class returns false when element lacks class attribute.
         /// </summary>
@@ -76,7 +21,7 @@
 
             var page = new HtmlPageStub(Html);
 
-            var target = page.Find<AnyHtmlElement>().All().EnsureSingle();
+            var target = page.Find<AnyHtmlElement>().Singular();
 
             target.HasClass("test").Should().BeFalse();
         }
@@ -91,7 +36,7 @@
 
             var page = new HtmlPageStub(Html);
 
-            var target = page.Find<AnyHtmlElement>().All().EnsureSingle();
+            var target = page.Find<AnyHtmlElement>().Singular();
 
             target.HasClass("test").Should().BeFalse();
         }
@@ -106,7 +51,7 @@
 
             var page = new HtmlPageStub(Html);
 
-            var target = page.Find<AnyHtmlElement>().All().EnsureSingle();
+            var target = page.Find<AnyHtmlElement>().Singular();
 
             target.HasClass("test").Should().BeFalse();
         }
@@ -121,7 +66,7 @@
 
             var page = new HtmlPageStub(Html);
 
-            var target = page.Find<AnyHtmlElement>().All().EnsureSingle();
+            var target = page.Find<AnyHtmlElement>().Singular();
 
             target.HasClass("test").Should().BeTrue();
         }
@@ -136,7 +81,7 @@
 
             var page = new HtmlPageStub(Html);
 
-            var target = page.Find<AnyHtmlElement>().All().EnsureSingle();
+            var target = page.Find<AnyHtmlElement>().Singular();
 
             target.HasClass("test").Should().BeTrue();
         }
@@ -151,7 +96,7 @@
 
             var page = new HtmlPageStub(Html);
 
-            var target = page.Find<AnyHtmlElement>().All().EnsureSingle();
+            var target = page.Find<AnyHtmlElement>().Singular();
 
             target.HasClass("test").Should().BeTrue();
         }
@@ -166,7 +111,7 @@
 
             var page = new HtmlPageStub(Html);
 
-            var target = page.Find<AnyHtmlElement>().All().EnsureSingle();
+            var target = page.Find<AnyHtmlElement>().Singular();
 
             target.HasClass("test").Should().BeTrue();
         }
@@ -181,7 +126,7 @@
 
             var page = new HtmlPageStub(Html);
 
-            var target = page.Find<AnyHtmlElement>().All().EnsureSingle();
+            var target = page.Find<AnyHtmlElement>().Singular();
 
             Action action = () => target.HasClass(string.Empty);
 
@@ -198,7 +143,7 @@
 
             var page = new HtmlPageStub(Html);
 
-            var target = page.Find<AnyHtmlElement>().All().EnsureSingle();
+            var target = page.Find<AnyHtmlElement>().Singular();
 
             Action action = () => target.HasClass(null);
 
@@ -215,24 +160,11 @@
 
             var page = new HtmlPageStub(Html);
 
-            var target = page.Find<AnyHtmlElement>().All().EnsureSingle();
+            var target = page.Find<AnyHtmlElement>().Singular();
 
             Action action = () => target.HasClass("  ");
 
             action.ShouldThrow<ArgumentException>();
-        }
-
-        /// <summary>
-        ///     Runs a test for has class throws exception when element is null.
-        /// </summary>
-        [TestMethod]
-        public void HasClassThrowsExceptionWhenElementIsNullTest()
-        {
-            var target = (HtmlElement)null;
-
-            Action action = () => target.HasClass("test");
-
-            action.ShouldThrow<ArgumentNullException>();
         }
     }
 }

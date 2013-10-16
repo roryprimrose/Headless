@@ -125,7 +125,7 @@
     /// {
     ///     using (var browser = new Browser())
     ///     {
-    ///         var homePage = browser.GoTo<HomeIndexPage>();
+    ///         var homePage = browser.GoTo(HomeLocation.Index);
     /// 
     ///         var signInPage = homePage.SignIn.Click();
     /// 
@@ -527,6 +527,11 @@
         /// <value>
         ///     The cookies for the browser session.
         /// </value>
+        /// <remarks>
+        ///     The cookies are specific to a <see cref="Browser" /> instance and do not live beyond that instance.
+        ///     This means that two <see cref="Browser" /> instances running concurrently will have their own cookie "session".
+        ///     Any cookies stored will not be available once the <see cref="Browser" /> instance is out of scope.
+        /// </remarks>
         public CookieContainer Cookies
         {
             [DebuggerStepThrough]
@@ -544,6 +549,33 @@
         }
 
         /// <inheritdoc />
+        /// <remarks>
+        ///     The page created from a server response will be exposed by <see cref="Page" /> before any HTTP status code or
+        ///     <see cref="LocationValidator" /> actions are taken.
+        ///     This allows the caller to catch a <see cref="HttpOutcomeException" /> from a request and inspect the state of the
+        ///     loaded page.
+        /// </remarks>
+        /// <example>
+        ///     <code lang="C#" title="Page failure example">
+        /// <![CDATA[
+        /// [TestMethod]
+        /// public void BrowserExposesLoadedPageWhenStatusCodeValidationFailsTest()
+        /// {
+        ///     using (var browser = new Browser())
+        ///     {
+        ///         try
+        ///         {
+        ///             browser.GoTo(Home.Failure);
+        ///         }
+        ///         catch (HttpOutcomeException ex)
+        ///         {
+        ///             browser.Page.Result.TraceResults();
+        ///         }
+        ///     }
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
         public IPage Page
         {
             get;
@@ -591,6 +623,7 @@
         /// <value>
         ///     The user agent.
         /// </value>
+        /// <remarks><see cref="Browser" /> by default will use a user agent in the format "Headless (Major.Minor.Build)".</remarks>
         public string UserAgent
         {
             get

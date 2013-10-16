@@ -184,7 +184,7 @@
                 Resources.HtmlElement_MultipleMatchesFoundForAttribute, 
                 attributeName);
 
-            return matches.EnsureSingle(failureMessage);
+            return EnsureSingle(matches, failureMessage);
         }
 
         /// <inheritdoc />
@@ -215,7 +215,7 @@
                 Resources.HtmlElement_MultipleMatchesFoundForId, 
                 id);
 
-            return matches.EnsureSingle(failureMessage);
+            return EnsureSingle(matches, failureMessage);
         }
 
         /// <inheritdoc />
@@ -246,7 +246,7 @@
                 Resources.HtmlElement_MultipleMatchesFoundForName, 
                 name);
 
-            return matches.EnsureSingle(failureMessage);
+            return EnsureSingle(matches, failureMessage);
         }
 
         /// <inheritdoc />
@@ -273,7 +273,7 @@
 
             var matches = AllByPredicate(predicate);
 
-            return matches.EnsureSingle();
+            return EnsureSingle(matches);
         }
 
         /// <inheritdoc />
@@ -290,7 +290,7 @@
         {
             var matches = AllByTagName(tagName);
 
-            return matches.EnsureSingle();
+            return EnsureSingle(matches);
         }
 
         /// <inheritdoc />
@@ -321,7 +321,7 @@
                 Resources.HtmlElement_MultipleMatchesFoundForText, 
                 text);
 
-            return matches.EnsureSingle(failureMessage);
+            return EnsureSingle(matches, failureMessage);
         }
 
         /// <inheritdoc />
@@ -352,7 +352,7 @@
                 Resources.HtmlElement_MultipleMatchesFoundForValue, 
                 value);
 
-            return matches.EnsureSingle(failureMessage);
+            return EnsureSingle(matches, failureMessage);
         }
 
         /// <inheritdoc />
@@ -361,18 +361,76 @@
         /// <inheritdoc />
         public T Singular()
         {
-            return All().EnsureSingle();
+            return EnsureSingle(All());
         }
 
         /// <summary>
         ///     Gets the axes for the xpath query.
         /// </summary>
         /// <returns>A <see cref="string" /> value.</returns>
-        /// <remarks>See <a href="http://www.w3schools.com/xpath/xpath_axes.asp" target="_blank">http://www.w3schools.com/xpath/xpath_axes.asp</a>
-        /// for futher information about Axes in XPath queries.</remarks>
+        /// <remarks>
+        ///     See
+        ///     <a href="http://www.w3schools.com/xpath/xpath_axes.asp" target="_blank">http://www.w3schools.com/xpath/xpath_axes.asp</a>
+        ///     for further information about Axes in XPath queries.
+        /// </remarks>
         protected virtual string QueryAxes()
         {
             return DefaultQueryAxes;
+        }
+
+        /// <summary>
+        /// Ensures that only a single element is found.
+        /// </summary>
+        /// <param name="elements">
+        /// The elements to validate.
+        /// </param>
+        /// <returns>
+        /// A <typeparamref name="T"/> value.
+        /// </returns>
+        /// <exception cref="InvalidHtmlElementMatchException">
+        /// No elements were found.
+        /// </exception>
+        /// <exception cref="InvalidHtmlElementMatchException">
+        /// No elements were found.
+        /// </exception>
+        private static T EnsureSingle(IEnumerable<T> elements)
+        {
+            return EnsureSingle(elements, Resources.HtmlElement_MultipleMatchesFound);
+        }
+
+        /// <summary>
+        /// Ensures that on a single element is found.
+        /// </summary>
+        /// <param name="elements">
+        /// The elements to validate.
+        /// </param>
+        /// <param name="multipleElementsFailureMessage">
+        /// The multiple elements failure message.
+        /// </param>
+        /// <returns>
+        /// The single matching <typeref name="T"/> element.
+        /// </returns>
+        /// <exception cref="InvalidHtmlElementMatchException">
+        /// No elements were found.
+        /// </exception>
+        /// <exception cref="InvalidHtmlElementMatchException">
+        /// No elements were found.
+        /// </exception>
+        private static T EnsureSingle(IEnumerable<T> elements, string multipleElementsFailureMessage)
+        {
+            var filteredElements = elements.Take(2).ToList();
+
+            if (filteredElements.Count == 0)
+            {
+                throw new InvalidHtmlElementMatchException(Resources.HtmlElement_NoMatchFound);
+            }
+
+            if (filteredElements.Count > 1)
+            {
+                throw new InvalidHtmlElementMatchException(multipleElementsFailureMessage);
+            }
+
+            return filteredElements[0];
         }
     }
 }

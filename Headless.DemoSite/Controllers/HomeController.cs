@@ -34,5 +34,11 @@ namespace Headless.DemoSite.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public ActionResult Failure()
+        {
+            throw new InvalidOperationException();
+        }
     }
 }

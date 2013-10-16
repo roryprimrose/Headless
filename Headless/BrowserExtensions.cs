@@ -18,13 +18,13 @@
     public static class BrowserExtensions
     {
         /// <summary>
-        /// Browses to the specified location.
+        /// Uses the browser to execute a GET request to the specified location.
         /// </summary>
         /// <param name="browser">
         /// The browser.
         /// </param>
         /// <param name="location">
-        /// The specific location to request rather than that identified by the page.
+        /// The location to request.
         /// </param>
         /// <returns>
         /// An <see cref="IPage"/> value.
@@ -41,16 +41,16 @@
         }
 
         /// <summary>
-        /// Browses to the specified location.
+        /// Uses the browser to execute a GET request to the specified location and validates against the specified HTTP status code.
         /// </summary>
         /// <param name="browser">
         /// The browser.
         /// </param>
         /// <param name="location">
-        /// The specific location to request rather than that identified by the page.
+        /// The location to request.
         /// </param>
         /// <param name="expectedStatusCode">
-        /// The expected status code.
+        /// The expected HTTP status code.
         /// </param>
         /// <returns>
         /// An <see cref="IPage"/> value.
@@ -71,7 +71,7 @@
         }
 
         /// <summary>
-        /// Browses to the location defined by the specified page type.
+        /// Uses the browser to execute a GET request to the location specified by <see cref="IPage.TargetLocation">T.TargetLocation</see>.
         /// </summary>
         /// <param name="browser">
         /// The browser.
@@ -93,7 +93,7 @@
         }
 
         /// <summary>
-        /// Browses to the location defined by the specified page type and validates the status code.
+        /// Uses the browser to execute a GET request to the location specified by <see cref="IPage.TargetLocation">T.TargetLocation</see> and validates against the specified HTTP status code.
         /// </summary>
         /// <typeparam name="T">
         /// The type of page to return.
@@ -102,7 +102,7 @@
         /// The browser.
         /// </param>
         /// <param name="expectedStatusCode">
-        /// The expected status code.
+        /// The expected HTTP status code.
         /// </param>
         /// <returns>
         /// A <typeparamref name="T"/> value.
@@ -118,7 +118,7 @@
         }
 
         /// <summary>
-        /// Browses to the specified location.
+        /// Uses the browser to execute a GET request to the specified location.
         /// </summary>
         /// <typeparam name="T">
         /// The type of page to return.
@@ -127,10 +127,10 @@
         /// The browser.
         /// </param>
         /// <param name="location">
-        /// The specific location to request rather than that identified by the page.
+        /// The location to request.
         /// </param>
         /// <returns>
-        /// A <see cref="Page"/> value.
+        /// A <typeparamref name="T"/> value.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
         /// The <paramref name="browser"/> parameter is <c>null</c>.
@@ -144,7 +144,7 @@
         }
 
         /// <summary>
-        /// Browses to the specified location and validates the status code.
+        /// Uses the browser to execute a GET request to the specified location and validates against the specified HTTP status code.
         /// </summary>
         /// <typeparam name="T">
         /// The type of page to return.
@@ -153,10 +153,10 @@
         /// The browser.
         /// </param>
         /// <param name="location">
-        /// The location.
+        /// The location to request.
         /// </param>
         /// <param name="expectedStatusCode">
-        /// The expected status code.
+        /// The expected HTTP status code.
         /// </param>
         /// <returns>
         /// A <typeparamref name="T"/> value.
@@ -176,7 +176,7 @@
         }
 
         /// <summary>
-        /// Browses to the specified location and validates the status code.
+        /// Uses the browser to execute a GET request to the specified location, validates against the specified HTTP status code and creates a page using the specified factory.
         /// </summary>
         /// <typeparam name="T">
         /// The type of page to return.
@@ -185,16 +185,16 @@
         /// The browser.
         /// </param>
         /// <param name="location">
-        /// The location.
+        /// The location to request.
         /// </param>
         /// <param name="expectedStatusCode">
-        /// The expected status code.
+        /// The expected HTTP status code.
         /// </param>
         /// <param name="pageFactory">
         /// The page factory.
         /// </param>
         /// <returns>
-        /// A <see cref="IPage"/> value.
+        /// A <typeparamref name="T"/> value.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
         /// The <paramref name="browser"/> parameter is <c>null</c>.
@@ -233,7 +233,7 @@
         }
 
         /// <summary>
-        /// Posts the parameters to the specified location.
+        /// Uses the browser to execute a POST request with the specified parameters to the specified location.
         /// </summary>
         /// <param name="browser">
         /// The browser.
@@ -242,7 +242,7 @@
         /// The POST parameters.
         /// </param>
         /// <param name="location">
-        /// The location.
+        /// The location to request.
         /// </param>
         /// <returns>
         /// An <see cref="IPage"/> value.
@@ -262,7 +262,7 @@
         }
 
         /// <summary>
-        /// Posts the parameters to the specified location.
+        /// Uses the browser to execute a POST request with the specified parameters to the specified location and validates against the specified HTTP status code.
         /// </summary>
         /// <param name="browser">
         /// The browser.
@@ -271,10 +271,10 @@
         /// The POST parameters.
         /// </param>
         /// <param name="location">
-        /// The location.
+        /// The location to request.
         /// </param>
         /// <param name="expectedStatusCode">
-        /// The expected status code.
+        /// The expected HTTP status code.
         /// </param>
         /// <returns>
         /// An <see cref="IPage"/> value.
@@ -302,7 +302,7 @@
         }
 
         /// <summary>
-        /// Posts the parameters to the location defined by the specified page type.
+        /// Uses the browser to execute a POST request with the specified parameters to the location specified by <see cref="IPage.TargetLocation">T.TargetLocation</see>.
         /// </summary>
         /// <typeparam name="T">
         /// The type of page to return.
@@ -330,7 +330,7 @@
         }
 
         /// <summary>
-        /// Posts the parameters to the specified location.
+        /// Uses the browser to execute a POST request with the specified parameters to the specified location.
         /// </summary>
         /// <typeparam name="T">
         /// The type of page to return.
@@ -342,7 +342,7 @@
         /// The POST parameters.
         /// </param>
         /// <param name="location">
-        /// The location.
+        /// The location to request.
         /// </param>
         /// <returns>
         /// A <typeparamref name="T"/> value.
@@ -363,7 +363,7 @@
         }
 
         /// <summary>
-        /// Posts the parameters to the specified location and validates the status code.
+        /// Uses the browser to execute a POST request with the specified parameters to the location specified by <see cref="IPage.TargetLocation">T.TargetLocation</see> and validates against the specified HTTP status code.
         /// </summary>
         /// <typeparam name="T">
         /// The type of page to return.
@@ -375,7 +375,7 @@
         /// The POST parameters.
         /// </param>
         /// <param name="expectedStatusCode">
-        /// The expected status code.
+        /// The expected HTTP status code.
         /// </param>
         /// <returns>
         /// A <typeparamref name="T"/> value.
@@ -397,7 +397,7 @@
         }
 
         /// <summary>
-        /// Posts the parameters to the specified location and validates the status code.
+        /// Uses the browser to execute a POST request with the specified parameters to the specified location and validates against the specified HTTP status code.
         /// </summary>
         /// <typeparam name="T">
         /// The type of page to return.
@@ -412,7 +412,7 @@
         /// The location to post to.
         /// </param>
         /// <param name="expectedStatusCode">
-        /// The expected status code.
+        /// The expected HTTP status code.
         /// </param>
         /// <returns>
         /// A <typeparamref name="T"/> value.
@@ -438,7 +438,7 @@
         }
 
         /// <summary>
-        /// Posts the parameters to the specified location and validates the status code.
+        /// Uses the browser to execute a POST request with the specified parameters to the specified location, validates against the specified HTTP status code and creates a page using the specified factory.
         /// </summary>
         /// <typeparam name="T">
         /// The type of page to return.
@@ -453,7 +453,7 @@
         /// The location to post to.
         /// </param>
         /// <param name="expectedStatusCode">
-        /// The expected status code.
+        /// The expected HTTP status code.
         /// </param>
         /// <param name="pageFactory">
         /// The page factory.
@@ -534,7 +534,7 @@
         /// </returns>
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", 
             Justification = "All content types and streams are disposed when the HTTP Request is disposed.")]
-        private static MultipartFormDataContent BuildMultipartContent(List<PostEntry> parameters)
+        private static MultipartFormDataContent BuildMultipartContent(IReadOnlyList<PostEntry> parameters)
         {
             var multiPart = new MultipartFormDataContent();
 
@@ -603,7 +603,7 @@
         /// <returns>
         /// A <see cref="HttpContent"/> value.
         /// </returns>
-        private static HttpContent BuildPostContent(List<PostEntry> parameters)
+        private static HttpContent BuildPostContent(IReadOnlyList<PostEntry> parameters)
         {
             if (parameters.OfType<PostFileEntry>().Any())
             {

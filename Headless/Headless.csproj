@@ -117,9 +117,6 @@
     <Compile Include="HtmlFormElement.cs">
       <DependentUpon>IHtmlElement.cs</DependentUpon>
     </Compile>
-    <Compile Include="HtmlFormExtensions.cs">
-      <DependentUpon>Extensions.cs</DependentUpon>
-    </Compile>
     <Compile Include="HtmlLink.cs">
       <DependentUpon>IHtmlElement.cs</DependentUpon>
     </Compile>
@@ -137,9 +134,6 @@
     </Compile>
     <Compile Include="HttpOutcomeException.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="HtmlElementExtensions.cs">
-      <DependentUpon>Extensions.cs</DependentUpon>
-    </Compile>
     <Compile Include="HtmlInput.cs">
       <DependentUpon>IHtmlElement.cs</DependentUpon>
     </Compile>

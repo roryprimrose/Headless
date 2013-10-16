@@ -6,7 +6,7 @@
 
     /// <summary>
     ///     The <see cref="HtmlCheckBox" />
-    ///     class is used to represent an HTML checkbox.
+    ///     class is used to represent a HTML checkbox.
     /// </summary>
     [SupportedTag("input", "type", "checkbox")]
     public class HtmlCheckBox : HtmlFormElement

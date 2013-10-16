@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using Headless.Activation;
 
     /// <summary>
     /// The <see cref="IHtmlElementFinder{T}"/>
@@ -151,7 +152,7 @@
         IEnumerable<T> AllByValue(string value, bool ignoreCase);
 
         /// <summary>
-        ///     Builds the tag name xpath selector.
+        ///     Builds the XPath query to match HTML elements defined by <see cref="SupportedTagAttribute"/> on <typeparamref name="T"/>.
         /// </summary>
         /// <returns>
         ///     A <see cref="string" /> value.
@@ -312,7 +313,7 @@
         T ByValue(string value, bool ignoreCase);
 
         /// <summary>
-        /// Builds the element results.
+        /// Executes the specified XPath query and returns the <see cref="IHtmlElement"/> results.
         /// </summary>
         /// <param name="query">
         /// The query.

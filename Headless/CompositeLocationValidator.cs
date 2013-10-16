@@ -13,21 +13,21 @@
     public class CompositeLocationValidator : RelaxedFolderLocationValidator
     {
         /// <inheritdoc />
-        /// <exception cref="ArgumentNullException">The <paramref name="actualLocation" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">The <paramref name="location" /> is <c>null</c>.</exception>
         /// <exception cref="System.ArgumentException">
-        ///     The <paramref name="actualLocation" /> is a relative location where an absolute location is required.
+        ///     The <paramref name="location" /> is a relative location where an absolute location is required.
         /// </exception>
         /// <exception cref="ArgumentNullException">The <paramref name="matchingExpressions" /> is <c>null</c>.</exception>
-        public override bool Matches(Uri actualLocation, IEnumerable<Regex> matchingExpressions)
+        public override bool Matches(Uri location, IEnumerable<Regex> matchingExpressions)
         {
-            if (actualLocation == null)
+            if (location == null)
             {
-                throw new ArgumentNullException("actualLocation");
+                throw new ArgumentNullException("location");
             }
 
-            if (actualLocation.IsAbsoluteUri == false)
+            if (location.IsAbsoluteUri == false)
             {
-                throw new ArgumentException(Resources.Uri_LocationMustBeAbsolute, "actualLocation");
+                throw new ArgumentException(Resources.Uri_LocationMustBeAbsolute, "location");
             }
 
             if (matchingExpressions == null)
@@ -35,7 +35,7 @@
                 throw new ArgumentNullException("matchingExpressions");
             }
 
-            return matchingExpressions.Any(x => x.IsMatch(actualLocation.ToString()));
+            return matchingExpressions.Any(x => x.IsMatch(location.ToString()));
         }
 
         /// <inheritdoc />

@@ -6,9 +6,9 @@
 
     /// <summary>
     ///     The <see cref="HtmlInput" />
-    ///     is used to represent text related input elements and textarea elements.
-    ///     It is also the default fallback type for input elements.
+    ///     class is used to represent a HTML input element.
     /// </summary>
+    /// <remarks>This class supports HTML5 input fields and textarea elements.</remarks>
     [SupportedTag("input", "type", "color")]
     [SupportedTag("input", "type", "date")]
     [SupportedTag("input", "type", "datetime")]

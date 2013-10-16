@@ -57,10 +57,10 @@
         }
 
         /// <summary>
-        ///     Gets the last page loaded.
+        ///     Gets the last page loaded by the browser.
         /// </summary>
         /// <value>
-        ///     The last page loaded.
+        ///     The last page loaded by the browser.
         /// </value>
         /// <remarks>Returns <c>null</c> before the first page has been loaded.</remarks>
         IPage Page
