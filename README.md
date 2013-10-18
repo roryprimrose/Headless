@@ -20,7 +20,7 @@ Performance
 -
 The performance of Headless is fast. It is much faster than [WatiN](http://watin.org/) which is much faster than Microsoft's CUIT. 
 
-Anecdotally, we found that WatiN was up to 10 times faster than CUIT. We have found similar performance gains with Headless over WatiN. In one test suite of 50 tests, WatiN executed the suite in 7:40 minutes while Headless clocked in at 49 seconds. In another test suite of 23 tests, WatiN executed the suite in 4:10 minutes while Headless completed in 19 seconds. 
+Anecdotally, we found that WatiN was up to 10 times faster than CUIT. We have found similar performance gains with Headless over WatiN. In one test suite of 50 tests, WatiN executed the suite in 7:40 minutes while Headless clocked in at 49 seconds. In another test suite of 23 tests, WatiN executed the suite in 4:10 minutes while Headless completed in 19 seconds. An entire enterprise solution has now been converted from WatiN to Headless with the execution time dropping from 1:04hr down to just over 7 minutes.
 
 To be clear, this does not mean that Headless is better than WatiN, just different and faster.
 
