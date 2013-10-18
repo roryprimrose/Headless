@@ -30,10 +30,14 @@
         /// <summary>
         /// The post action for the file data.
         /// </summary>
-        /// <param name="data">The data.</param>
-        /// <param name="files">The files.</param>
+        /// <param name="data">
+        /// The data.
+        /// </param>
+        /// <param name="files">
+        /// The files.
+        /// </param>
         /// <returns>
-        /// An <see cref="ActionResult" /> value.
+        /// An <see cref="ActionResult"/> value.
         /// </returns>
         [HttpPost]
         public ActionResult Files(FileData data, IEnumerable<HttpPostedFileBase> files)
@@ -62,6 +66,26 @@
         }
 
         /// <summary>
+        /// Forms the by get.
+        /// </summary>
+        /// <param name="form">
+        /// The form.
+        /// </param>
+        /// <returns>
+        /// An <see cref="ActionResult"/> value.
+        /// </returns>
+        [HttpGet]
+        public ActionResult FormByGet(FormData form)
+        {
+            if (form == null)
+            {
+                form = new FormData();
+            }
+
+            return View(form);
+        }
+
+        /// <summary>
         ///     The default page.
         /// </summary>
         /// <returns>An <see cref="ActionResult" /> value.</returns>
@@ -85,6 +109,11 @@
         [HttpPost]
         public ActionResult Index(FormData form)
         {
+            if (form == null)
+            {
+                form = new FormData();
+            }
+
             return View(form);
         }
     }

@@ -314,6 +314,7 @@
     <Content Include="Views\Form\Index.cshtml" />
     <Content Include="Views\Form\Files.cshtml" />
     <Content Include="Views\Home\Echo.cshtml" />
+    <Content Include="Views\Form\FormByGet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

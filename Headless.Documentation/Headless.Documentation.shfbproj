@@ -40,7 +40,8 @@
     </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="Headless" isDocumented="True">The Headless namespace provides types that support browserless HTTP automation testing.</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Headless.Activation" isDocumented="True">The Headless.Activation namespace provides types that facilitate the creation of types related to &lt;see cref="Headless.IHtmlElement" /&gt;.</NamespaceSummaryItem></NamespaceSummaries>
+      <NamespaceSummaryItem name="Headless.Activation" isDocumented="True">The Headless.Activation namespace provides types that facilitate the creation of types related to &lt;see cref="Headless.IHtmlElement" /&gt;.</NamespaceSummaryItem>
+    </NamespaceSummaries>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional

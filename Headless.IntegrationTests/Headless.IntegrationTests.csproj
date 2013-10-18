@@ -61,6 +61,8 @@
   <ItemGroup>
     <Compile Include="Content.cs" />
     <Compile Include="Form.cs" />
+    <Compile Include="FormByGetTests.cs" />
+    <Compile Include="Pages\FromByGetPage.cs" />
     <Compile Include="Pages\RedirectTemporaryPage.cs" />
     <Compile Include="Pages\FormFilePage.cs" />
     <Compile Include="Pages\FormIndexPage.cs" />

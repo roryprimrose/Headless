@@ -9,6 +9,20 @@
     public static class Form
     {
         /// <summary>
+        ///     Gets the by get.
+        /// </summary>
+        /// <value>
+        ///     The by get.
+        /// </value>
+        public static Uri ByGet
+        {
+            get
+            {
+                return new Uri(Config.BaseWebAddress, "form/formbyget");
+            }
+        }
+
+        /// <summary>
         ///     Gets the files address.
         /// </summary>
         /// <value>
