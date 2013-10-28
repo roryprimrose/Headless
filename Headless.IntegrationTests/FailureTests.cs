@@ -1,6 +1,9 @@
 ﻿namespace Headless.IntegrationTests
 {
+    using System;
+    using System.Diagnostics;
     using System.Net;
+    using FluentAssertions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
@@ -42,5 +45,35 @@
                 }
             }
         }
+
+        /// <summary>
+        ///     Runs a test for browser throws HTTP outcome exception when no server connection made.
+        /// </summary>
+        [TestMethod]
+        public void BrowserThrowsHttpOutcomeExceptionWhenNoServerConnectionMadeTest()
+        {
+            using (var browser = new Browser())
+            {
+                Action action = () => browser.GoTo(new Uri("http://localhost:3377"));
+
+                action.ShouldThrow<HttpOutcomeException>().Where(y => RenderException(y));
+            }
+        }
+
+        #region Static Helper Methods
+
+        /// <summary>
+        ///     Renders the exception.
+        /// </summary>
+        /// <param name="ex">The exception.</param>
+        /// <returns></returns>
+        private static bool RenderException(HttpOutcomeException ex)
+        {
+            Trace.WriteLine(ex);
+
+            return true;
+        }
+
+        #endregion
     }
 }

@@ -60,6 +60,39 @@
         }
 
         /// <summary>
+        ///     Runs a test for can create with result and exception.
+        /// </summary>
+        [TestMethod]
+        public void CanCreateWithResultAndExceptionTest()
+        {
+            var outcomes = new List<HttpOutcome>
+            {
+                new HttpOutcome(
+                    new Uri("http://www.google.com"),
+                    HttpMethod.Get,
+                    HttpStatusCode.Redirect,
+                    "Redirect to HTTPS",
+                    TimeSpan.FromMilliseconds(50)),
+                new HttpOutcome(
+                    new Uri("https://google.com"),
+                    HttpMethod.Get,
+                    HttpStatusCode.OK,
+                    "OK",
+                    TimeSpan.FromMilliseconds(234))
+            };
+            var result = new HttpResult(outcomes);
+            var ex = new TimeoutException();
+
+            var target = new HttpOutcomeException(result, ex);
+
+            Trace.WriteLine(target.Message);
+
+            target.Message.Should().Contain("http://www.google.com");
+            target.Message.Should().Contain("https://google.com");
+            target.Message.Should().Contain(ex.Message);
+        }
+
+        /// <summary>
         ///     Runs a test for can create with results and expected status code.
         /// </summary>
         [TestMethod]
@@ -68,16 +101,16 @@
             var outcomes = new List<HttpOutcome>
             {
                 new HttpOutcome(
-                    new Uri("http://www.google.com"), 
-                    HttpMethod.Get, 
-                    HttpStatusCode.Redirect, 
-                    "Redirect to HTTPS", 
-                    TimeSpan.FromMilliseconds(50)), 
+                    new Uri("http://www.google.com"),
+                    HttpMethod.Get,
+                    HttpStatusCode.Redirect,
+                    "Redirect to HTTPS",
+                    TimeSpan.FromMilliseconds(50)),
                 new HttpOutcome(
-                    new Uri("https://google.com"), 
-                    HttpMethod.Get, 
-                    HttpStatusCode.OK, 
-                    "OK", 
+                    new Uri("https://google.com"),
+                    HttpMethod.Get,
+                    HttpStatusCode.OK,
+                    "OK",
                     TimeSpan.FromMilliseconds(234))
             };
             var result = new HttpResult(outcomes);
@@ -99,16 +132,16 @@
             var outcomes = new List<HttpOutcome>
             {
                 new HttpOutcome(
-                    new Uri("http://www.google.com"), 
-                    HttpMethod.Get, 
-                    HttpStatusCode.Redirect, 
-                    "Redirect to HTTPS", 
-                    TimeSpan.FromMilliseconds(50)), 
+                    new Uri("http://www.google.com"),
+                    HttpMethod.Get,
+                    HttpStatusCode.Redirect,
+                    "Redirect to HTTPS",
+                    TimeSpan.FromMilliseconds(50)),
                 new HttpOutcome(
-                    new Uri("https://google.com"), 
-                    HttpMethod.Get, 
-                    HttpStatusCode.OK, 
-                    "OK", 
+                    new Uri("https://google.com"),
+                    HttpMethod.Get,
+                    HttpStatusCode.OK,
+                    "OK",
                     TimeSpan.FromMilliseconds(234))
             };
             var result = new HttpResult(outcomes);
@@ -141,16 +174,16 @@
             var outcomes = new List<HttpOutcome>
             {
                 new HttpOutcome(
-                    new Uri("http://www.google.com"), 
-                    HttpMethod.Get, 
-                    HttpStatusCode.Redirect, 
-                    "Redirect to HTTPS", 
-                    TimeSpan.FromMilliseconds(50)), 
+                    new Uri("http://www.google.com"),
+                    HttpMethod.Get,
+                    HttpStatusCode.Redirect,
+                    "Redirect to HTTPS",
+                    TimeSpan.FromMilliseconds(50)),
                 new HttpOutcome(
-                    new Uri("https://google.com"), 
-                    HttpMethod.Get, 
-                    HttpStatusCode.OK, 
-                    "OK", 
+                    new Uri("https://google.com"),
+                    HttpMethod.Get,
+                    HttpStatusCode.OK,
+                    "OK",
                     TimeSpan.FromMilliseconds(234))
             };
             var result = new HttpResult(outcomes);

@@ -168,7 +168,7 @@
         /// <summary>
         ///     Initializes a new instance of the <see cref="Browser" /> class.
         /// </summary>
-        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", 
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope",
             Justification = "The handler is disposed by the client when it is disposed.")]
         public Browser()
         {
@@ -212,14 +212,20 @@
 
                 if (exception.InnerExceptions.Count > 1)
                 {
-                    throw;
+                    var failure = GenerateFailure(request, ex);
+
+                    throw failure;
                 }
 
-                var canceledException = exception.InnerExceptions[0] as TaskCanceledException;
+                var innerException = exception.InnerExceptions[0];
+
+                var canceledException = innerException as TaskCanceledException;
 
                 if (canceledException == null)
                 {
-                    throw;
+                    var failure = GenerateFailure(request, innerException);
+
+                    throw failure;
                 }
 
                 throw new TimeoutException(canceledException.Message, canceledException);
@@ -227,10 +233,10 @@
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
+        ///     Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="disposing">
-        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
+        ///     <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
         ///     unmanaged resources.
         /// </param>
         protected virtual void Dispose(bool disposing)
@@ -265,21 +271,21 @@
             const string UserAgentFormat = "Headless ({0}.{1}.{2})";
 
             return string.Format(
-                CultureInfo.CurrentCulture, 
-                UserAgentFormat, 
-                info.ProductMajorPart, 
-                info.ProductMinorPart, 
+                CultureInfo.CurrentCulture,
+                UserAgentFormat,
+                info.ProductMajorPart,
+                info.ProductMinorPart,
                 info.ProductBuildPart);
         }
 
         /// <summary>
-        /// Determines whether the specified response is redirect.
+        ///     Determines whether the specified response is redirect.
         /// </summary>
         /// <param name="response">
-        /// The response.
+        ///     The response.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified response is redirect; otherwise, <c>false</c>.
+        ///     <c>true</c> if the specified response is redirect; otherwise, <c>false</c>.
         /// </returns>
         private static bool IsRedirect(HttpResponseMessage response)
         {
@@ -342,34 +348,34 @@
         }
 
         /// <summary>
-        /// Executes the request internally.
+        ///     Executes the request internally.
         /// </summary>
         /// <typeparam name="T">
-        /// The type of page to return.
+        ///     The type of page to return.
         /// </typeparam>
         /// <param name="request">
-        /// The request.
+        ///     The request.
         /// </param>
         /// <param name="expectedStatusCode">
-        /// The expected status code.
+        ///     The expected status code.
         /// </param>
         /// <param name="pageFactory">
-        /// The page factory.
+        ///     The page factory.
         /// </param>
         /// <returns>
-        /// A <typeparamref name="T"/> value.
+        ///     A <typeparamref name="T" /> value.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="request"/> parameter is <c>null</c>.
+        ///     The <paramref name="request" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="pageFactory"/> parameter is <c>null</c>.
+        ///     The <paramref name="pageFactory" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="HttpOutcomeException">
         /// </exception>
         private T ExecuteInternal<T>(
-            HttpRequestMessage request, 
-            HttpStatusCode expectedStatusCode, 
+            HttpRequestMessage request,
+            HttpStatusCode expectedStatusCode,
             IPageFactory pageFactory) where T : IPage, new()
         {
             var page = default(T);
@@ -402,10 +408,10 @@
                 stopwatch.Stop();
 
                 var outcome = new HttpOutcome(
-                    currentResourceLocation, 
-                    response.RequestMessage.Method, 
-                    response.StatusCode, 
-                    response.ReasonPhrase, 
+                    currentResourceLocation,
+                    response.RequestMessage.Method,
+                    response.StatusCode,
+                    response.ReasonPhrase,
                     stopwatch.Elapsed);
 
                 outcomes.Add(outcome);
@@ -448,10 +454,10 @@
                     stopwatch.Stop();
 
                     var outcome = new HttpOutcome(
-                        currentResourceLocation, 
-                        response.RequestMessage.Method, 
-                        response.StatusCode, 
-                        response.ReasonPhrase, 
+                        currentResourceLocation,
+                        response.RequestMessage.Method,
+                        response.StatusCode,
+                        response.ReasonPhrase,
                         stopwatch.Elapsed);
 
                     outcomes.Add(outcome);
@@ -495,10 +501,43 @@
         }
 
         /// <summary>
-        /// Sets the current page.
+        ///     Generates the failure.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="ex">The ex.</param>
+        /// <returns>The generated exception.</returns>
+        private HttpOutcomeException GenerateFailure(HttpRequestMessage request, Exception ex)
+        {
+            HttpResult result;
+
+            if (Page == null || Page.Result == null)
+            {
+                var outcome = new HttpOutcome(
+                    request.RequestUri,
+                    request.Method,
+                    HttpStatusCode.BadGateway,
+                    string.Empty,
+                    TimeSpan.Zero);
+
+                result = new HttpResult(
+                    new[]
+                    {
+                        outcome
+                    });
+            }
+            else
+            {
+                result = Page.Result;
+            }
+
+            return new HttpOutcomeException(result, ex);
+        }
+
+        /// <summary>
+        ///     Sets the current page.
         /// </summary>
         /// <param name="page">
-        /// The page.
+        ///     The page.
         /// </param>
         private void SetCurrentPage(IPage page)
         {
