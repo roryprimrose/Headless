@@ -5,7 +5,6 @@
     using System.Collections.ObjectModel;
     using System.Globalization;
     using System.Linq;
-    using System.Runtime.CompilerServices;
     using System.Xml.XPath;
     using Headless.Activation;
     using Headless.Properties;
@@ -163,7 +162,6 @@
         /// <returns>
         /// A <see cref="HtmlElementNotFoundException"/> value.
         /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private HtmlElementNotFoundException BuildItemNotFoundException(string value)
         {
             var message = string.Format(CultureInfo.CurrentCulture, Resources.HtmlList_NoOptionFoundForValue, value);
@@ -200,7 +198,7 @@
         /// <value>
         ///     The items.
         /// </value>
-        public IReadOnlyCollection<HtmlListItem> Items
+        public ReadOnlyCollection<HtmlListItem> Items
         {
             get
             {
@@ -216,7 +214,7 @@
         /// <value>
         ///     The selected items.
         /// </value>
-        public IReadOnlyCollection<HtmlListItem> SelectedItems
+        public ReadOnlyCollection<HtmlListItem> SelectedItems
         {
             get
             {

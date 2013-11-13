@@ -39,7 +39,7 @@
                 {
                     browser.GoTo(Home.Failure);
                 }
-                catch (HttpOutcomeException ex)
+                catch (HttpOutcomeException)
                 {
                     browser.Page.Result.TraceResults();
                 }

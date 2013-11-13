@@ -18,22 +18,22 @@
     public static class BrowserExtensions
     {
         /// <summary>
-        /// Uses the browser to execute a GET request to the specified location.
+        ///     Uses the browser to execute a GET request to the specified location.
         /// </summary>
         /// <param name="browser">
-        /// The browser.
+        ///     The browser.
         /// </param>
         /// <param name="location">
-        /// The location to request.
+        ///     The location to request.
         /// </param>
         /// <returns>
-        /// An <see cref="IPage"/> value.
+        ///     An <see cref="IPage" /> value.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="browser"/> parameter is <c>null</c>.
+        ///     The <paramref name="browser" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="location"/> parameter is <c>null</c>.
+        ///     The <paramref name="location" /> parameter is <c>null</c>.
         /// </exception>
         public static dynamic GoTo(this IBrowser browser, Uri location)
         {
@@ -41,25 +41,26 @@
         }
 
         /// <summary>
-        /// Uses the browser to execute a GET request to the specified location and validates against the specified HTTP status code.
+        ///     Uses the browser to execute a GET request to the specified location and validates against the specified HTTP status
+        ///     code.
         /// </summary>
         /// <param name="browser">
-        /// The browser.
+        ///     The browser.
         /// </param>
         /// <param name="location">
-        /// The location to request.
+        ///     The location to request.
         /// </param>
         /// <param name="expectedStatusCode">
-        /// The expected HTTP status code.
+        ///     The expected HTTP status code.
         /// </param>
         /// <returns>
-        /// An <see cref="IPage"/> value.
+        ///     An <see cref="IPage" /> value.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="browser"/> parameter is <c>null</c>.
+        ///     The <paramref name="browser" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="location"/> parameter is <c>null</c>.
+        ///     The <paramref name="location" /> parameter is <c>null</c>.
         /// </exception>
         public static dynamic GoTo(this IBrowser browser, Uri location, HttpStatusCode expectedStatusCode)
         {
@@ -71,19 +72,20 @@
         }
 
         /// <summary>
-        /// Uses the browser to execute a GET request to the location specified by <see cref="IPage.TargetLocation">T.TargetLocation</see>.
+        ///     Uses the browser to execute a GET request to the location specified by
+        ///     <see cref="IPage.TargetLocation">T.TargetLocation</see>.
         /// </summary>
         /// <param name="browser">
-        /// The browser.
+        ///     The browser.
         /// </param>
         /// <typeparam name="T">
-        /// The type of page to return.
+        ///     The type of page to return.
         /// </typeparam>
         /// <returns>
-        /// A <typeparamref name="T"/> value.
+        ///     A <typeparamref name="T" /> value.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="browser"/> parameter is <c>null</c>.
+        ///     The <paramref name="browser" /> parameter is <c>null</c>.
         /// </exception>
         public static T GoTo<T>(this IBrowser browser) where T : IPage, new()
         {
@@ -93,22 +95,23 @@
         }
 
         /// <summary>
-        /// Uses the browser to execute a GET request to the location specified by <see cref="IPage.TargetLocation">T.TargetLocation</see> and validates against the specified HTTP status code.
+        ///     Uses the browser to execute a GET request to the location specified by
+        ///     <see cref="IPage.TargetLocation">T.TargetLocation</see> and validates against the specified HTTP status code.
         /// </summary>
         /// <typeparam name="T">
-        /// The type of page to return.
+        ///     The type of page to return.
         /// </typeparam>
         /// <param name="browser">
-        /// The browser.
+        ///     The browser.
         /// </param>
         /// <param name="expectedStatusCode">
-        /// The expected HTTP status code.
+        ///     The expected HTTP status code.
         /// </param>
         /// <returns>
-        /// A <typeparamref name="T"/> value.
+        ///     A <typeparamref name="T" /> value.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="browser"/> parameter is <c>null</c>.
+        ///     The <paramref name="browser" /> parameter is <c>null</c>.
         /// </exception>
         public static T GoTo<T>(this IBrowser browser, HttpStatusCode expectedStatusCode) where T : IPage, new()
         {
@@ -118,25 +121,25 @@
         }
 
         /// <summary>
-        /// Uses the browser to execute a GET request to the specified location.
+        ///     Uses the browser to execute a GET request to the specified location.
         /// </summary>
         /// <typeparam name="T">
-        /// The type of page to return.
+        ///     The type of page to return.
         /// </typeparam>
         /// <param name="browser">
-        /// The browser.
+        ///     The browser.
         /// </param>
         /// <param name="location">
-        /// The location to request.
+        ///     The location to request.
         /// </param>
         /// <returns>
-        /// A <typeparamref name="T"/> value.
+        ///     A <typeparamref name="T" /> value.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="browser"/> parameter is <c>null</c>.
+        ///     The <paramref name="browser" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="location"/> parameter is <c>null</c>.
+        ///     The <paramref name="location" /> parameter is <c>null</c>.
         /// </exception>
         public static T GoTo<T>(this IBrowser browser, Uri location) where T : IPage, new()
         {
@@ -144,28 +147,29 @@
         }
 
         /// <summary>
-        /// Uses the browser to execute a GET request to the specified location and validates against the specified HTTP status code.
+        ///     Uses the browser to execute a GET request to the specified location and validates against the specified HTTP status
+        ///     code.
         /// </summary>
         /// <typeparam name="T">
-        /// The type of page to return.
+        ///     The type of page to return.
         /// </typeparam>
         /// <param name="browser">
-        /// The browser.
+        ///     The browser.
         /// </param>
         /// <param name="location">
-        /// The location to request.
+        ///     The location to request.
         /// </param>
         /// <param name="expectedStatusCode">
-        /// The expected HTTP status code.
+        ///     The expected HTTP status code.
         /// </param>
         /// <returns>
-        /// A <typeparamref name="T"/> value.
+        ///     A <typeparamref name="T" /> value.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="browser"/> parameter is <c>null</c>.
+        ///     The <paramref name="browser" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="location"/> parameter is <c>null</c>.
+        ///     The <paramref name="location" /> parameter is <c>null</c>.
         /// </exception>
         public static T GoTo<T>(this IBrowser browser, Uri location, HttpStatusCode expectedStatusCode)
             where T : IPage, new()
@@ -176,39 +180,40 @@
         }
 
         /// <summary>
-        /// Uses the browser to execute a GET request to the specified location, validates against the specified HTTP status code and creates a page using the specified factory.
+        ///     Uses the browser to execute a GET request to the specified location, validates against the specified HTTP status
+        ///     code and creates a page using the specified factory.
         /// </summary>
         /// <typeparam name="T">
-        /// The type of page to return.
+        ///     The type of page to return.
         /// </typeparam>
         /// <param name="browser">
-        /// The browser.
+        ///     The browser.
         /// </param>
         /// <param name="location">
-        /// The location to request.
+        ///     The location to request.
         /// </param>
         /// <param name="expectedStatusCode">
-        /// The expected HTTP status code.
+        ///     The expected HTTP status code.
         /// </param>
         /// <param name="pageFactory">
-        /// The page factory.
+        ///     The page factory.
         /// </param>
         /// <returns>
-        /// A <typeparamref name="T"/> value.
+        ///     A <typeparamref name="T" /> value.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="browser"/> parameter is <c>null</c>.
+        ///     The <paramref name="browser" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="location"/> parameter is <c>null</c>.
+        ///     The <paramref name="location" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="pageFactory"/> parameter is <c>null</c>.
+        ///     The <paramref name="pageFactory" /> parameter is <c>null</c>.
         /// </exception>
         public static T GoTo<T>(
-            this IBrowser browser, 
-            Uri location, 
-            HttpStatusCode expectedStatusCode, 
+            this IBrowser browser,
+            Uri location,
+            HttpStatusCode expectedStatusCode,
             IPageFactory pageFactory) where T : IPage, new()
         {
             if (browser == null)
@@ -233,28 +238,28 @@
         }
 
         /// <summary>
-        /// Uses the browser to execute a POST request with the specified parameters to the specified location.
+        ///     Uses the browser to execute a POST request with the specified parameters to the specified location.
         /// </summary>
         /// <param name="browser">
-        /// The browser.
+        ///     The browser.
         /// </param>
         /// <param name="parameters">
-        /// The POST parameters.
+        ///     The POST parameters.
         /// </param>
         /// <param name="location">
-        /// The location to request.
+        ///     The location to request.
         /// </param>
         /// <returns>
-        /// An <see cref="IPage"/> value.
+        ///     An <see cref="IPage" /> value.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="browser"/> parameter is <c>null</c>.
+        ///     The <paramref name="browser" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="parameters"/> parameter is <c>null</c>.
+        ///     The <paramref name="parameters" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="location"/> parameter is <c>null</c>.
+        ///     The <paramref name="location" /> parameter is <c>null</c>.
         /// </exception>
         public static dynamic PostTo(this IBrowser browser, IEnumerable<PostEntry> parameters, Uri location)
         {
@@ -262,36 +267,37 @@
         }
 
         /// <summary>
-        /// Uses the browser to execute a POST request with the specified parameters to the specified location and validates against the specified HTTP status code.
+        ///     Uses the browser to execute a POST request with the specified parameters to the specified location and validates
+        ///     against the specified HTTP status code.
         /// </summary>
         /// <param name="browser">
-        /// The browser.
+        ///     The browser.
         /// </param>
         /// <param name="parameters">
-        /// The POST parameters.
+        ///     The POST parameters.
         /// </param>
         /// <param name="location">
-        /// The location to request.
+        ///     The location to request.
         /// </param>
         /// <param name="expectedStatusCode">
-        /// The expected HTTP status code.
+        ///     The expected HTTP status code.
         /// </param>
         /// <returns>
-        /// An <see cref="IPage"/> value.
+        ///     An <see cref="IPage" /> value.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="browser"/> parameter is <c>null</c>.
+        ///     The <paramref name="browser" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="parameters"/> parameter is <c>null</c>.
+        ///     The <paramref name="parameters" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="location"/> parameter is <c>null</c>.
+        ///     The <paramref name="location" /> parameter is <c>null</c>.
         /// </exception>
         public static dynamic PostTo(
-            this IBrowser browser, 
-            IEnumerable<PostEntry> parameters, 
-            Uri location, 
+            this IBrowser browser,
+            IEnumerable<PostEntry> parameters,
+            Uri location,
             HttpStatusCode expectedStatusCode)
         {
             var pageFactory = new DefaultPageFactory();
@@ -302,25 +308,26 @@
         }
 
         /// <summary>
-        /// Uses the browser to execute a POST request with the specified parameters to the location specified by <see cref="IPage.TargetLocation">T.TargetLocation</see>.
+        ///     Uses the browser to execute a POST request with the specified parameters to the location specified by
+        ///     <see cref="IPage.TargetLocation">T.TargetLocation</see>.
         /// </summary>
         /// <typeparam name="T">
-        /// The type of page to return.
+        ///     The type of page to return.
         /// </typeparam>
         /// <param name="browser">
-        /// The browser.
+        ///     The browser.
         /// </param>
         /// <param name="parameters">
-        /// The POST parameters.
+        ///     The POST parameters.
         /// </param>
         /// <returns>
-        /// A <typeparamref name="T"/> value.
+        ///     A <typeparamref name="T" /> value.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="browser"/> parameter is <c>null</c>.
+        ///     The <paramref name="browser" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="parameters"/> parameter is <c>null</c>.
+        ///     The <paramref name="parameters" /> parameter is <c>null</c>.
         /// </exception>
         public static T PostTo<T>(this IBrowser browser, IEnumerable<PostEntry> parameters) where T : IPage, new()
         {
@@ -330,31 +337,31 @@
         }
 
         /// <summary>
-        /// Uses the browser to execute a POST request with the specified parameters to the specified location.
+        ///     Uses the browser to execute a POST request with the specified parameters to the specified location.
         /// </summary>
         /// <typeparam name="T">
-        /// The type of page to return.
+        ///     The type of page to return.
         /// </typeparam>
         /// <param name="browser">
-        /// The browser.
+        ///     The browser.
         /// </param>
         /// <param name="parameters">
-        /// The POST parameters.
+        ///     The POST parameters.
         /// </param>
         /// <param name="location">
-        /// The location to request.
+        ///     The location to request.
         /// </param>
         /// <returns>
-        /// A <typeparamref name="T"/> value.
+        ///     A <typeparamref name="T" /> value.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="browser"/> parameter is <c>null</c>.
+        ///     The <paramref name="browser" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="parameters"/> parameter is <c>null</c>.
+        ///     The <paramref name="parameters" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="location"/> parameter is <c>null</c>.
+        ///     The <paramref name="location" /> parameter is <c>null</c>.
         /// </exception>
         public static T PostTo<T>(this IBrowser browser, IEnumerable<PostEntry> parameters, Uri location)
             where T : IPage, new()
@@ -363,32 +370,33 @@
         }
 
         /// <summary>
-        /// Uses the browser to execute a POST request with the specified parameters to the location specified by <see cref="IPage.TargetLocation">T.TargetLocation</see> and validates against the specified HTTP status code.
+        ///     Uses the browser to execute a POST request with the specified parameters to the location specified by
+        ///     <see cref="IPage.TargetLocation">T.TargetLocation</see> and validates against the specified HTTP status code.
         /// </summary>
         /// <typeparam name="T">
-        /// The type of page to return.
+        ///     The type of page to return.
         /// </typeparam>
         /// <param name="browser">
-        /// The browser.
+        ///     The browser.
         /// </param>
         /// <param name="parameters">
-        /// The POST parameters.
+        ///     The POST parameters.
         /// </param>
         /// <param name="expectedStatusCode">
-        /// The expected HTTP status code.
+        ///     The expected HTTP status code.
         /// </param>
         /// <returns>
-        /// A <typeparamref name="T"/> value.
+        ///     A <typeparamref name="T" /> value.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="browser"/> parameter is <c>null</c>.
+        ///     The <paramref name="browser" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="parameters"/> parameter is <c>null</c>.
+        ///     The <paramref name="parameters" /> parameter is <c>null</c>.
         /// </exception>
         public static T PostTo<T>(
-            this IBrowser browser, 
-            IEnumerable<PostEntry> parameters, 
+            this IBrowser browser,
+            IEnumerable<PostEntry> parameters,
             HttpStatusCode expectedStatusCode) where T : IPage, new()
         {
             var page = new T();
@@ -397,39 +405,40 @@
         }
 
         /// <summary>
-        /// Uses the browser to execute a POST request with the specified parameters to the specified location and validates against the specified HTTP status code.
+        ///     Uses the browser to execute a POST request with the specified parameters to the specified location and validates
+        ///     against the specified HTTP status code.
         /// </summary>
         /// <typeparam name="T">
-        /// The type of page to return.
+        ///     The type of page to return.
         /// </typeparam>
         /// <param name="browser">
-        /// The browser.
+        ///     The browser.
         /// </param>
         /// <param name="parameters">
-        /// The POST parameters.
+        ///     The POST parameters.
         /// </param>
         /// <param name="location">
-        /// The location to post to.
+        ///     The location to post to.
         /// </param>
         /// <param name="expectedStatusCode">
-        /// The expected HTTP status code.
+        ///     The expected HTTP status code.
         /// </param>
         /// <returns>
-        /// A <typeparamref name="T"/> value.
+        ///     A <typeparamref name="T" /> value.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="browser"/> parameter is <c>null</c>.
+        ///     The <paramref name="browser" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="parameters"/> parameter is <c>null</c>.
+        ///     The <paramref name="parameters" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="location"/> parameter is <c>null</c>.
+        ///     The <paramref name="location" /> parameter is <c>null</c>.
         /// </exception>
         public static T PostTo<T>(
-            this IBrowser browser, 
-            IEnumerable<PostEntry> parameters, 
-            Uri location, 
+            this IBrowser browser,
+            IEnumerable<PostEntry> parameters,
+            Uri location,
             HttpStatusCode expectedStatusCode) where T : IPage, new()
         {
             var pageFactory = new DefaultPageFactory();
@@ -438,43 +447,44 @@
         }
 
         /// <summary>
-        /// Uses the browser to execute a POST request with the specified parameters to the specified location, validates against the specified HTTP status code and creates a page using the specified factory.
+        ///     Uses the browser to execute a POST request with the specified parameters to the specified location, validates
+        ///     against the specified HTTP status code and creates a page using the specified factory.
         /// </summary>
         /// <typeparam name="T">
-        /// The type of page to return.
+        ///     The type of page to return.
         /// </typeparam>
         /// <param name="browser">
-        /// The browser.
+        ///     The browser.
         /// </param>
         /// <param name="parameters">
-        /// The post parameters.
+        ///     The post parameters.
         /// </param>
         /// <param name="location">
-        /// The location to post to.
+        ///     The location to post to.
         /// </param>
         /// <param name="expectedStatusCode">
-        /// The expected HTTP status code.
+        ///     The expected HTTP status code.
         /// </param>
         /// <param name="pageFactory">
-        /// The page factory.
+        ///     The page factory.
         /// </param>
         /// <returns>
-        /// A <typeparamref name="T"/> value.
+        ///     A <typeparamref name="T" /> value.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="browser"/> parameter is <c>null</c>.
+        ///     The <paramref name="browser" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="parameters"/> parameter is <c>null</c>.
+        ///     The <paramref name="parameters" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="location"/> parameter is <c>null</c>.
+        ///     The <paramref name="location" /> parameter is <c>null</c>.
         /// </exception>
         public static T PostTo<T>(
-            this IBrowser browser, 
-            IEnumerable<PostEntry> parameters, 
-            Uri location, 
-            HttpStatusCode expectedStatusCode, 
+            this IBrowser browser,
+            IEnumerable<PostEntry> parameters,
+            Uri location,
+            HttpStatusCode expectedStatusCode,
             IPageFactory pageFactory) where T : IPage, new()
         {
             if (browser == null)
@@ -496,7 +506,7 @@
             {
                 throw new ArgumentNullException("pageFactory");
             }
-            
+
             var parameterSet = parameters.ToList();
 
             try
@@ -524,23 +534,22 @@
         }
 
         /// <summary>
-        /// Builds the content of the multipart.
+        ///     Builds the content of the multipart.
         /// </summary>
         /// <param name="parameters">
-        /// The parameters.
+        ///     The parameters.
         /// </param>
         /// <returns>
-        /// A <see cref="MultipartFormDataContent"/> value.
+        ///     A <see cref="MultipartFormDataContent" /> value.
         /// </returns>
-        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", 
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope",
             Justification = "All content types and streams are disposed when the HTTP Request is disposed.")]
-        private static MultipartFormDataContent BuildMultipartContent(IReadOnlyList<PostEntry> parameters)
+        private static MultipartFormDataContent BuildMultipartContent(IEnumerable<PostEntry> parameters)
         {
             var multiPart = new MultipartFormDataContent();
 
-            for (var index = 0; index < parameters.Count; index++)
+            foreach (var entry in parameters)
             {
-                var entry = parameters[index];
                 var fileEntry = entry as PostFileEntry;
 
                 if (fileEntry == null)
@@ -560,7 +569,7 @@
 
                     fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
                     {
-                        Name = "\"" + fileEntry.Name + "\"", 
+                        Name = "\"" + fileEntry.Name + "\"",
                         FileName = "\"\""
                     };
                     fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
@@ -573,7 +582,8 @@
                     var fileContent = new StreamContent(fileStream);
                     var fileName = Path.GetFileName(fileEntry.Value);
                     var fileExtension = Path.GetExtension(fileEntry.Value);
-                    var contentType = Registry.GetValue(@"HKEY_CLASSES_ROOT\" + fileExtension, "Content Type", null) as string;
+                    var contentType =
+                        Registry.GetValue(@"HKEY_CLASSES_ROOT\" + fileExtension, "Content Type", null) as string;
 
                     if (string.IsNullOrWhiteSpace(contentType))
                     {
@@ -582,7 +592,7 @@
 
                     fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
                     {
-                        Name = "\"" + fileEntry.Name + "\"", 
+                        Name = "\"" + fileEntry.Name + "\"",
                         FileName = "\"" + fileName + "\""
                     };
                     fileContent.Headers.ContentType = new MediaTypeHeaderValue(contentType);
@@ -595,23 +605,25 @@
         }
 
         /// <summary>
-        /// Builds the content of the post.
+        ///     Builds the content of the post.
         /// </summary>
         /// <param name="parameters">
-        /// The parameters.
+        ///     The parameters.
         /// </param>
         /// <returns>
-        /// A <see cref="HttpContent"/> value.
+        ///     A <see cref="HttpContent" /> value.
         /// </returns>
-        private static HttpContent BuildPostContent(IReadOnlyList<PostEntry> parameters)
+        private static HttpContent BuildPostContent(IEnumerable<PostEntry> parameters)
         {
-            if (parameters.OfType<PostFileEntry>().Any())
+            var parameterSet = parameters.ToList();
+
+            if (parameterSet.OfType<PostFileEntry>().Any())
             {
-                return BuildMultipartContent(parameters);
+                return BuildMultipartContent(parameterSet);
             }
 
             // There are no files to post so this is going to be url encoded form data
-            var pairs = parameters.Select(x => new KeyValuePair<string, string>(x.Name, x.Value));
+            var pairs = parameterSet.Select(x => new KeyValuePair<string, string>(x.Name, x.Value));
 
             return new FormUrlEncodedContent(pairs);
         }

@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Headless</id>
-    <version>1.0.103</version>
+    <version>1.1.4-beta</version>
     <title>Headless</title>
     <authors>Rory Primrose, Jon Wagner</authors>
     <description>A web browser replacement for testing websites without the browser overhead.</description>
@@ -10,15 +10,16 @@
     <projectUrl>https://github.com/roryprimrose/Headless</projectUrl>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <tags>headless browser test automation http web integrationtesting unittesting cookies dotnet</tags>
-    <releaseNotes>See important release information at: https://github.com/roryprimrose/Headless/releases </releaseNotes>
+    <releaseNotes>See important release information at: https://github.com/roryprimrose/Headless/releases and online documentation at http://www.nudoq.org/#!/Projects/Headless </releaseNotes>
     <dependencies>
       <dependency id="SgmlReader" />
+      <dependency id="Microsoft.Net.Http" />
     </dependencies>
   </metadata>
   <files>
-    <file src="Headless.dll" target="lib\NET45" />
-    <file src="Headless.pdb" target="lib\NET45" />
-    <file src="Headless.xml" target="lib\NET45" />
-    <file src="Headless.chm" target="lib\NET45" />
+    <file src="Headless.dll" target="lib\net40" />
+    <file src="Headless.pdb" target="lib\net40" />
+    <file src="Headless.xml" target="lib\net40" />
+    <file src="Headless.chm" target="lib\net40" />
   </files>
 </package>
