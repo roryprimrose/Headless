@@ -6,6 +6,7 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
+    using System.Reflection;
     using System.Xml.XPath;
     using Headless.Properties;
 
@@ -38,27 +39,27 @@
         private static readonly object _typeSyncLock = new object();
 
         /// <summary>
-        /// The find best matching type.
+        ///     The find best matching type.
         /// </summary>
         /// <param name="elementType">
-        /// The element type.
+        ///     The element type.
         /// </param>
         /// <param name="node">
-        /// The related node.
+        ///     The related node.
         /// </param>
         /// <returns>
-        /// A <see cref="Type"/> value.
+        ///     A <see cref="Type" /> value.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="elementType"/> parameter is <c>null</c>.
+        ///     The <paramref name="elementType" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="node"/> parameter is <c>null</c>.
+        ///     The <paramref name="node" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="InvalidHtmlElementMatchException">
-        /// No type could be found to match the node.
+        ///     No type could be found to match the node.
         /// </exception>
-        [SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase", 
+        [SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase",
             Justification = "HTML references are lower-case by convention.")]
         public static Type FindBestMatchingType(this Type elementType, IXPathNavigable node)
         {
@@ -75,13 +76,15 @@
             var navigator = node.GetNavigator();
             var possibleTypes = GetMatchingTypes(elementType).ToList();
             var matchingTypes = new List<Type>();
-            
+
             // The node name should already be folded to lower case when the HTML was read
             var nodeName = navigator.Name;
 
             foreach (var possibleType in possibleTypes)
             {
-                var attributes = possibleType.GetCustomAttributes(typeof(SupportedTagAttribute), true).OfType<SupportedTagAttribute>();
+                var attributes =
+                    possibleType.GetCustomAttributes(typeof(SupportedTagAttribute), true)
+                        .OfType<SupportedTagAttribute>();
 
                 foreach (var attribute in attributes)
                 {
@@ -94,9 +97,9 @@
                     {
                         // The attribute name should already be folded to lower case when the HTML was read
                         var queryAttributeName = attribute.AttributeName.ToLowerInvariant();
-                        
+
                         var matchingAttribute = navigator.GetAttribute(queryAttributeName, string.Empty);
-                        
+
                         if (matchingAttribute.Equals(attribute.AttributeValue, StringComparison.OrdinalIgnoreCase))
                         {
                             matchingTypes.Add(possibleType);
@@ -118,10 +121,10 @@
             {
                 var matchingTypeNames = matchingTypes.Aggregate(string.Empty, (x, y) => x + Environment.NewLine + y);
                 var message = string.Format(
-                    CultureInfo.CurrentCulture, 
-                    Resources.TypeExtensions_MultipleTypeMatchesForNode, 
+                    CultureInfo.CurrentCulture,
+                    Resources.TypeExtensions_MultipleTypeMatchesForNode,
                     elementType.FullName,
-                    navigator.OuterXml, 
+                    navigator.OuterXml,
                     matchingTypeNames);
 
                 throw new InvalidHtmlElementMatchException(message);
@@ -131,16 +134,39 @@
         }
 
         /// <summary>
-        /// Gets the matching types.
+        ///     Gets the loadable types.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        /// <returns>The available types in the specified assembly.</returns>
+        /// <exception cref="System.ArgumentNullException">assembly</exception>
+        public static IEnumerable<Type> GetLoadableTypes(this Assembly assembly)
+        {
+            if (assembly == null)
+            {
+                throw new ArgumentNullException("assembly");
+            }
+
+            try
+            {
+                return assembly.GetTypes();
+            }
+            catch (ReflectionTypeLoadException e)
+            {
+                return e.Types.Where(t => t != null);
+            }
+        }
+
+        /// <summary>
+        ///     Gets the matching types.
         /// </summary>
         /// <param name="elementType">
-        /// Type of the element.
+        ///     Type of the element.
         /// </param>
         /// <returns>
-        /// An <see cref="IEnumerable{T}"/> value.
+        ///     An <see cref="IEnumerable{T}" /> value.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="elementType"/> parameter is <c>null</c>.
+        ///     The <paramref name="elementType" /> parameter is <c>null</c>.
         /// </exception>
         public static ReadOnlyCollection<Type> GetMatchingTypes(this Type elementType)
         {
@@ -168,7 +194,8 @@
                 var matchingTypes =
                     assemblies.SelectMany(
                         assembly =>
-                            assembly.GetTypes().Where(x => elementType.IsAssignableFrom(x) && x.IsAbstract == false));
+                            assembly.GetLoadableTypes()
+                                .Where(x => elementType.IsAssignableFrom(x) && x.IsAbstract == false));
 
                 var types = new ReadOnlyCollection<Type>(matchingTypes.ToList());
 
@@ -179,19 +206,19 @@
         }
 
         /// <summary>
-        /// Gets the supported tags.
+        ///     Gets the supported tags.
         /// </summary>
         /// <param name="elementType">
-        /// Type of the element.
+        ///     Type of the element.
         /// </param>
         /// <returns>
-        /// An <see cref="ReadOnlyCollection{T}"/> value.
+        ///     An <see cref="ReadOnlyCollection{T}" /> value.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">
-        /// The <paramref name="elementType"/> parameter is <c>null</c>.
+        ///     The <paramref name="elementType" /> parameter is <c>null</c>.
         /// </exception>
         /// <exception cref="System.InvalidOperationException">
-        /// The type does not indicate any supported tags.
+        ///     The type does not indicate any supported tags.
         /// </exception>
         public static ReadOnlyCollection<SupportedTagAttribute> GetSupportedTags(this Type elementType)
         {
@@ -232,13 +259,13 @@
         }
 
         /// <summary>
-        /// Finds the supported tags.
+        ///     Finds the supported tags.
         /// </summary>
         /// <param name="types">
-        /// The types.
+        ///     The types.
         /// </param>
         /// <returns>
-        /// An <see cref="IEnumerable{T}"/> value.
+        ///     An <see cref="IEnumerable{T}" /> value.
         /// </returns>
         private static IList<SupportedTagAttribute> FindSupportedTags(IEnumerable<Type> types)
         {
@@ -247,7 +274,8 @@
 
             foreach (var type in types)
             {
-                var attributes = type.GetCustomAttributes(typeof(SupportedTagAttribute), true).OfType<SupportedTagAttribute>();
+                var attributes =
+                    type.GetCustomAttributes(typeof(SupportedTagAttribute), true).OfType<SupportedTagAttribute>();
 
                 foreach (var attribute in attributes)
                 {
